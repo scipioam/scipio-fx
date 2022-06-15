@@ -89,7 +89,7 @@ public abstract class AbstractTableBuilder<T> {
 
     public AbstractTableBuilder<T> initDataSource(Collection<T> initData) {
         if (initData != null) {
-            if (initData instanceof ObservableList<T>) {
+            if (initData instanceof ObservableList) {
                 dataSource = (ObservableList<T>) initData;
             } else {
                 dataSource.addAll(initData);

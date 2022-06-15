@@ -114,16 +114,22 @@ public class RandomUtil {
         StringBuilder s = new StringBuilder();
         for (int i = 1; i <= length; i++) {
             int kindIndex = kindIndexArr.get(random.nextInt(kindIndexArr.size()));
-            int charIndex = switch (kindIndex) {
-                case LOWER -> //小写
-                        random.nextInt(26);
-                case UPPER -> //大写
-                        random.nextInt(26) + 26;
-                case NUMBER -> //数字
-                        random.nextInt(10) + 52;
-                case SPECIAL -> //特殊字符
-                        random.nextInt(16) + 62;
-                default -> 0;
+            int charIndex;
+            switch (kindIndex) {
+                case LOWER: //小写
+                    charIndex = random.nextInt(26);
+                    break;
+                case UPPER: //大写
+                    charIndex = random.nextInt(26) + 26;
+                    break;
+                case NUMBER: //数字
+                    charIndex = random.nextInt(10) + 52;
+                    break;
+                case SPECIAL: //特殊字符
+                    charIndex = random.nextInt(16) + 62;
+                    break;
+                default:
+                    charIndex = 0;
             };
             s.append(BASE_CHARS[charIndex]);
         }

@@ -50,7 +50,7 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
         if (tableView == null) {
             this.tableView = new TableView<>();
         } else {
-            isTableView2 = (tableView instanceof TableView2<T>);
+            isTableView2 = (tableView instanceof TableView2);
             this.tableView = tableView;
         }
     }

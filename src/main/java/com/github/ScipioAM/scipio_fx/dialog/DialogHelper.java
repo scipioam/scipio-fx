@@ -34,16 +34,16 @@ public class DialogHelper {
     public static ExceptionDialog showExceptionDialog(Throwable e, Language language) {
         ExceptionDialog dialog = new ExceptionDialog(e);
         switch (language) {
-            case EN -> {
+            case EN:
                 dialog.setTitle("Exception");
                 dialog.setHeaderText("Exception information");
                 dialog.setContentText(StringUtils.isNull(e.getMessage()) ? "Empty message" : e.getMessage());
-            }
-            case CN -> {
+                break;
+            case CN:
                 dialog.setTitle("异常");
                 dialog.setHeaderText("异常信息");
                 dialog.setContentText(StringUtils.isNull(e.getMessage()) ? "无信息" : e.getMessage());
-            }
+                break;
         }
         dialog.show();
         return dialog;
