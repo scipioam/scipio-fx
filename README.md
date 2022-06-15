@@ -1,5 +1,5 @@
 # ScipioFX
-
+[![](https://jitpack.io/v/ScipioAM/scipio-fx.svg)](https://jitpack.io/#ScipioAM/scipio-fx)
 #### 介绍
 JavaFX轻量级框架
 
