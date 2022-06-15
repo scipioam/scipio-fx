@@ -290,9 +290,15 @@ public class MFXDialog implements IDialog {
     }
 
     public MFXDialog addOkButton(EventHandler<MouseEvent> btnAction, Language language) {
-        String btnText = switch (language) {
-            case CN -> "确定";
-            case EN -> "O K";
+        String btnText ;
+        switch (language) {
+            case CN :
+                btnText = "确定";
+                break;
+            case EN:
+            default:
+                btnText = "O K";
+                break;
         };
         return addOkButton(btnText, btnAction);
     }
