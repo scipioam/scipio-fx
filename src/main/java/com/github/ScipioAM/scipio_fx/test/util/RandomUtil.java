@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.utils;
+package com.github.ScipioAM.scipio_fx.test.util;
 
 import java.util.*;
 
@@ -114,7 +114,7 @@ public class RandomUtil {
         StringBuilder s = new StringBuilder();
         for (int i = 1; i <= length; i++) {
             int kindIndex = kindIndexArr.get(random.nextInt(kindIndexArr.size()));
-            int charIndex = 0;
+            int charIndex;
             switch (kindIndex) {
                 case LOWER: //小写
                     charIndex = random.nextInt(26);
@@ -128,7 +128,9 @@ public class RandomUtil {
                 case SPECIAL: //特殊字符
                     charIndex = random.nextInt(16) + 62;
                     break;
-            }
+                default:
+                    charIndex = 0;
+            };
             s.append(BASE_CHARS[charIndex]);
         }
         return s.toString();
