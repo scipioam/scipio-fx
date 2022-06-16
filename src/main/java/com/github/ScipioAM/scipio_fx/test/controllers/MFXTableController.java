@@ -4,8 +4,8 @@ import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.table.mfx.MFXTableBuilder;
 import com.github.ScipioAM.scipio_fx.test.bean.Person;
 import com.github.ScipioAM.scipio_fx.test.util.RandomUtil;
+import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
-import io.github.palexdev.materialfx.controls.MFXTableView;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import io.github.palexdev.materialfx.filter.IntegerFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
@@ -25,7 +25,7 @@ public class MFXTableController extends BaseController {
     @FXML
     private AnchorPane rootPane;
     @FXML
-    private MFXTableView<Person> tableView;
+    private MFXPaginatedTableView<Person> tableView;
 
     private ObservableList<Person> tableData;
 
@@ -41,7 +41,7 @@ public class MFXTableController extends BaseController {
                     .builder(tableView)
                     .initDataSource(true)
                     .setDataType(Person.class)
-//                    .setInitDataSort(Comparator.comparing(Person::getAge))
+                    .setRowsPerPage(10)
                     .build();
             Person.buildTestData(tableData);
         } catch (Exception e) {

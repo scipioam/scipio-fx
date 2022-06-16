@@ -14,6 +14,7 @@ public class MainController extends BaseController {
 
     private final FXMLView mfxTableTestView = new FXMLView();
     private final FXMLView fxTableTestView = new FXMLView();
+    private final FXMLView fxInputsView = new FXMLView();
 
     @FXML
     private StackPane rootPane;
@@ -40,7 +41,7 @@ public class MainController extends BaseController {
     @FXML
     protected void onTest4BtnClick() {
         try {
-            FXMLView.loadAndShow(mfxTableTestView, "/views/mfx-table.fxml", "Test4 MFX表格", rootPane);
+            FXMLView.loadAndShow(mfxTableTestView, "/views/table-mfx.fxml", "Test4 MFX表格", rootPane);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,7 +50,16 @@ public class MainController extends BaseController {
     @FXML
     protected void onTest5BtnClick() {
         try {
-            FXMLView.loadAndShow(fxTableTestView, "/views/fx-table.fxml", "Test5 FX表格", rootPane);
+            FXMLView.loadAndShow(fxTableTestView, "/views/table-fx.fxml", "Test5 FX表格", rootPane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onTest6BtnClick() {
+        try {
+            FXMLView.loadAndShow(fxInputsView, "/views/inputs-fx.fxml", "Test6 输入组件", rootPane);
         } catch (Exception e) {
             e.printStackTrace();
         }
