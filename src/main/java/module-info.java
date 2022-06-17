@@ -13,12 +13,12 @@ module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.table;
     exports com.github.ScipioAM.scipio_fx.utils;
     exports com.github.ScipioAM.scipio_fx.view;
-    exports com.github.ScipioAM.scipio_fx.test.util;
+//    exports com.github.ScipioAM.scipio_fx.test.util;
 
-    opens com.github.ScipioAM.scipio_fx.test;
-    opens com.github.ScipioAM.scipio_fx.test.bean;
-    opens com.github.ScipioAM.scipio_fx.test.original;
-    opens com.github.ScipioAM.scipio_fx.test.controllers;
-    opens com.github.ScipioAM.scipio_fx.test.threads;
+//    opens com.github.ScipioAM.scipio_fx.test;
+//    opens com.github.ScipioAM.scipio_fx.test.bean;
+//    opens com.github.ScipioAM.scipio_fx.test.original;
+//    opens com.github.ScipioAM.scipio_fx.test.controllers;
+//    opens com.github.ScipioAM.scipio_fx.test.threads;
 
 }
