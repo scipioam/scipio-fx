@@ -21,7 +21,7 @@ public class SplashScreen {
     /**
      * 启动画面的图片
      */
-    private String imagePath = "/img/splash.gif";
+    private String imagePath = "/test/img/splash.gif";
 
     /**
      * 启动画面是否显示
