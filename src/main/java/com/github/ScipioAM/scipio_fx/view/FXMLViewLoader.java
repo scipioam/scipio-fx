@@ -30,13 +30,12 @@ public class FXMLViewLoader {
     /**
      * 加载fxml文件
      *
-     * @param fxmlPath fxml文件的路径
+     * @param location fxml文件的路径
      * @param initArg  初始化参数
      * @return fxml对象
      * @throws IOException 找不到文件或加载失败
      */
-    public FXMLView load(String fxmlPath, Object initArg) throws IOException {
-        URL location = getClass().getResource(fxmlPath);
+    public FXMLView load(URL location, Object initArg) throws IOException {
         fxmlLoader.setLocation(location);
         //加载fxml文件 (controller的onCreate方法被回调)
         Parent rootNode = fxmlLoader.load();
@@ -44,7 +43,15 @@ public class FXMLViewLoader {
         BaseController controller = fxmlLoader.getController();
         //controller初始化回调
         controller.onLoadInit(rootNode, initArg);
-        return new FXMLView(rootNode, controller, fxmlPath);
+        return new FXMLView(rootNode, controller, location.getPath());
+    }
+
+    public FXMLView load(String fxmlPath, Object initArg) throws IOException {
+        URL location = getClass().getResource(fxmlPath);
+        if (location == null) {
+            location = new URL(fxmlPath);
+        }
+        return load(location, initArg);
     }
 
     public FXMLView load(String fxmlPath) throws IOException {
