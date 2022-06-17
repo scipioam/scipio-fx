@@ -5,6 +5,7 @@ import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnBind;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnComparator;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnFilter;
 import io.github.palexdev.materialfx.builders.control.TableBuilder;
+import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTableView;
 import io.github.palexdev.materialfx.filter.base.AbstractFilter;
@@ -33,9 +34,9 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
 
     private final TableBuilder<T, MFXTableView<T>> innerBuilder;
     private final ObservableList<AbstractFilter<T, ?>> filters = FXCollections.observableArrayList();
-
     @Setter(AccessLevel.NONE)
-    private MFXTableView<T> tableView;
+    private final MFXTableView<T> tableView;
+
     private MFXRowCellBuilder<T> rowCellBuilder;
     private MFXTableColumnBuildListener<T> columnBuildListener;
 
@@ -268,5 +269,22 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         innerBuilder.setComparator(comparator, isReverse);
         return this;
     }
+
+    /**
+     * 启用{@link MFXPaginatedTableView}的前提下，设定每页数量
+     */
+    public MFXTableBuilder<T> setRowsPerPage(int rowsPerPage) {
+        if (rowsPerPage <= 0) {
+            throw new IllegalArgumentException("rowsPerPage must be positive");
+        }
+        if (tableView instanceof MFXPaginatedTableView) {
+            MFXPaginatedTableView<T> paginatedTableView = (MFXPaginatedTableView<T>) tableView;
+            paginatedTableView.setRowsPerPage(rowsPerPage);
+        } else {
+            throw new UnsupportedOperationException("tableView is not instance of MFXPaginatedTableView");
+        }
+        return this;
+    }
+
 
 }
