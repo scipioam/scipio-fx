@@ -3,6 +3,7 @@ package com.github.ScipioAM.scipio_fx.app;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author Alan Scipio
@@ -20,7 +21,7 @@ public interface ApplicationInterface {
 
     String title();
 
-    String mainViewPath();
+    URL mainViewUrl();
 
     //=========================================== ↓↓↓↓↓↓ 绑定 ↓↓↓↓↓↓ ===========================================
 

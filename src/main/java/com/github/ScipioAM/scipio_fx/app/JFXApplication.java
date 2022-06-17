@@ -10,14 +10,13 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -35,30 +34,47 @@ import java.util.concurrent.Executors;
 @Accessors(chain = true)
 public class JFXApplication extends Application implements ApplicationInterface {
 
-    /** 主界面的stage */
+    /**
+     * 启动界面
+     */
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE)
+    protected static URL mainViewUrl = null;
+
+    /**
+     * app配置
+     */
     protected final ApplicationConfig config = new ApplicationConfig();
 
-    /** 主界面的stage */
+    /**
+     * 主界面的stage
+     */
     @Setter(AccessLevel.NONE)
     protected Stage primaryStage;
 
-    /** 主界面对线 */
+    /**
+     * 主界面对线
+     */
     @Setter(AccessLevel.NONE)
     protected FXMLView mainView;
 
-    /** 启动界面 */
+    /**
+     * 启动界面
+     */
     @Setter(AccessLevel.NONE)
     protected static SplashScreen splashScreen = null;
 
-    /** 线程池 */
+    /**
+     * 线程池
+     */
     protected final ExecutorService threadPool = Executors.newCachedThreadPool();
 
     //=========================================== ↓↓↓↓↓↓ 启动入口API ↓↓↓↓↓↓ ===========================================
 
     /**
      * 程序启动
-     * @param appClass 继承本类的子类
-     * @param args main方法的入参
+     *
+     * @param appClass     继承本类的子类
+     * @param args         main方法的入参
      * @param splashScreen 自定义启动画面
      */
     public static void launchApp(final Class<? extends JFXApplication> appClass, String[] args, SplashScreen splashScreen) {
@@ -68,8 +84,9 @@ public class JFXApplication extends Application implements ApplicationInterface 
 
     /**
      * 程序启动
-     * @param appClass 继承本类的子类
-     * @param args main方法的入参
+     *
+     * @param appClass      继承本类的子类
+     * @param args          main方法的入参
      * @param splashVisible 是否显示启动画面(构建默认的启动画面)
      */
     public static void launchApp(final Class<? extends JFXApplication> appClass, String[] args, boolean splashVisible) {
@@ -79,22 +96,26 @@ public class JFXApplication extends Application implements ApplicationInterface 
 
     /**
      * 程序启动(没有启动画面)
+     *
      * @param appClass 继承本类的子类
-     * @param args main方法的入参
+     * @param args     main方法的入参
      */
     public static void launchApp(final Class<? extends JFXApplication> appClass, String[] args) {
         launch(appClass, args);
     }
 
-    public static void launchApp(String[] args, SplashScreen splashScreen) {
+    public static void launchApp(String[] args, SplashScreen splashScreen, URL mainViewUrl) {
+        JFXApplication.mainViewUrl = mainViewUrl;
         launchApp(JFXApplication.class, args, splashScreen);
     }
 
-    public static void launchApp(String[] args, boolean splashVisible) {
+    public static void launchApp(String[] args, boolean splashVisible, URL mainViewUrl) {
+        JFXApplication.mainViewUrl = mainViewUrl;
         launchApp(JFXApplication.class, args, splashVisible);
     }
 
-    public static void launchApp(String[] args) {
+    public static void launchApp(String[] args, URL mainViewUrl) {
+        JFXApplication.mainViewUrl = mainViewUrl;
         launchApp(JFXApplication.class, args);
     }
 
@@ -161,17 +182,17 @@ public class JFXApplication extends Application implements ApplicationInterface 
     }
 
     @Override
-    public String mainViewPath() {
-        return config.getMainViewPath();
+    public URL mainViewUrl() {
+        return mainViewUrl;
     }
 
     @Override
     public FXMLView buildMainView() throws IOException {
-        String mainViewPath = config.getMainViewPath();
-        if (StringUtils.isNull(mainViewPath)) {
-            throw new IOException("Launch application failed, [mainViewPath] did not set !");
+        URL mainViewUrl = mainViewUrl();
+        if (mainViewUrl == null) {
+            throw new IOException("Launch application failed, [mainViewUrl] did not set !");
         }
-        return FXMLViewLoader.build().load(mainViewPath);
+        return FXMLViewLoader.build().load(mainViewUrl, null);
     }
 
     //=========================================== ↓↓↓↓↓↓ 工具方法 ↓↓↓↓↓↓ ===========================================
@@ -183,7 +204,11 @@ public class JFXApplication extends Application implements ApplicationInterface 
         //设置图标
         String iconPath = config.getIconPath();
         if (StringUtils.isNotNull(iconPath)) {
-            primaryStage.getIcons().addAll(new Image(Objects.requireNonNull(getClass().getResource(iconPath)).toExternalForm()));
+            InputStream in = getClass().getResourceAsStream(iconPath);
+            if (in == null) {
+                throw new IllegalStateException("get resource as stream from: [" + iconPath + "] failed");
+            }
+            primaryStage.getIcons().add(new Image(in));
         }
         //设置标题
         String title = config.getTitle();
@@ -231,12 +256,6 @@ public class JFXApplication extends Application implements ApplicationInterface 
         //读取配置项
         config.setTitle(getStrFromConfig(bundle, "app.title", title()));
         config.setIconPath(getStrFromConfig(bundle, "app.icon-path", iconPath()));
-        config.setMainViewPath(getStrFromConfig(bundle, "app.main-view-path", mainViewPath()));
-        //是否使用MaterialFX的UI
-//        String s = getStrFromConfig(bundle, "app.use-material-ui", null, "use default setting: " + config.isUseMaterialUI());
-//        if (StringUtil.isNotNull(s)) {
-//            config.setUseMaterialUI(Boolean.parseBoolean(s));
-//        }
         //构建启动监听器
         LaunchListener bindLL = bindLaunchListener();
         if (bindLL == null) {

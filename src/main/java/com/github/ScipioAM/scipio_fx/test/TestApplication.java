@@ -4,6 +4,8 @@ import com.github.ScipioAM.scipio_fx.app.JFXApplication;
 import com.github.ScipioAM.scipio_fx.app.LaunchListener;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 
+import java.net.URL;
+
 public class TestApplication extends JFXApplication implements LaunchListener {
 
     private static long startTime;
@@ -11,6 +13,11 @@ public class TestApplication extends JFXApplication implements LaunchListener {
     public static void main(String[] args) {
         startTime = System.currentTimeMillis();
         launchApp(TestApplication.class, args, false);
+    }
+
+    @Override
+    public URL mainViewUrl() {
+        return getClass().getResource("/views/main.fxml");
     }
 
     @Override

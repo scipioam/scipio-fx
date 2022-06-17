@@ -17,11 +17,8 @@ public class ApplicationConfig {
     /** 标题 */
     private String title;
 
-    /** 主界面的fxml文件路径 */
-    private String mainViewPath;
-
-    /* 是否使用MaterialFX的UI */
-//    private boolean useMaterialUI = false;
+    /* 主界面的url */
+//    private URL mainViewUrl;
 
     /** 启动监听器 */
     private LaunchListener launchListener;
@@ -33,15 +30,14 @@ public class ApplicationConfig {
         return new ApplicationConfig();
     }
 
-    public static ApplicationConfig create(String title, String mainViewPath, String iconPath) {
+    public static ApplicationConfig create(String title, String iconPath) {
         return new ApplicationConfig()
                 .setTitle(title)
-                .setMainViewPath(mainViewPath)
                 .setIconPath(iconPath);
     }
 
-    public static ApplicationConfig create(String title, String mainViewPath) {
-        return create(title, mainViewPath, null);
+    public static ApplicationConfig create(String title) {
+        return create(title, null);
     }
 
 }
