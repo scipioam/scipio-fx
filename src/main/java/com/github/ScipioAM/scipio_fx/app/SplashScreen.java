@@ -2,11 +2,14 @@ package com.github.ScipioAM.scipio_fx.app;
 
 import javafx.scene.Parent;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.io.InputStream;
 
 /**
  * 启动屏幕
@@ -21,7 +24,7 @@ public class SplashScreen {
     /**
      * 启动画面的图片
      */
-    private String imagePath = "/test/img/splash.gif";
+    private String imagePath = "/img/splash.gif";
 
     /**
      * 启动画面是否显示
@@ -63,7 +66,11 @@ public class SplashScreen {
      */
     public Parent buildViews() {
         final VBox vbox = new VBox();
-        final ImageView splashImageView = new ImageView(getImagePath());
+        InputStream in = getClass().getResourceAsStream(imagePath);
+        if (in == null) {
+            throw new IllegalStateException("get resource as stream from: [" + imagePath + "] failed");
+        }
+        final ImageView splashImageView = new ImageView(new Image(in));
         if (progressBarVisible) {
             if (progressBar == null) {
                 progressBar = buildProgressBar(splashImageView);
@@ -77,6 +84,7 @@ public class SplashScreen {
 
     /**
      * 构建进度条
+     *
      * @param splashImageView 设定的
      * @return 构建好了的进度条
      */
