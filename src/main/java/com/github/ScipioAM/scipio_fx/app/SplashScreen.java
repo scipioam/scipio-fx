@@ -8,9 +8,9 @@ import javafx.stage.Stage;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.Objects;
-
 /**
+ * 启动屏幕
+ *
  * @author Alan Scipio
  * @since 2022/2/22
  */
@@ -63,7 +63,7 @@ public class SplashScreen {
      */
     public Parent buildViews() {
         final VBox vbox = new VBox();
-        final ImageView splashImageView = new ImageView(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm());
+        final ImageView splashImageView = new ImageView(getImagePath());
         if (progressBarVisible) {
             if (progressBar == null) {
                 progressBar = buildProgressBar(splashImageView);
