@@ -20,6 +20,11 @@ public class TestApplication extends JFXApplication implements LaunchListener {
     }
 
     @Override
+    public String configPrefix() {
+        return "[example]app";
+    }
+
+    @Override
     public LaunchListener bindLaunchListener() {
         return this;
     }
