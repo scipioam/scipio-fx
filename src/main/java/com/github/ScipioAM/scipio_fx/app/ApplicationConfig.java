@@ -171,7 +171,7 @@ public class ApplicationConfig {
                 return null;
             }
         }
-        URL url = appClass.getResource(mainViewPath);
+        URL url = appClass.getResource(path);
         if (url == null) {
             throw new FileNotFoundException("resource file [" + path + "] not found, or not opens to " + this.getClass().getPackageName() + " in JPMS");
         }
