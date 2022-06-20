@@ -13,15 +13,17 @@ public interface ApplicationInterface {
 
     //=========================================== ↓↓↓↓↓↓ 配置 ↓↓↓↓↓↓ ===========================================
 
-    default String getConfigPrefix() {
+    default String configPrefix() {
         return "app";
     }
 
-    String iconPath();
-
     String title();
 
+    URL iconUrl();
+
     URL mainViewUrl();
+
+    URL splashImgUrl();
 
     //=========================================== ↓↓↓↓↓↓ 绑定 ↓↓↓↓↓↓ ===========================================
 

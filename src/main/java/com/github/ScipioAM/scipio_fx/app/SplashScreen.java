@@ -9,7 +9,8 @@ import javafx.stage.Stage;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.InputStream;
+import java.net.URL;
+import java.util.MissingResourceException;
 
 /**
  * 启动屏幕
@@ -24,7 +25,7 @@ public class SplashScreen {
     /**
      * 启动画面的图片
      */
-    private String imagePath = "/img/splash.gif";
+    private URL splashImgUrl;
 
     /**
      * 启动画面是否显示
@@ -54,9 +55,9 @@ public class SplashScreen {
         return new SplashScreen().setVisible(visible);
     }
 
-    public static SplashScreen create(String imagePath, boolean visible, boolean progressBarVisible) {
+    public static SplashScreen create(URL splashImgUrl, boolean visible, boolean progressBarVisible) {
         return new SplashScreen()
-                .setImagePath(imagePath)
+                .setSplashImgUrl(splashImgUrl)
                 .setVisible(visible)
                 .setProgressBarVisible(progressBarVisible);
     }
@@ -65,12 +66,11 @@ public class SplashScreen {
      * 构建启动画面
      */
     public Parent buildViews() {
-        final VBox vbox = new VBox();
-        InputStream in = getClass().getResourceAsStream(imagePath);
-        if (in == null) {
-            throw new IllegalStateException("get resource as stream from: [" + imagePath + "] failed");
+        if (splashImgUrl == null) {
+            throw new MissingResourceException("splash build failed, image url is null", ApplicationConfig.class.getName(), "app.splash-img.path");
         }
-        final ImageView splashImageView = new ImageView(new Image(in));
+        final VBox vbox = new VBox();
+        final ImageView splashImageView = new ImageView(new Image(splashImgUrl.toExternalForm()));
         if (progressBarVisible) {
             if (progressBar == null) {
                 progressBar = buildProgressBar(splashImageView);
@@ -88,7 +88,7 @@ public class SplashScreen {
      * @param splashImageView 设定的
      * @return 构建好了的进度条
      */
-    public ProgressBar buildProgressBar(ImageView splashImageView) {
+    protected ProgressBar buildProgressBar(ImageView splashImageView) {
         ProgressBar progressBar = new ProgressBar();
 //            progressBar.setPrefHeight(useMaterialUI ? 9.0 : 12.0);
         progressBar.setPrefHeight(12.0);

@@ -23,7 +23,23 @@
         </developer>
     </developers>
 
+    <repositories>
+        <repository>
+            <id>aliyun-maven</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <properties>
+        <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
