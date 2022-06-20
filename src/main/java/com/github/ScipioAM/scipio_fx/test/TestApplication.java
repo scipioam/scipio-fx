@@ -4,20 +4,19 @@ import com.github.ScipioAM.scipio_fx.app.JFXApplication;
 import com.github.ScipioAM.scipio_fx.app.LaunchListener;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 
-import java.net.URL;
-
 public class TestApplication extends JFXApplication implements LaunchListener {
 
     private static long startTime;
 
     public static void main(String[] args) {
-        startTime = System.currentTimeMillis();
-        launchApp(TestApplication.class, args, false);
-    }
-
-    @Override
-    public URL mainViewUrl() {
-        return getClass().getResource("/views/main.fxml");
+        try {
+            startTime = System.currentTimeMillis();
+            launchApp(TestApplication.class, args, false);
+            System.exit(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
     @Override
