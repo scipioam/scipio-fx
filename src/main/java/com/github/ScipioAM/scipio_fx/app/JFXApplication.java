@@ -137,6 +137,7 @@ public class JFXApplication extends Application implements ApplicationInterface 
                 if (StringUtils.isNotNull(iconPath)) {
                     splashStage.getIcons().addAll(new Image(Objects.requireNonNull(getClass().getResource(iconPath)).toExternalForm()));
                 }
+                splashScreen.setSplashImgUrl(config.getSplashImgUrl());
                 Scene splashScene = new Scene(splashScreen.buildViews(), Color.TRANSPARENT);
                 splashStage.setScene(splashScene);
                 splashStage.setResizable(false);
