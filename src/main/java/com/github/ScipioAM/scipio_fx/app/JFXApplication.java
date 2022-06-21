@@ -5,10 +5,10 @@ import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.FXMLViewLoader;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.*;
@@ -42,10 +42,15 @@ public class JFXApplication extends Application implements ApplicationInterface 
     /**
      * 主界面的stage
      */
-    protected Stage primaryStage;
+    protected Stage mainStage;
 
     /**
-     * 主界面对线
+     * 主界面的scene
+     */
+    protected Scene mainScene;
+
+    /**
+     * 主界面view对象
      */
     protected FXMLView mainView;
 
@@ -58,6 +63,12 @@ public class JFXApplication extends Application implements ApplicationInterface 
      * 线程池
      */
     protected final ExecutorService threadPool = Executors.newCachedThreadPool();
+
+    /**
+     * 位移值，用于（尤其是无边框情况下）可拖拽
+     */
+    protected double xOffset;
+    protected double yOffset;
 
     public JFXApplication() {
         if (thisClass == null) {
@@ -125,7 +136,7 @@ public class JFXApplication extends Application implements ApplicationInterface 
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            this.primaryStage = primaryStage;
+            this.mainStage = primaryStage;
             //加载配置
             config.loadConfig();
             //初始化主界面
@@ -196,7 +207,20 @@ public class JFXApplication extends Application implements ApplicationInterface 
     @Override
     public FXMLView buildMainView() throws IOException {
         URL mainViewUrl = config.getMainViewUrl();
-        return FXMLViewLoader.build().load(mainViewUrl, null);
+        FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, null);
+        //让主窗体可以被随意拖拽
+        if(config.isMainViewDraggable()) {
+            Parent rootNode = mainView.getView();
+            rootNode.setOnMousePressed(event -> {
+                xOffset = mainStage.getX() - event.getScreenX();
+                yOffset = mainStage.getY() - event.getScreenY();
+            });
+            rootNode.setOnMouseDragged(event -> {
+                mainStage.setX(event.getScreenX() + xOffset);
+                mainStage.setY(event.getScreenY() + yOffset);
+            });
+        }
+        return mainView;
     }
 
     //=========================================== ↓↓↓↓↓↓ 工具方法 ↓↓↓↓↓↓ ===========================================
@@ -226,7 +250,10 @@ public class JFXApplication extends Application implements ApplicationInterface 
      * 显示主界面
      */
     protected void showMainView() {
-        primaryStage.setScene(new Scene(mainView.getView()));
+        if (mainScene == null) {
+            mainScene = new Scene(mainView.getView());
+        }
+        mainStage.setScene(mainScene);
         if (splashScreen != null && splashScreen.isVisible()) {
             Stage splashStage = splashScreen.getStage();
             splashStage.close();
@@ -234,8 +261,9 @@ public class JFXApplication extends Application implements ApplicationInterface 
             splashScreen.setStage(null);
         }
         BaseController mainController = mainView.getController();
-        mainController.setThisStage(primaryStage);
-        primaryStage.show();
+        mainController.setThisStage(mainStage);
+        mainView.setStage(mainStage);
+        mainStage.show();
     }
 
 }

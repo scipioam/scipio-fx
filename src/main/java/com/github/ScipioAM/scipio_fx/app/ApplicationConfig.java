@@ -1,7 +1,6 @@
 package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
-import javafx.stage.Modality;
 import javafx.stage.StageStyle;
 
 import java.io.FileNotFoundException;
@@ -62,6 +61,11 @@ public class ApplicationConfig {
      */
     private StageStyle mainStageStyle;
 
+    /**
+     * 主界面是否可拖拽
+     */
+    private boolean mainViewDraggable = false;
+
     //==============================================================================================================================
 
     public static ApplicationConfig build() {
@@ -100,11 +104,12 @@ public class ApplicationConfig {
         setIconPath(getStrFromConfig(bundle, "app.icon-path", null, appInstance.configPrefix()));
         setMainViewPath(getStrFromConfig(bundle, "app.main-view.path", null, appInstance.configPrefix()));
         String splashImgPath = getStrFromConfig(bundle, "app.splash-img.path", null, appInstance.configPrefix());
-        if(splashImgPath == null) {
+        if (splashImgPath == null) {
             splashImgPath = DEFAULT_SPLASH_IMG_PATH;
         }
         setSplashImgPath(splashImgPath);
         resolveStageStyle(getStrFromConfig(bundle, "app.main-view.stage-style", null, appInstance.configPrefix()));
+        resolveDraggable(getStrFromConfig(bundle, "app.main-view.draggable", null, appInstance.configPrefix()));
         //app里重写的优先级最高，覆盖配置文件里设定的
         setMainViewUrl(appInstance.mainViewUrl());
         setIconUrl(appInstance.iconUrl());
@@ -225,15 +230,25 @@ public class ApplicationConfig {
         return value;
     }
 
-    private void resolveStageStyle(String stageStyleStr) {
-        if(StringUtils.isNull(stageStyleStr)) {
+    private void resolveStageStyle(String configValue) {
+        if (StringUtils.isNull(configValue)) {
             return;
         }
-        String enumName = stageStyleStr.toUpperCase();
+        String enumName = configValue.toUpperCase();
         try {
-            mainStageStyle = StageStyle.valueOf(enumName);
+            setMainStageStyle(StageStyle.valueOf(enumName));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void resolveDraggable(String configValue) {
+        if (StringUtils.isNull(configValue)) {
+            return;
+        }
+        String draggableStr = configValue.toLowerCase();
+        if (draggableStr.equals("true") || draggableStr.equals("on") || draggableStr.equals("1")) {
+            setMainViewDraggable(true);
         }
     }
 
@@ -335,4 +350,12 @@ public class ApplicationConfig {
         return this;
     }
 
+    public boolean isMainViewDraggable() {
+        return mainViewDraggable;
+    }
+
+    public ApplicationConfig setMainViewDraggable(boolean mainViewDraggable) {
+        this.mainViewDraggable = mainViewDraggable;
+        return this;
+    }
 }
