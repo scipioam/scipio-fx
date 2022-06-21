@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.*;
@@ -213,6 +214,11 @@ public class JFXApplication extends Application implements ApplicationInterface 
         String title = config.getTitle();
         if (StringUtils.isNotNull(title)) {
             primaryStage.setTitle(title);
+        }
+        //StageStyle
+        StageStyle stageStyle = config.getMainStageStyle();
+        if (stageStyle != null) {
+            primaryStage.initStyle(stageStyle);
         }
     }
 

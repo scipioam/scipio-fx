@@ -1,6 +1,8 @@
 package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -55,6 +57,11 @@ public class ApplicationConfig {
      */
     private AppInitThread initThread;
 
+    /**
+     * 主界面式样
+     */
+    private StageStyle mainStageStyle;
+
     //==============================================================================================================================
 
     public static ApplicationConfig build() {
@@ -90,9 +97,14 @@ public class ApplicationConfig {
         //加载配置文件
         //读取配置项
         this.setTitle(getStrFromConfig(bundle, "app.title", appInstance.title(), appInstance.configPrefix()));
-        setIconPath(getStrFromConfig(bundle, "app.icon-path", "", appInstance.configPrefix()));
-        setMainViewPath(getStrFromConfig(bundle, "app.main-view.path", "", appInstance.configPrefix()));
-        setSplashImgPath(getStrFromConfig(bundle, "app.splash-img.path", DEFAULT_SPLASH_IMG_PATH, appInstance.configPrefix()));
+        setIconPath(getStrFromConfig(bundle, "app.icon-path", null, appInstance.configPrefix()));
+        setMainViewPath(getStrFromConfig(bundle, "app.main-view.path", null, appInstance.configPrefix()));
+        String splashImgPath = getStrFromConfig(bundle, "app.splash-img.path", null, appInstance.configPrefix());
+        if(splashImgPath == null) {
+            splashImgPath = DEFAULT_SPLASH_IMG_PATH;
+        }
+        setSplashImgPath(splashImgPath);
+        resolveStageStyle(getStrFromConfig(bundle, "app.main-view.stage-style", null, appInstance.configPrefix()));
         //app里重写的优先级最高，覆盖配置文件里设定的
         setMainViewUrl(appInstance.mainViewUrl());
         setIconUrl(appInstance.iconUrl());
@@ -201,7 +213,7 @@ public class ApplicationConfig {
     /**
      * 从配置文件中读取参数
      *
-     * @param priorityValue 优先值，它为null时才采纳配置文件里的参数
+     * @param priorityValue 优先值，它为空白时才采纳配置文件里的参数
      */
     private String getStrFromConfig(ResourceBundle bundle, String key, String priorityValue, String configPrefix) {
         String value = null;
@@ -211,6 +223,18 @@ public class ApplicationConfig {
             System.err.println("[" + key + "] not found in config file: " + configPrefix + ".properties");
         }
         return value;
+    }
+
+    private void resolveStageStyle(String stageStyleStr) {
+        if(StringUtils.isNull(stageStyleStr)) {
+            return;
+        }
+        String enumName = stageStyleStr.toUpperCase();
+        try {
+            mainStageStyle = StageStyle.valueOf(enumName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //==============================================================================================================================
@@ -301,4 +325,14 @@ public class ApplicationConfig {
         this.initThread = initThread;
         return this;
     }
+
+    public StageStyle getMainStageStyle() {
+        return mainStageStyle;
+    }
+
+    public ApplicationConfig setMainStageStyle(StageStyle mainStageStyle) {
+        this.mainStageStyle = mainStageStyle;
+        return this;
+    }
+
 }
