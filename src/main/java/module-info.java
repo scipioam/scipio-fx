@@ -10,7 +10,11 @@ module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.constant;
     exports com.github.ScipioAM.scipio_fx.controller;
     exports com.github.ScipioAM.scipio_fx.dialog;
+    exports com.github.ScipioAM.scipio_fx.dialog.mfx;
     exports com.github.ScipioAM.scipio_fx.table;
+    exports com.github.ScipioAM.scipio_fx.table.annotations;
+    exports com.github.ScipioAM.scipio_fx.table.cell;
+    exports com.github.ScipioAM.scipio_fx.table.mfx;
     exports com.github.ScipioAM.scipio_fx.utils;
     exports com.github.ScipioAM.scipio_fx.view;
 
