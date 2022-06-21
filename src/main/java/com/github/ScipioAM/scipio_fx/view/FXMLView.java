@@ -18,6 +18,8 @@ import lombok.experimental.Accessors;
 @Data
 public class FXMLView {
 
+    //TODO 待调整，需要有单纯的load（不新建stage），以及load时传入url而不是string
+
     private Parent view;
     private BaseController controller;
     private String fxmlPath;
