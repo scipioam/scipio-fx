@@ -182,6 +182,11 @@ public class JFXApplication extends Application implements ApplicationInterface 
         }
     }//end of start()
 
+    @Override
+    public void stop() throws Exception {
+        mainView.getController().onStop();
+    }
+
     //=========================================== ↓↓↓↓↓↓ 接口默认实现 ↓↓↓↓↓↓ ===========================================
 
     @Override

@@ -17,6 +17,8 @@ public abstract class BaseController implements Initializable {
 
     protected Stage thisStage;
 
+    //=========================================== ↓↓↓↓↓↓ controller生命周期 ↓↓↓↓↓↓ ===========================================
+
     /**
      * controller被创建时的回调，早于{@link #onLoadInit}
      *
@@ -24,6 +26,7 @@ public abstract class BaseController implements Initializable {
      * @param resources fxml root object
      */
     public void onCreate(URL location, ResourceBundle resources) {
+        registerListener();
     }
 
     /**
@@ -42,6 +45,29 @@ public abstract class BaseController implements Initializable {
      */
     public void onShow(Stage thisStage) {
     }
+
+    /**
+     * 程序停止时的回调
+     */
+    public void onStop() throws Exception {
+        unregisterListener();
+    }
+
+    //=========================================== ↓↓↓↓↓↓ 辅助性回调（本身无意义） ↓↓↓↓↓↓ ===========================================
+
+    /**
+     * 注册监听器
+     */
+    public void registerListener() {
+    }
+
+    /**
+     * 注销监听器，避免内存泄露
+     */
+    public void unregisterListener() {
+    }
+
+    //=========================================== ↓↓↓↓↓↓ 不需要重写的 ↓↓↓↓↓↓ ===========================================
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
