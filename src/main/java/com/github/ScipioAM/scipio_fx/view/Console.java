@@ -19,11 +19,25 @@ public class Console {
 
     private final TextArea textArea;
 
-    private final List<String> lines;
+    /**
+     * 每行的内容
+     */
+    private final List<String> lineList;
 
+    /**
+     * 自定义行前缀，为null时默认为行号(1-based)
+     */
     private final String linePrefix;
 
+    /**
+     * 每行输入时的回调
+     */
     private InputListener inputListener;
+
+    /**
+     * 是否可输入，true代表是
+     */
+    private boolean input = false;
 
     //=========================================== ↓↓↓↓↓↓ 构造方法 ↓↓↓↓↓↓ ===========================================
 
@@ -45,9 +59,10 @@ public class Console {
         }
         this.textArea = textArea;
         this.linePrefix = linePrefix;
-        lines = new ArrayList<>();
+        lineList = new ArrayList<>();
+        this.input = input;
         if (input) {
-            this.textArea.setText(getPrefix(1));
+            this.textArea.setText(getPrefix(0));
             this.textArea.textProperty().addListener(new ConsoleChangeListener(this, inputListener));
         }
     }
@@ -67,7 +82,7 @@ public class Console {
         }
         this.textArea = textArea;
         this.linePrefix = linePrefix;
-        lines = new ArrayList<>();
+        lineList = new ArrayList<>();
         if (textChangeListener != null) {
             this.textArea.textProperty().addListener(textChangeListener);
         }
@@ -86,12 +101,18 @@ public class Console {
      */
     public Console output(String text) {
         StringBuilder s = new StringBuilder(textArea.getText());
-        if (lines.size() > 0) {
-            s.append('\n');
+        if (lineList.size() > 0) {
+            //第n行的情况下（n > 1）
+            s.append('\n').append(getPrefix(lineList.size())).append(text);
+        } else if (input) {
+            //可输入的情况下，第1行已初始化了前缀
+            s.append(text);
+        } else {
+            //不可输入的情况下，第1行什么都没有
+            s.append(getPrefix(0)).append(text);
         }
-        s.append(getPrefix(lines.size() + 1)).append(text);
         textArea.setText(s.toString());
-        lines.add(text);
+        lineList.add(text);
         return this;
     }
 
@@ -99,24 +120,24 @@ public class Console {
      * 清空内容
      */
     public void clear() {
-        textArea.setText(getPrefix(1));
-        lines.clear();
+        textArea.setText(getPrefix(0));
+        lineList.clear();
     }
 
     /**
      * 获取行总数
      */
     public int getLineCount() {
-        return lines.size();
+        return lineList.size();
     }
 
     /**
      * 获取指定行的内容
      *
-     * @param lineNo 行号(1-based)
+     * @param lineIndex 行号(0-based)
      */
-    public String getLineContent(int lineNo) {
-        return lines.get((lineNo + 1));
+    public String getLine(int lineIndex) {
+        return lineList.get(lineIndex);
     }
 
     //=========================================== ↓↓↓↓↓↓ 内部调用 ↓↓↓↓↓↓ ===========================================
@@ -124,11 +145,11 @@ public class Console {
     /**
      * 获取最终的行前缀
      *
-     * @param lineNo 当前行号
+     * @param lineIndex 当前行号(0-based)
      */
-    String getPrefix(int lineNo) {
+    String getPrefix(int lineIndex) {
         if (StringUtils.isNull(linePrefix)) {
-            return "[" + lineNo + "]";
+            return "[" + (lineIndex + 1) + "]";
         } else {
             return linePrefix;
         }
