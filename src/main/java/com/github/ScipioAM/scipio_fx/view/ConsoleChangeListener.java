@@ -14,12 +14,12 @@ import java.util.List;
  */
 class ConsoleChangeListener implements ChangeListener<String> {
 
-    private final List<String> lines;
-    private final TextArea textArea;
+    private final Console console;
+    private final Console.InputListener inputListener;
 
-    public ConsoleChangeListener(List<String> lines, TextArea textArea) {
-        this.lines = lines;
-        this.textArea = textArea;
+    public ConsoleChangeListener(Console console, Console.InputListener inputListener) {
+        this.console = console;
+        this.inputListener = inputListener;
     }
 
     @Override
@@ -27,14 +27,26 @@ class ConsoleChangeListener implements ChangeListener<String> {
         if (StringUtils.isNull(newValue)) {
             return;
         }
-        if (newValue.equals("\n")) {
+
+        TextArea textArea = console.getTextArea();
+        List<String> lines = console.getLines();
+
+        //换行时的处理
+        if (newValue.charAt(newValue.length() - 1) == '\n') {
+            //拿到新输入的行
             String[] arr = textArea.getText().split("\n");
-            if (arr.length <= 1) {
-                lines.add("");
-            } else {
-                lines.add(arr[arr.length - 1]);
+            String lastLine = arr[arr.length - 1];
+            //处理掉行前缀
+            String prefix = console.getPrefix(lines.size() + 1);
+            String trueLine = lastLine.replace(prefix,"");
+            //记录下来
+            lines.add(trueLine);
+            //回调
+            if (inputListener != null) {
+                inputListener.onInput(textArea, trueLine);
             }
-            textArea.setText("[" + (lines.size() + 1) + "]");
+            //确定显示
+            textArea.setText(newValue + console.getPrefix(lines.size() + 1));
         }
     }
 
