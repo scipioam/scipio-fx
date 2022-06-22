@@ -43,19 +43,19 @@ public class FXMLViewLoader {
         BaseController controller = fxmlLoader.getController();
         //controller初始化回调
         controller.onLoadInit(rootNode, initArg);
-        return new FXMLView(rootNode, controller, location.getPath());
+        return new FXMLView(rootNode, controller, location);
     }
 
-    public FXMLView load(String fxmlPath, Object initArg) throws IOException {
-        URL location = getClass().getResource(fxmlPath);
+    public FXMLView load(Class<?> clazz, String fxmlPath, Object initArg) throws IOException {
+        URL location = clazz.getResource(fxmlPath);
         if (location == null) {
             location = new URL(fxmlPath);
         }
         return load(location, initArg);
     }
 
-    public FXMLView load(String fxmlPath) throws IOException {
-        return load(fxmlPath, null);
+    public FXMLView load(Class<?> clazz, String fxmlPath) throws IOException {
+        return load(clazz, fxmlPath, null);
     }
 
 }

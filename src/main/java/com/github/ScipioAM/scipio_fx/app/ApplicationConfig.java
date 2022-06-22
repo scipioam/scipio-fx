@@ -66,6 +66,11 @@ public class ApplicationConfig {
      */
     private boolean mainViewDraggable = false;
 
+    /**
+     * 配置加载时的监听回调
+     */
+    private ConfigLoadListener loadListener;
+
     //==============================================================================================================================
 
     public static ApplicationConfig build() {
@@ -97,6 +102,12 @@ public class ApplicationConfig {
             bundle = ResourceBundle.getBundle(appInstance.configPrefix());
         } catch (MissingResourceException e) {
             throw new FileNotFoundException("can not found configuration file: " + appInstance.configPrefix() + ".properties");
+        }
+        //加载前的回调，此方法可整体替换原本的加载逻辑
+        if (loadListener != null) {
+            if (!loadListener.onLoad(bundle, this)) {
+                return this;
+            }
         }
         //加载配置文件
         //读取配置项
@@ -133,6 +144,10 @@ public class ApplicationConfig {
             }
         } else {
             setInitThread(bindIT);
+        }
+        //加载后的回调
+        if (loadListener != null) {
+            loadListener.afterLoad(bundle, this);
         }
         return this;
     }
@@ -356,6 +371,15 @@ public class ApplicationConfig {
 
     public ApplicationConfig setMainViewDraggable(boolean mainViewDraggable) {
         this.mainViewDraggable = mainViewDraggable;
+        return this;
+    }
+
+    public ConfigLoadListener getLoadListener() {
+        return loadListener;
+    }
+
+    public ApplicationConfig setLoadListener(ConfigLoadListener loadListener) {
+        this.loadListener = loadListener;
         return this;
     }
 }
