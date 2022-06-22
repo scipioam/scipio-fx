@@ -29,7 +29,7 @@ class ConsoleChangeListener implements ChangeListener<String> {
         }
 
         TextArea textArea = console.getTextArea();
-        List<String> lines = console.getLines();
+        List<String> lineList = console.getLineList();
 
         //换行时的处理
         if (newValue.charAt(newValue.length() - 1) == '\n') {
@@ -37,16 +37,16 @@ class ConsoleChangeListener implements ChangeListener<String> {
             String[] arr = textArea.getText().split("\n");
             String lastLine = arr[arr.length - 1];
             //处理掉行前缀
-            String prefix = console.getPrefix(lines.size() + 1);
+            String prefix = console.getPrefix(lineList.size());
             String trueLine = lastLine.replace(prefix,"");
             //记录下来
-            lines.add(trueLine);
+            lineList.add(trueLine);
             //回调
             if (inputListener != null) {
                 inputListener.onInput(textArea, trueLine);
             }
             //确定显示
-            textArea.setText(newValue + console.getPrefix(lines.size() + 1));
+            textArea.setText(newValue + console.getPrefix(lineList.size()));
         }
     }
 

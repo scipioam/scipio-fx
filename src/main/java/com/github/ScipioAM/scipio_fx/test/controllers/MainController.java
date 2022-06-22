@@ -27,12 +27,13 @@ public class MainController extends BaseController {
 
     @Override
     public void onLoadInit(Parent rootNode, Object initArg) {
-        console = new Console(textArea, true, null);
+        console = new Console(textArea, true);
     }
 
     @FXML
     protected void onTest1BtnClick() {
         console.clear();
+//        console.output(RandomUtil.getString(5));
     }
 
     @FXML
