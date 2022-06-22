@@ -2,13 +2,14 @@ package com.github.ScipioAM.scipio_fx.test.controllers;
 
 import com.github.ScipioAM.scipio_fx.constant.Language;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
-import com.github.ScipioAM.scipio_fx.dialog.DialogHelper;
 import com.github.ScipioAM.scipio_fx.dialog.mfx.MFXDialogHelper;
 import com.github.ScipioAM.scipio_fx.test.original.TestMFXNotification;
+import com.github.ScipioAM.scipio_fx.view.Console;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.ViewLoadOptions;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.Parent;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
 
 public class MainController extends BaseController {
@@ -20,12 +21,18 @@ public class MainController extends BaseController {
     @FXML
     private StackPane rootPane;
     @FXML
-    private Label welcomeText;
+    private TextArea textArea;
+
+    private Console console;
+
+    @Override
+    public void onLoadInit(Parent rootNode, Object initArg) {
+        console = new Console(textArea, true, null);
+    }
 
     @FXML
     protected void onTest1BtnClick() {
-//        welcomeText.setText("Welcome to JavaFX Application!");
-        DialogHelper.showDialog("asd");
+        console.clear();
     }
 
     @FXML
