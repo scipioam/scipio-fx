@@ -25,6 +25,10 @@ public interface ApplicationInterface {
 
     URL splashImgUrl();
 
+    default ConfigLoadListener configLoadListener() {
+        return null;
+    }
+
     //=========================================== ↓↓↓↓↓↓ 绑定 ↓↓↓↓↓↓ ===========================================
 
     default AppInitThread bindInitThread() {

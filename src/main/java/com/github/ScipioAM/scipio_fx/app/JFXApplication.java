@@ -74,9 +74,24 @@ public class JFXApplication extends Application implements ApplicationInterface 
         if (thisClass == null) {
             thisClass = this.getClass();
         }
+        //准备config对象
         config = ApplicationConfig.build(thisClass);
         if (this.getClass() == thisClass) {
             config.setAppInstance(this);
+        }
+        //配置加载时的监听器
+        ConfigLoadListener configLoadListener = configLoadListener();
+        if (configLoadListener != null) {
+            config.setLoadListener(configLoadListener);
+        }
+        //加载配置
+        try {
+            config.loadConfig();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (config.getLaunchListener() != null) {
+                config.getLaunchListener().onLaunchError(this, e);
+            }
         }
     }
 
@@ -137,8 +152,6 @@ public class JFXApplication extends Application implements ApplicationInterface 
     public void start(Stage primaryStage) throws Exception {
         try {
             this.mainStage = primaryStage;
-            //加载配置
-            config.loadConfig();
             //初始化主界面
             initPrimaryStage(primaryStage);
             //画面显示
@@ -158,14 +171,7 @@ public class JFXApplication extends Application implements ApplicationInterface 
             } else {
                 //不显示启动画面，直接显示主画面
                 mainView = buildMainView();
-                if (config.getLaunchListener() != null) {
-                    config.getLaunchListener().onFinishInit(this, mainView);
-                }
                 showMainView();
-                //显示主界面后的回调
-                if (config.getLaunchListener() != null) {
-                    config.getLaunchListener().afterShowMainView(this, mainView);
-                }
             }
             //启动初始化的子线程
             AppInitThread initThread = bindInitThread();
@@ -176,15 +182,16 @@ public class JFXApplication extends Application implements ApplicationInterface 
         } catch (Exception e) {
             if (config.getLaunchListener() != null) {
                 config.getLaunchListener().onLaunchError(this, e);
-            } else {
-                throw e;
             }
+            throw e;
         }
     }//end of start()
 
     @Override
     public void stop() throws Exception {
-        mainView.getController().onStop();
+        if (mainView.getController() != null) {
+            mainView.getController().onStop();
+        }
     }
 
     //=========================================== ↓↓↓↓↓↓ 接口默认实现 ↓↓↓↓↓↓ ===========================================
@@ -214,7 +221,7 @@ public class JFXApplication extends Application implements ApplicationInterface 
         URL mainViewUrl = config.getMainViewUrl();
         FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, null);
         //让主窗体可以被随意拖拽
-        if(config.isMainViewDraggable()) {
+        if (config.isMainViewDraggable()) {
             Parent rootNode = mainView.getView();
             rootNode.setOnMousePressed(event -> {
                 xOffset = mainStage.getX() - event.getScreenX();
@@ -266,9 +273,17 @@ public class JFXApplication extends Application implements ApplicationInterface 
             splashScreen.setStage(null);
         }
         BaseController mainController = mainView.getController();
-        mainController.setThisStage(mainStage);
+        mainController.setParentStage(mainStage);
         mainView.setStage(mainStage);
+        //完成初始化后(显示主界面之前)的回调
+        if (config.getLaunchListener() != null) {
+            config.getLaunchListener().onFinishInit(this, mainView);
+        }
         mainStage.show();
+        //显示主界面后的回调
+        if (config.getLaunchListener() != null) {
+            config.getLaunchListener().afterShowMainView(this, mainView);
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package com.github.ScipioAM.scipio_fx.app;
 
-import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -21,20 +20,12 @@ public abstract class AppInitThread implements Runnable {
             //初始化
             init(application);
 
-            FXMLView mainView = application.buildMainView();
-
-            //初始化完成的回调
-            if (launchListener != null) {
-                launchListener.onFinishInit(application, mainView);
-            }
+            //加载mainView
+            application.buildMainView();
 
             //显示主界面
-            application.showMainView();
+            application.showMainView();//显示前后皆有回调
 
-            //显示主界面后的回调
-            if (launchListener != null) {
-                launchListener.afterShowMainView(application, mainView);
-            }
         } catch (Exception e) {
             if (launchListener != null) {
                 launchListener.onLaunchError(application, e);

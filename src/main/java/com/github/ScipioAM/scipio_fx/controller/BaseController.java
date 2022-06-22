@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 @Data
 public abstract class BaseController implements Initializable {
 
-    protected Stage thisStage;
+    protected Stage parentStage;
 
     //=========================================== ↓↓↓↓↓↓ controller生命周期 ↓↓↓↓↓↓ ===========================================
 
@@ -26,7 +26,6 @@ public abstract class BaseController implements Initializable {
      * @param resources fxml root object
      */
     public void onCreate(URL location, ResourceBundle resources) {
-        registerListener();
     }
 
     /**
@@ -50,21 +49,6 @@ public abstract class BaseController implements Initializable {
      * 程序停止时的回调
      */
     public void onStop() throws Exception {
-        unregisterListener();
-    }
-
-    //=========================================== ↓↓↓↓↓↓ 辅助性回调（本身无意义） ↓↓↓↓↓↓ ===========================================
-
-    /**
-     * 注册监听器
-     */
-    public void registerListener() {
-    }
-
-    /**
-     * 注销监听器，避免内存泄露
-     */
-    public void unregisterListener() {
     }
 
     //=========================================== ↓↓↓↓↓↓ 不需要重写的 ↓↓↓↓↓↓ ===========================================
