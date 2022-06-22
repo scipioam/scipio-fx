@@ -63,8 +63,13 @@ public class Console {
      * @param text 要输出的内容（1行内容）
      */
     public Console output(String text) {
+        StringBuilder s = new StringBuilder(textArea.getText());
+        if (lines.size() > 0) {
+            s.append('\n');
+        }
+        s.append('[').append(lines.size() + 1).append(']').append(text);
+        textArea.setText(s.toString());
         lines.add(text);
-        textArea.setText("[" + (lines.size() + 1) + "]" + textArea.getText() + text + '\n');
         return this;
     }
 
