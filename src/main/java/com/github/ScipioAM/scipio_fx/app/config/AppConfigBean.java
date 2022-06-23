@@ -4,8 +4,6 @@ import com.github.ScipioAM.scipio_fx.app.AppInitThread;
 import com.github.ScipioAM.scipio_fx.app.LaunchListener;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 import javafx.stage.StageStyle;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.IOException;
 import java.net.URL;
@@ -13,8 +11,6 @@ import java.net.URL;
 /**
  * @since 2022/6/23
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
 public class AppConfigBean extends BaseConfigBean {
 
     private String version;
@@ -77,13 +73,11 @@ public class AppConfigBean extends BaseConfigBean {
         mainView.setDraggableBool(mainViewDraggable);
     }
 
-    public void setLaunchListener(String launchListener) throws Exception {
-        this.launchListener = launchListener;
-        if (StringUtils.isNotNull(launchListener)) {
+    public LaunchListener getLaunchListener() throws Exception {
+        if (launchListenerObj == null && StringUtils.isNotNull(launchListener)) {
             launchListenerObj = (LaunchListener) buildInstance(LaunchListener.class, launchListener);
-        } else {
-            launchListenerObj = null;
         }
+        return launchListenerObj;
     }
 
     public void setLaunchListenerObj(LaunchListener launchListenerObj) {
@@ -95,13 +89,11 @@ public class AppConfigBean extends BaseConfigBean {
         }
     }
 
-    public void setInitThread(String initThread) throws Exception {
-        this.initThread = initThread;
-        if (StringUtils.isNotNull(initThread)) {
+    public AppInitThread getInitThread() throws Exception {
+        if(initThreadObj == null && StringUtils.isNotNull(initThread)) {
             initThreadObj = (AppInitThread) buildInstance(AppInitThread.class, initThread);
-        } else {
-            initThreadObj = null;
         }
+        return initThreadObj;
     }
 
     public void setInitThreadObj(AppInitThread initThreadObj) {
@@ -129,4 +121,77 @@ public class AppConfigBean extends BaseConfigBean {
         mainView.setStageStyleEnum(stageStyleEnum);
     }
 
+    //=======================================================================================================================================
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
+    public URL getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(URL iconUrl) {
+        this.iconUrl = iconUrl;
+    }
+
+    public String getSplashImgPath() {
+        return splashImgPath;
+    }
+
+    public void setSplashImgPath(String splashImgPath) {
+        this.splashImgPath = splashImgPath;
+    }
+
+    public URL getSplashImgUrl() {
+        return splashImgUrl;
+    }
+
+    public void setSplashImgUrl(URL splashImgUrl) {
+        this.splashImgUrl = splashImgUrl;
+    }
+
+    public void setLaunchListener(String launchListener) {
+        this.launchListener = launchListener;
+    }
+
+    public LaunchListener getLaunchListenerObj() {
+        return launchListenerObj;
+    }
+
+    public void setInitThread(String initThread) {
+        this.initThread = initThread;
+    }
+
+    public AppInitThread getInitThreadObj() {
+        return initThreadObj;
+    }
+
+    public MainViewBean getMainView() {
+        return mainView;
+    }
+
+    public void setMainView(MainViewBean mainView) {
+        this.mainView = mainView;
+    }
 }

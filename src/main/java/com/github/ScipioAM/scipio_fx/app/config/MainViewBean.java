@@ -45,13 +45,12 @@ public class MainViewBean extends BaseConfigBean {
         this.draggable = draggableBool + "";
     }
 
-    public void setStageStyle(String stageStyle) {
-        this.stageStyle = stageStyle;
-        if (StringUtils.isNotNull(stageStyle)) {
-            stageStyleEnum = StageStyle.valueOf(stageStyle);
-        } else {
-            stageStyleEnum = null;
+    public StageStyle getStageStyleEnum() {
+        if (stageStyleEnum == null && StringUtils.isNotNull(stageStyle)) {
+            String name = stageStyle.toUpperCase();
+            stageStyleEnum = StageStyle.valueOf(name);
         }
+        return stageStyleEnum;
     }
 
     public void setStageStyleEnum(StageStyle stageStyleEnum) {
