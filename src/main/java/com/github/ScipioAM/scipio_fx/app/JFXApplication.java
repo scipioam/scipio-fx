@@ -3,7 +3,6 @@ package com.github.ScipioAM.scipio_fx.app;
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
-import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.FXMLViewLoader;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
@@ -222,13 +221,9 @@ public class JFXApplication extends Application implements ApplicationInterface 
     public FXMLView buildMainView() throws IOException {
         //加载
         URL mainViewUrl = config.getMainViewUrl();
-        FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, null);
-        //存入config对象
-        BaseController controller = mainView.getController();
-        if(controller instanceof BaseMainController) {
-            BaseMainController mainController = (BaseMainController) controller;
-            mainController.setAppConfig(config);
-        }
+        FXMLView mainView = FXMLViewLoader.build()
+                .setAppConfig(config)
+                .load(mainViewUrl, null);
         //让主窗体可以被随意拖拽
         if (config.isMainViewDraggable()) {
             Parent rootNode = mainView.getView();
