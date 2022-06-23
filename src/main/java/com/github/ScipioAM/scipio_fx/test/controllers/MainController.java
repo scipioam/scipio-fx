@@ -1,7 +1,9 @@
 package com.github.ScipioAM.scipio_fx.test.controllers;
 
+import com.github.ScipioAM.scipio_fx.constant.AppView;
 import com.github.ScipioAM.scipio_fx.constant.Language;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
+import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import com.github.ScipioAM.scipio_fx.dialog.mfx.MFXDialogHelper;
 import com.github.ScipioAM.scipio_fx.test.original.TestMFXNotification;
 import com.github.ScipioAM.scipio_fx.view.Console;
@@ -12,7 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
 
-public class MainController extends BaseController {
+public class MainController extends BaseMainController {
 
     private final FXMLView mfxTableTestView = new FXMLView();
     private final FXMLView fxTableTestView = new FXMLView();
@@ -72,5 +74,10 @@ public class MainController extends BaseController {
                 .setFxmlUrl(this.getClass(), "/views/inputs-fx.fxml")
                 .defaultStageOptions(rootPane);
         FXMLView.loadAndShow(fxInputsView, options);
+    }
+
+    @Override
+    public void loadChildViews(AppView viewInfo, Object initArgs) {
+        System.out.println("loadChildViews() called.");
     }
 }
