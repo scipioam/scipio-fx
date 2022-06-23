@@ -1,6 +1,7 @@
 package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
+import javafx.scene.Scene;
 
 /**
  * 启动监听器
@@ -15,7 +16,7 @@ public interface LaunchListener {
      *
      * @param mainView 主界面对象
      */
-    default void onFinishInit(JFXApplication app, FXMLView mainView) {
+    default void onFinishInit(JFXApplication app, FXMLView mainView, Scene mainScene) {
     }
 
     /**

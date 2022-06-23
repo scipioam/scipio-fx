@@ -254,7 +254,8 @@ public abstract class JFXApplication extends Application implements ApplicationI
      * 显示主界面
      */
     protected void showMainView() {
-        mainStage.setScene(new Scene(mainView.getView()));
+        Scene mainScene = new Scene(mainView.getView());
+        mainStage.setScene(mainScene);
         if (splashScreen != null && splashScreen.isVisible()) {
             Stage splashStage = splashScreen.getStage();
             splashStage.close();
@@ -266,7 +267,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         mainView.setStage(mainStage);
         //完成初始化后(显示主界面之前)的回调
         if (config.getLaunchListener() != null) {
-            config.getLaunchListener().onFinishInit(this, mainView);
+            config.getLaunchListener().onFinishInit(this, mainView, mainScene);
         }
         mainStage.show();
         //显示主界面后的回调
