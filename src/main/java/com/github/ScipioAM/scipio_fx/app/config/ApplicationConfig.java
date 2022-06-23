@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * app配置
@@ -207,126 +208,109 @@ public class ApplicationConfig {
         return this;
     }
 
-    private void initConfigBean() {
-//        if (configBean == null) {
-//            configBean = new AppConfigBean();
-//        }
-    }
-
     public String getTitle() {
-        initConfigBean();
         return configBean.getTitle();
     }
 
     public ApplicationConfig setTitle(String title) {
-        initConfigBean();
         configBean.setTitle(title);
         return this;
     }
 
     public String getIconPath() {
-        initConfigBean();
         return configBean.getIconPath();
     }
 
     public ApplicationConfig setIconPath(String iconPath) {
-        initConfigBean();
         configBean.setIconPath(iconPath);
         return this;
     }
 
     private ApplicationConfig setIconUrl(URL iconUrl) {
-        initConfigBean();
         configBean.setIconUrl(iconUrl);
         return this;
     }
 
     public String getMainViewPath() {
-        initConfigBean();
         return configBean.getMainViewPath();
     }
 
     public ApplicationConfig setMainViewPath(String mainViewPath) {
-        initConfigBean();
         configBean.setMainViewPath(mainViewPath);
         return this;
     }
 
     private ApplicationConfig setMainViewUrl(URL mainViewUrl) {
-        initConfigBean();
         configBean.setMainViewUrl(mainViewUrl);
         return this;
     }
 
     public String getSplashImgPath() {
-        initConfigBean();
         return configBean.getSplashImgPath();
     }
 
     public ApplicationConfig setSplashImgPath(String splashImgPath) {
-        initConfigBean();
         configBean.setSplashImgPath(splashImgPath);
         return this;
     }
 
     private ApplicationConfig setSplashImgUrl(URL splashImgUrl) {
-        initConfigBean();
         configBean.setSplashImgUrl(splashImgUrl);
         return this;
     }
 
     public LaunchListener getLaunchListener() {
-        initConfigBean();
         return configBean.getLaunchListenerObj();
     }
 
     public ApplicationConfig setLaunchListener(LaunchListener launchListener) {
-        initConfigBean();
         configBean.setLaunchListenerObj(launchListener);
         return this;
     }
 
     public AppInitThread getInitThread() {
-        initConfigBean();
         return configBean.getInitThreadObj();
     }
 
     public ApplicationConfig setInitThread(AppInitThread initThread) {
-        initConfigBean();
         configBean.setInitThreadObj(initThread);
         return this;
     }
 
     public StageStyle getMainStageStyle() {
-        initConfigBean();
         return configBean.getStageStyleEnum();
     }
 
     public ApplicationConfig setMainStageStyle(StageStyle mainStageStyle) {
-        initConfigBean();
         configBean.setStageStyleEnum(mainStageStyle);
         return this;
     }
 
     public boolean isMainViewDraggable() {
-        initConfigBean();
         return configBean.isMainViewDraggable();
     }
 
     public ApplicationConfig setMainViewDraggable(boolean mainViewDraggable) {
-        initConfigBean();
         configBean.setMainViewDraggable(mainViewDraggable);
         return this;
     }
 
     public String getVersion() {
-        initConfigBean();
         return configBean.getVersion();
     }
 
     public ApplicationConfig setVersion(String version) {
-        initConfigBean();
         configBean.setVersion(version);
         return this;
     }
+
+    public Map<String, Object> getCustom() {
+        return configBean.getCustom();
+    }
+
+    public ApplicationConfig setCustom(Map<String, Object> custom) {
+        configBean.setCustom(custom);
+        return this;
+    }
+
 }
