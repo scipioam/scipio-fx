@@ -1,5 +1,7 @@
 package com.github.ScipioAM.scipio_fx.app;
 
+import com.github.ScipioAM.scipio_fx.view.FXMLView;
+import javafx.application.Platform;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -21,10 +23,11 @@ public abstract class AppInitThread implements Runnable {
             init(application);
 
             //加载mainView
-            application.buildMainView();
+            FXMLView mainView = application.buildMainView();
+            application.setMainView(mainView);
 
             //显示主界面
-            application.showMainView();//显示前后皆有回调
+            Platform.runLater(() -> application.showMainView()); //显示前后皆有回调
 
         } catch (Exception e) {
             if (launchListener != null) {

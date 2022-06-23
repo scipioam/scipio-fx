@@ -1,8 +1,11 @@
 package com.github.ScipioAM.scipio_fx.controller;
 
+import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.constant.AppView;
 import com.github.ScipioAM.scipio_fx.dialog.DialogHelper;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,9 +13,13 @@ import java.util.Map;
 /**
  * @since 2022/6/21
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public abstract class BaseMainController extends BaseController {
 
     protected final Map<AppView, FXMLView> children = new LinkedHashMap<>();
+
+    protected ApplicationConfig appConfig;
 
     @Override
     public void onStop() throws Exception {

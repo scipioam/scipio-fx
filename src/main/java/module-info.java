@@ -2,11 +2,14 @@ module com.github.scipio.scipio_fx {
     requires transitive javafx.controls;
     requires transitive javafx.fxml;
 
-    requires org.controlsfx.controls;
-    requires transitive MaterialFX;
     requires transitive static lombok;
+    requires org.controlsfx.controls;
+    requires org.yaml.snakeyaml;
+    requires transitive MaterialFX;
+
 
     exports com.github.ScipioAM.scipio_fx.app;
+    exports com.github.ScipioAM.scipio_fx.app.config;
     exports com.github.ScipioAM.scipio_fx.constant;
     exports com.github.ScipioAM.scipio_fx.controller;
     exports com.github.ScipioAM.scipio_fx.dialog;

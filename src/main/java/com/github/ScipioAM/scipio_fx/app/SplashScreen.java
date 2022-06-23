@@ -1,5 +1,6 @@
 package com.github.ScipioAM.scipio_fx.app;
 
+import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import javafx.scene.Parent;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -67,7 +68,7 @@ public class SplashScreen {
      */
     public Parent buildViews() {
         if (splashImgUrl == null) {
-            throw new MissingResourceException("splash build failed, image url is null", ApplicationConfig.class.getName(), "app.splash-img.path");
+            throw new MissingResourceException("splash build failed, image url is null", ApplicationConfig.class.getName(), "app.splash-img-path");
         }
         final VBox vbox = new VBox();
         final ImageView splashImageView = new ImageView(new Image(splashImgUrl.toExternalForm()));

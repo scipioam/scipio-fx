@@ -1,5 +1,6 @@
 package com.github.ScipioAM.scipio_fx.app;
 
+import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ public interface ApplicationInterface {
     //=========================================== ↓↓↓↓↓↓ 配置 ↓↓↓↓↓↓ ===========================================
 
     default String configPrefix() {
-        return "app";
+        return "fx-app";
     }
 
     String title();
