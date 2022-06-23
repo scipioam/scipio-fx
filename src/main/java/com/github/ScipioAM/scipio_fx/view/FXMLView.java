@@ -69,7 +69,6 @@ public class FXMLView {
         if (view == null) {
             try {
                 view = FXMLViewLoader.build()
-                        .setAppConfig(options.getAppConfig())
                         .load(options.getFxmlUrl(), options.getInitArgs());
                 if (options.isNeedStage()) {
                     options.buildStageForView(view);
@@ -101,7 +100,6 @@ public class FXMLView {
         if (stage == null) {
             try {
                 FXMLView newView = FXMLViewLoader.build()
-                        .setAppConfig(options.getAppConfig())
                         .load(options.getFxmlUrl(), options.getInitArgs());
                 view.setView(newView.getView())
                         .setFxmlUrl(newView.getFxmlUrl())

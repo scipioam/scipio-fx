@@ -1,6 +1,5 @@
 package com.github.ScipioAM.scipio_fx.view;
 
-import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.constant.AppView;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.utils.StageUtil;
@@ -38,8 +37,6 @@ public class ViewLoadOptions {
 
     @Setter(AccessLevel.NONE)
     private Parent container;
-
-    private ApplicationConfig appConfig;
 
     public static ViewLoadOptions build() {
         return new ViewLoadOptions();

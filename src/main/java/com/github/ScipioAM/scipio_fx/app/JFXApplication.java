@@ -35,6 +35,8 @@ public abstract class JFXApplication extends Application implements ApplicationI
 
     protected static Class<? extends JFXApplication> thisClass;
 
+    public final static AppContext context = new AppContext();
+
     /**
      * app配置
      */
@@ -44,11 +46,6 @@ public abstract class JFXApplication extends Application implements ApplicationI
      * 主界面的stage
      */
     protected Stage mainStage;
-
-    /**
-     * 主界面的scene
-     */
-    protected Scene mainScene;
 
     /**
      * 主界面view对象
@@ -75,6 +72,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         if (thisClass == null) {
             thisClass = this.getClass();
         }
+        JFXApplication.context.setAppInstance(this);
         //准备config对象
         config = ApplicationConfig.build(thisClass);
         if (this.getClass() == thisClass) {
@@ -93,6 +91,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
                 config.getLaunchListener().onLaunchError(this, e);
             }
         }
+        JFXApplication.context.setAppConfig(config);
     }
 
     //=========================================== ↓↓↓↓↓↓ 启动入口API ↓↓↓↓↓↓ ===========================================
@@ -140,6 +139,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
     public void start(Stage primaryStage) throws Exception {
         try {
             this.mainStage = primaryStage;
+            JFXApplication.context.setMainStage(primaryStage);
             //初始化主界面
             initPrimaryStage(primaryStage);
             //画面显示
@@ -209,9 +209,9 @@ public abstract class JFXApplication extends Application implements ApplicationI
     public FXMLView buildMainView() throws IOException {
         //加载
         URL mainViewUrl = config.getMainViewUrl();
-        FXMLView mainView = FXMLViewLoader.build()
-                .setAppConfig(config)
-                .load(mainViewUrl, null);
+        FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, null);
+        BaseController mainController = mainView.getController();
+        JFXApplication.context.setMainController(mainController);
         //让主窗体可以被随意拖拽
         if (config.isMainViewDraggable()) {
             Parent rootNode = mainView.getView();
@@ -254,10 +254,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
      * 显示主界面
      */
     protected void showMainView() {
-        if (mainScene == null) {
-            mainScene = new Scene(mainView.getView());
-        }
-        mainStage.setScene(mainScene);
+        mainStage.setScene(new Scene(mainView.getView()));
         if (splashScreen != null && splashScreen.isVisible()) {
             Stage splashStage = splashScreen.getStage();
             splashStage.close();
