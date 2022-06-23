@@ -68,7 +68,9 @@ public class FXMLView {
     public static FXMLView load(FXMLView view, ViewLoadOptions options) {
         if (view == null) {
             try {
-                view = FXMLViewLoader.build().load(options.getFxmlUrl(), options.getInitArgs());
+                view = FXMLViewLoader.build()
+                        .setAppConfig(options.getAppConfig())
+                        .load(options.getFxmlUrl(), options.getInitArgs());
                 if (options.isNeedStage()) {
                     options.buildStageForView(view);
                 }
@@ -98,7 +100,9 @@ public class FXMLView {
         Stage stage = view.getStage();
         if (stage == null) {
             try {
-                FXMLView newView = FXMLViewLoader.build().load(options.getFxmlUrl(), options.getInitArgs());
+                FXMLView newView = FXMLViewLoader.build()
+                        .setAppConfig(options.getAppConfig())
+                        .load(options.getFxmlUrl(), options.getInitArgs());
                 view.setView(newView.getView())
                         .setFxmlUrl(newView.getFxmlUrl())
                         .setTitle(newView.getTitle())

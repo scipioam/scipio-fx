@@ -74,7 +74,7 @@ public class ApplicationConfig {
             InputStream in = appClass.getResourceAsStream(configFileName());
             AppConfigBeanWrapper wrapper = yaml.load(in);
             configBean = wrapper.getApp();
-            if(configBean == null) {
+            if (configBean == null) {
                 throw new IllegalStateException("load config failed, configBean is null");
             }
         } catch (Exception e) {

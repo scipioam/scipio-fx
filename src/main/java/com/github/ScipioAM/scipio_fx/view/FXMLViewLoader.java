@@ -1,9 +1,13 @@
 package com.github.ScipioAM.scipio_fx.view;
 
+import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
+import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,9 +18,13 @@ import java.net.URL;
  * @author Alan Scipio
  * @since 2022/2/22
  */
+@Data
+@Accessors(chain = true)
 public class FXMLViewLoader {
 
     private final FXMLLoader fxmlLoader;
+
+    private ApplicationConfig appConfig;
 
     public static FXMLViewLoader build() {
         return new FXMLViewLoader();
@@ -41,6 +49,11 @@ public class FXMLViewLoader {
         Parent rootNode = fxmlLoader.load();
         //获取controller对象
         BaseController controller = fxmlLoader.getController();
+        //针对mainController传入config对象
+        if (controller instanceof BaseMainController) {
+            BaseMainController mainController = (BaseMainController) controller;
+            mainController.setAppConfig(appConfig);
+        }
         //controller初始化回调
         controller.onLoadInit(rootNode, initArg);
         return new FXMLView(rootNode, controller, location);
