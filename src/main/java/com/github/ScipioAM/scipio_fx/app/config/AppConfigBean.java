@@ -7,6 +7,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * @since 2022/6/23
@@ -30,6 +31,8 @@ public class AppConfigBean extends BaseConfigBean {
     private transient AppInitThread initThreadObj;
 
     private MainViewBean mainView = new MainViewBean();
+
+    private Map<String, Object> custom;
 
     public URL getMainViewUrl() {
         return mainView == null ? null : mainView.getMainViewUrl();
