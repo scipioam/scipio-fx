@@ -1,6 +1,5 @@
 package com.github.ScipioAM.scipio_fx.controller;
 
-import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.constant.AppView;
 import com.github.ScipioAM.scipio_fx.dialog.DialogHelper;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
@@ -18,8 +17,6 @@ import java.util.Map;
 public abstract class BaseMainController extends BaseController {
 
     protected final Map<AppView, FXMLView> children = new LinkedHashMap<>();
-
-    protected ApplicationConfig appConfig;
 
     @Override
     public void onStop() throws Exception {
