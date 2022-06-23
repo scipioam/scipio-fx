@@ -1,6 +1,9 @@
 package com.github.ScipioAM.scipio_fx.app;
 
+import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
+import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
+import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.FXMLViewLoader;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
@@ -16,7 +19,6 @@ import lombok.experimental.Accessors;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -88,7 +90,6 @@ public class JFXApplication extends Application implements ApplicationInterface 
         try {
             config.loadConfig();
         } catch (Exception e) {
-            e.printStackTrace();
             if (config.getLaunchListener() != null) {
                 config.getLaunchListener().onLaunchError(this, e);
             }
@@ -158,9 +159,10 @@ public class JFXApplication extends Application implements ApplicationInterface 
             if (splashScreen != null && splashScreen.isVisible()) {
                 //显示启动画面
                 Stage splashStage = new Stage(StageStyle.TRANSPARENT);
-                String iconPath = config.getIconPath();
-                if (StringUtils.isNotNull(iconPath)) {
-                    splashStage.getIcons().addAll(new Image(Objects.requireNonNull(getClass().getResource(iconPath)).toExternalForm()));
+                //设置启动画面的图标
+                URL iconUrl = config.getIconUrl();
+                if (iconUrl != null) {
+                    splashStage.getIcons().add(new Image(iconUrl.toExternalForm()));
                 }
                 splashScreen.setSplashImgUrl(config.getSplashImgUrl());
                 Scene splashScene = new Scene(splashScreen.buildViews(), Color.TRANSPARENT);
@@ -174,7 +176,7 @@ public class JFXApplication extends Application implements ApplicationInterface 
                 showMainView();
             }
             //启动初始化的子线程
-            AppInitThread initThread = bindInitThread();
+            AppInitThread initThread = config.getInitThread();
             if (initThread != null) {
                 initThread.setApplication(this).setLaunchListener(config.getLaunchListener());
                 threadPool.submit(initThread);
@@ -218,8 +220,15 @@ public class JFXApplication extends Application implements ApplicationInterface 
 
     @Override
     public FXMLView buildMainView() throws IOException {
+        //加载
         URL mainViewUrl = config.getMainViewUrl();
         FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, null);
+        //存入config对象
+        BaseController controller = mainView.getController();
+        if(controller instanceof BaseMainController) {
+            BaseMainController mainController = (BaseMainController) controller;
+            mainController.setAppConfig(config);
+        }
         //让主窗体可以被随意拖拽
         if (config.isMainViewDraggable()) {
             Parent rootNode = mainView.getView();
@@ -286,4 +295,7 @@ public class JFXApplication extends Application implements ApplicationInterface 
         }
     }
 
+    public void setMainView(FXMLView mainView) {
+        this.mainView = mainView;
+    }
 }

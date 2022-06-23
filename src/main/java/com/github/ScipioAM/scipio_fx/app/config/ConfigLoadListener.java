@@ -1,6 +1,6 @@
-package com.github.ScipioAM.scipio_fx.app;
+package com.github.ScipioAM.scipio_fx.app.config;
 
-import java.util.ResourceBundle;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * 配置加载时的监听回调
@@ -12,21 +12,22 @@ public interface ConfigLoadListener {
     /**
      * 加载前的回调，此方法可整体替换原本的加载逻辑
      *
-     * @param bundle 配置文件
+     * @param yaml   读取器
      * @param config 实例对象
      * @return true:继续原本的加载逻辑
      */
-    default boolean onLoad(ResourceBundle bundle, ApplicationConfig config) {
+    default boolean onLoad(Yaml yaml, ApplicationConfig config) {
         return true;
     }
 
     /**
      * 加载后的回调
      *
-     * @param bundle 配置文件
+     * @param yaml   读取器
+     * @param bean   读取的数据
      * @param config 实例对象
      */
-    default void afterLoad(ResourceBundle bundle, ApplicationConfig config) {
+    default void afterLoad(Yaml yaml, AppConfigBean bean, ApplicationConfig config) {
     }
 
 }
