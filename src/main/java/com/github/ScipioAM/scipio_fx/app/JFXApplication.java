@@ -31,7 +31,7 @@ import java.util.concurrent.Executors;
 @Data
 @Accessors(chain = true)
 @Setter(AccessLevel.NONE)
-public class JFXApplication extends Application implements ApplicationInterface {
+public abstract class JFXApplication extends Application implements ApplicationInterface {
 
     protected static Class<? extends JFXApplication> thisClass;
 
@@ -132,18 +132,6 @@ public class JFXApplication extends Application implements ApplicationInterface 
     public static void launchApp(final Class<? extends JFXApplication> appClass, String[] args) {
         JFXApplication.thisClass = appClass;
         launch(appClass, args);
-    }
-
-    public static void launchApp(String[] args, SplashScreen splashScreen) {
-        launchApp(JFXApplication.class, args, splashScreen);
-    }
-
-    public static void launchApp(String[] args, boolean splashVisible) {
-        launchApp(JFXApplication.class, args, splashVisible);
-    }
-
-    public static void launchApp(String[] args) {
-        launchApp(JFXApplication.class, args, false);
     }
 
     //=========================================== ↓↓↓↓↓↓ 程序启动 ↓↓↓↓↓↓ ===========================================
