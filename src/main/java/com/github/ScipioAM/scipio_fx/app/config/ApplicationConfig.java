@@ -73,6 +73,9 @@ public class ApplicationConfig {
             InputStream in = appClass.getResourceAsStream(configFileName());
             AppConfigBeanWrapper wrapper = yaml.load(in);
             configBean = wrapper.getApp();
+            if(configBean == null) {
+                throw new IllegalStateException("load config failed, configBean is null");
+            }
         } catch (Exception e) {
             throw new IOException("Got exception while Read config file [" + configFileName() + "], " + e, e);
         }
@@ -205,10 +208,9 @@ public class ApplicationConfig {
     }
 
     private void initConfigBean() {
-        if (configBean == null) {
-            configBean = new AppConfigBean();
-            System.err.println("initConfigBean()");
-        }
+//        if (configBean == null) {
+//            configBean = new AppConfigBean();
+//        }
     }
 
     public String getTitle() {

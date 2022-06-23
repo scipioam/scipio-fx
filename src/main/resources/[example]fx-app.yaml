@@ -6,7 +6,7 @@ app:
   title: This is a title
 
   # main window`s icon relative path
-  iconPath: /img/r.png
+  #iconPath: /img/r.png
 
   # splash image relative path
   #splashImgPath:
@@ -16,7 +16,7 @@ app:
     # main window`s content fxml relative path
     path: /views/main.fxml
     # javafx.stage.StageStyle (both lower case and upper case can be accepted)
-    #stageStyle:
+    #stageStyle: utility
     # is main window can be draggable by any position (false/true, off/on. 0/1)
     #draggable:
 
