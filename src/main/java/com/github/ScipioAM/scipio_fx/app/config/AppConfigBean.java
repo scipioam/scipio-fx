@@ -197,4 +197,12 @@ public class AppConfigBean extends BaseConfigBean {
     public void setMainView(MainViewBean mainView) {
         this.mainView = mainView;
     }
+
+    public Map<String, Object> getCustom() {
+        return custom;
+    }
+
+    public void setCustom(Map<String, Object> custom) {
+        this.custom = custom;
+    }
 }
