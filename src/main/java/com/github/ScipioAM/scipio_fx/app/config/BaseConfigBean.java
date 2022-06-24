@@ -1,8 +1,9 @@
 package com.github.ScipioAM.scipio_fx.app.config;
 
+import com.github.ScipioAM.scipio_fx.exception.ConfigLoadException;
+import com.github.ScipioAM.scipio_fx.exception.ResourceException;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 
-import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 
@@ -18,19 +19,19 @@ public abstract class BaseConfigBean {
      * @param appClass 实际应用的class（通常是JFXApplication或其子类），以方便突破jar去拿资源文件
      * @param errTips  错误提示
      * @param notNull  必须需要，否则抛异常
-     * @throws FileNotFoundException 文件不存在，或者没有在module-info.java中将资源文件开放给本调用者
+     * @throws ResourceException 文件不存在，或者没有在module-info.java中将资源文件开放给本调用者
      */
-    public URL resolveUrl(String path, Class<?> appClass, String errTips, boolean notNull) throws FileNotFoundException {
+    public URL resolveUrl(String path, Class<?> appClass, String errTips, boolean notNull) {
         if (StringUtils.isNull(path)) {
             if (notNull) {
-                throw new IllegalArgumentException("Launch application failed, [" + errTips + "] did not set !");
+                throw new ConfigLoadException("Launch application failed, [" + errTips + "] did not set !");
             } else {
                 return null;
             }
         }
         URL url = appClass.getResource(path);
         if (url == null) {
-            throw new FileNotFoundException("resource file [" + path + "] not found, or not opens to " + this.getClass().getPackageName() + " in JPMS");
+            throw new ResourceException("resource file [" + path + "] not found, or not opens to " + this.getClass().getPackageName() + " in JPMS");
         }
         return url;
     }
@@ -48,7 +49,7 @@ public abstract class BaseConfigBean {
         if (StringUtils.isNotNull(className)) {
             Class<?> actualType = Class.forName(className);
             if (!expectType.isAssignableFrom(actualType)) {
-                throw new ClassCastException("can not build instance, expect type(super class):[" + expectType + "], actual type:[" + actualType + "]");
+                throw new ConfigLoadException("can not build instance, expect type(super class):[" + expectType + "], actual type:[" + actualType + "]");
             }
             obj = actualType.getDeclaredConstructor().newInstance();
         }

@@ -5,7 +5,6 @@ import javafx.stage.StageStyle;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -24,7 +23,7 @@ public class MainViewBean extends BaseConfigBean {
     private String draggable;
     private boolean draggableBool = false;
 
-    public URL getMainViewUrl(Class<?> appClass) throws IOException {
+    public URL getMainViewUrl(Class<?> appClass) {
         if (mainViewUrl == null) {
             mainViewUrl = resolveUrl(path, appClass, "mainViewPath", true);
         }

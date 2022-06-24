@@ -3,12 +3,12 @@ package com.github.ScipioAM.scipio_fx.app.config;
 import com.github.ScipioAM.scipio_fx.app.AppInitThread;
 import com.github.ScipioAM.scipio_fx.app.JFXApplication;
 import com.github.ScipioAM.scipio_fx.app.LaunchListener;
+import com.github.ScipioAM.scipio_fx.exception.ConfigLoadException;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 import javafx.stage.StageStyle;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -75,10 +75,10 @@ public class ApplicationConfig {
             AppConfigBeanWrapper wrapper = yaml.load(in);
             configBean = wrapper.getApp();
             if (configBean == null) {
-                throw new IllegalStateException("load config failed, configBean is null");
+                throw new ConfigLoadException("load config failed, configBean is null");
             }
         } catch (Exception e) {
-            throw new IOException("Got exception while Read config file [" + configFileName() + "], " + e, e);
+            throw new ConfigLoadException("Got exception while Read config file [" + configFileName() + "], " + e, e);
         }
 
         //优先级处理:标题
@@ -130,20 +130,6 @@ public class ApplicationConfig {
 
     //==============================================================================================================================
 
-    public URL getMainViewUrl() throws IOException {
-        return configBean == null ? null : configBean.getMainViewUrl(appClass);
-    }
-
-    public URL getIconUrl() throws IOException {
-        return configBean == null ? null : configBean.getIconUrl(appClass);
-    }
-
-    public URL getSplashImgUrl() throws IOException {
-        return configBean == null ? null : configBean.getSplashImgUrl(appClass);
-    }
-
-    //==============================================================================================================================
-
     /**
      * 获取读取的配置文件名
      */
@@ -157,26 +143,16 @@ public class ApplicationConfig {
         return s.toString();
     }
 
-    private void resolveStageStyle(String configValue) {
-        if (StringUtils.isNull(configValue)) {
-            return;
-        }
-        String enumName = configValue.toUpperCase();
-        try {
-            setMainStageStyle(StageStyle.valueOf(enumName));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public URL getMainViewUrl() {
+        return configBean == null ? null : configBean.getMainViewUrl(appClass);
     }
 
-    private void resolveDraggable(String configValue) {
-        if (StringUtils.isNull(configValue)) {
-            return;
-        }
-        String draggableStr = configValue.toLowerCase();
-        if (draggableStr.equals("true") || draggableStr.equals("on") || draggableStr.equals("1")) {
-            setMainViewDraggable(true);
-        }
+    public URL getIconUrl() {
+        return configBean == null ? null : configBean.getIconUrl(appClass);
+    }
+
+    public URL getSplashImgUrl() {
+        return configBean == null ? null : configBean.getSplashImgUrl(appClass);
     }
 
     //==============================================================================================================================
