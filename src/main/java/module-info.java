@@ -20,6 +20,7 @@ module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.table.mfx;
     exports com.github.ScipioAM.scipio_fx.utils;
     exports com.github.ScipioAM.scipio_fx.view;
+    exports com.github.ScipioAM.scipio_fx.exception;
 
     opens com.github.ScipioAM.scipio_fx.test.util;
     opens com.github.ScipioAM.scipio_fx.test;

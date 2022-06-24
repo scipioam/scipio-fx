@@ -5,7 +5,6 @@ import com.github.ScipioAM.scipio_fx.app.LaunchListener;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 import javafx.stage.StageStyle;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
@@ -42,18 +41,18 @@ public class AppConfigBean extends BaseConfigBean {
         mainView.setMainViewUrl(url);
     }
 
-    public URL getMainViewUrl(Class<?> appClass) throws IOException {
+    public URL getMainViewUrl(Class<?> appClass) {
         return mainView.getMainViewUrl(appClass);
     }
 
-    public URL getIconUrl(Class<?> appClass) throws IOException {
+    public URL getIconUrl(Class<?> appClass) {
         if (iconUrl == null) {
             iconUrl = resolveUrl(iconPath, appClass, "iconPath", false);
         }
         return iconUrl;
     }
 
-    public URL getSplashImgUrl(Class<?> appClass) throws IOException {
+    public URL getSplashImgUrl(Class<?> appClass) {
         if (splashImgUrl == null) {
             splashImgUrl = resolveUrl(splashImgPath, appClass, "splashImgUrl", false);
         }

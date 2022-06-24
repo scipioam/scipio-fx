@@ -14,6 +14,8 @@ public class AppContext {
 
     private JFXApplication appInstance;
 
+    private Class<? extends JFXApplication> appClass;
+
     private Stage mainStage;
 
     private BaseController mainController;
@@ -50,4 +52,11 @@ public class AppContext {
         this.mainController = mainController;
     }
 
+    public Class<? extends JFXApplication> getAppClass() {
+        return appClass;
+    }
+
+    protected void setAppClass(Class<? extends JFXApplication> appClass) {
+        this.appClass = appClass;
+    }
 }

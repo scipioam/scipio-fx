@@ -72,7 +72,8 @@ public abstract class JFXApplication extends Application implements ApplicationI
         if (thisClass == null) {
             thisClass = this.getClass();
         }
-        JFXApplication.context.setAppInstance(this);
+        context.setAppClass(thisClass);
+        context.setAppInstance(this);
         //准备config对象
         config = ApplicationConfig.build(thisClass);
         if (this.getClass() == thisClass) {
@@ -91,7 +92,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
                 config.getLaunchListener().onLaunchError(this, e);
             }
         }
-        JFXApplication.context.setAppConfig(config);
+        context.setAppConfig(config);
     }
 
     //=========================================== ↓↓↓↓↓↓ 启动入口API ↓↓↓↓↓↓ ===========================================
@@ -139,7 +140,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
     public void start(Stage primaryStage) throws Exception {
         try {
             this.mainStage = primaryStage;
-            JFXApplication.context.setMainStage(primaryStage);
+            context.setMainStage(primaryStage);
             //初始化主界面
             initPrimaryStage(primaryStage);
             //画面显示
@@ -211,7 +212,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         URL mainViewUrl = config.getMainViewUrl();
         FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, null);
         BaseController mainController = mainView.getController();
-        JFXApplication.context.setMainController(mainController);
+        context.setMainController(mainController);
         //让主窗体可以被随意拖拽
         if (config.isMainViewDraggable()) {
             Parent rootNode = mainView.getView();
@@ -232,7 +233,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
     /**
      * 初始化主界面
      */
-    protected void initPrimaryStage(Stage primaryStage) throws IOException {
+    protected void initPrimaryStage(Stage primaryStage) {
         //设置图标
         URL iconUrl = config.getIconUrl();
         if (iconUrl != null) {
