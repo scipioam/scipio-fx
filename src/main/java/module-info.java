@@ -21,6 +21,8 @@ module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.utils;
     exports com.github.ScipioAM.scipio_fx.view;
     exports com.github.ScipioAM.scipio_fx.exception;
+    exports com.github.ScipioAM.scipio_fx.combobox;
+    exports com.github.ScipioAM.scipio_fx.combobox.mfx;
 
     opens com.github.ScipioAM.scipio_fx.test.util;
     opens com.github.ScipioAM.scipio_fx.test;
