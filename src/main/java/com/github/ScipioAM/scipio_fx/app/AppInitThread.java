@@ -18,6 +18,7 @@ public abstract class AppInitThread implements Runnable {
 
     @Override
     public void run() {
+        long startTime = System.currentTimeMillis();
         try {
             //初始化
             init(application);
@@ -25,6 +26,9 @@ public abstract class AppInitThread implements Runnable {
             //加载mainView
             FXMLView mainView = application.buildMainView();
             application.setMainView(mainView);
+
+            //初始化结束时（显示主画面之前）的回调
+            onFinished(startTime);
 
             //显示主界面
             Platform.runLater(() -> application.showMainView()); //显示前后皆有回调
@@ -44,5 +48,13 @@ public abstract class AppInitThread implements Runnable {
      * @param application 程序对象
      */
     public abstract void init(JFXApplication application);
+
+    /**
+     * 初始化结束时（显示主画面之前）的回调
+     *
+     * @param startTime 开始执行的时间点
+     */
+    protected void onFinished(long startTime) {
+    }
 
 }
