@@ -185,7 +185,14 @@ public class ApplicationConfig {
     }
 
     public String getTitle() {
-        return configBean.getTitle();
+        if (configBean != null) {
+            return configBean.getTitle();
+        } else if (appInstance != null) {
+            return appInstance.title();
+        } else {
+            System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getTitle()");
+            return null;
+        }
     }
 
     public ApplicationConfig setTitle(String title) {
@@ -194,7 +201,15 @@ public class ApplicationConfig {
     }
 
     public String getIconPath() {
-        return configBean.getIconPath();
+        if (configBean != null) {
+            return configBean.getIconPath();
+        } else if (appInstance != null) {
+            URL url = appInstance.iconUrl();
+            return url == null ? null : url.toExternalForm();
+        } else {
+            System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getIconPath()");
+            return null;
+        }
     }
 
     public ApplicationConfig setIconPath(String iconPath) {
@@ -208,7 +223,15 @@ public class ApplicationConfig {
     }
 
     public String getMainViewPath() {
-        return configBean.getMainViewPath();
+        if (configBean != null) {
+            return configBean.getMainViewPath();
+        } else if (appInstance != null) {
+            URL url = appInstance.mainViewUrl();
+            return url == null ? null : url.toExternalForm();
+        } else {
+            System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getMainViewPath()");
+            return null;
+        }
     }
 
     public ApplicationConfig setMainViewPath(String mainViewPath) {
@@ -222,7 +245,15 @@ public class ApplicationConfig {
     }
 
     public String getSplashImgPath() {
-        return configBean.getSplashImgPath();
+        if (configBean != null) {
+            return configBean.getMainViewPath();
+        } else if (appInstance != null) {
+            URL url = appInstance.splashImgUrl();
+            return url == null ? null : url.toExternalForm();
+        } else {
+            System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getSplashImgPath()");
+            return null;
+        }
     }
 
     public ApplicationConfig setSplashImgPath(String splashImgPath) {
@@ -236,7 +267,14 @@ public class ApplicationConfig {
     }
 
     public LaunchListener getLaunchListener() {
-        return configBean.getLaunchListenerObj();
+        if (configBean != null) {
+            return configBean.getLaunchListenerObj();
+        } else if (appInstance != null) {
+            return appInstance.bindLaunchListener();
+        } else {
+            System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getLaunchListener()");
+            return null;
+        }
     }
 
     public ApplicationConfig setLaunchListener(LaunchListener launchListener) {
@@ -245,7 +283,14 @@ public class ApplicationConfig {
     }
 
     public AppInitThread getInitThread() {
-        return configBean.getInitThreadObj();
+        if (configBean != null) {
+            return configBean.getInitThreadObj();
+        } else if (appInstance != null) {
+            return appInstance.bindInitThread();
+        } else {
+            System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getInitThread()");
+            return null;
+        }
     }
 
     public ApplicationConfig setInitThread(AppInitThread initThread) {
