@@ -35,7 +35,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
 
     protected static Class<? extends JFXApplication> thisClass;
 
-    public final static AppContext context = new AppContext();
+    public static AppContext context;
 
     /**
      * app配置
@@ -72,6 +72,13 @@ public abstract class JFXApplication extends Application implements ApplicationI
         if (thisClass == null) {
             thisClass = this.getClass();
         }
+        //自定义上下文对象
+        AppContext customContext = getContext();
+        if (customContext == null) {
+            //没有自定义，采用默认的
+            customContext = new AppContext();
+        }
+        context = customContext;
         context.setAppClass(thisClass);
         context.setAppInstance(this);
         //准备config对象
@@ -185,6 +192,10 @@ public abstract class JFXApplication extends Application implements ApplicationI
     }
 
     //=========================================== ↓↓↓↓↓↓ 接口默认实现 ↓↓↓↓↓↓ ===========================================
+
+    public AppContext getContext() {
+        return null;
+    }
 
     @Override
     public String title() {
