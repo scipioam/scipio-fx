@@ -282,15 +282,22 @@ public class ApplicationConfig {
         return this;
     }
 
-    public AppInitThread getInitThread() {
+    public AppInitThread getInitThread() throws Exception {
         if (configBean != null) {
-            return configBean.getInitThreadObjDirectly();
+            return configBean.getInitThreadObj();
         } else if (appInstance != null) {
             return appInstance.bindInitThread();
         } else {
             System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getInitThread()");
             return null;
         }
+    }
+
+    public AppInitThread getInitThreadDirectly() {
+        if (configBean == null) {
+            return null;
+        }
+        return configBean.getInitThreadObjDirectly();
     }
 
     public ApplicationConfig setInitThread(AppInitThread initThread) {
