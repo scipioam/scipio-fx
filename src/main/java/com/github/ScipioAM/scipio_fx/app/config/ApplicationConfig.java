@@ -284,7 +284,7 @@ public class ApplicationConfig {
 
     public AppInitThread getInitThread() {
         if (configBean != null) {
-            return configBean.getInitThreadObj();
+            return configBean.getInitThreadObjDirectly();
         } else if (appInstance != null) {
             return appInstance.bindInitThread();
         } else {
