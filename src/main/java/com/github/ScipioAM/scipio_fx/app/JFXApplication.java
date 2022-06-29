@@ -295,6 +295,8 @@ public abstract class JFXApplication extends Application implements ApplicationI
         BaseController mainController = mainView.getController();
         mainController.setParentStage(mainStage);
         mainView.setStage(mainStage);
+        //主窗口关闭时，必然调用exit方法
+        mainStage.setOnCloseRequest(windowsEvent -> exit(false));
         //完成初始化后(显示主界面之前)的回调
         if (config.getLaunchListener() != null && config.getInitThreadDirectly() == null) {
             config.getLaunchListener().onFinishInit(this, mainView, mainScene);
