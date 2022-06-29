@@ -7,6 +7,7 @@ import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.FXMLViewLoader;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -60,7 +61,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
     /**
      * 线程池
      */
-    protected final ExecutorService threadPool = Executors.newCachedThreadPool();
+    protected final ExecutorService threadPool;
 
     /**
      * 位移值，用于（尤其是无边框情况下）可拖拽
@@ -81,6 +82,8 @@ public abstract class JFXApplication extends Application implements ApplicationI
         context = customContext;
         context.setAppClass(thisClass);
         context.setAppInstance(this);
+        threadPool = Executors.newCachedThreadPool();
+        context.setThreadPool(threadPool);
         //准备config对象
         config = ApplicationConfig.build(thisClass);
         if (this.getClass() == thisClass) {
@@ -189,6 +192,9 @@ public abstract class JFXApplication extends Application implements ApplicationI
         if (mainView.getController() != null) {
             mainView.getController().onStop();
         }
+        if (!threadPool.isShutdown()) {
+            threadPool.shutdownNow();
+        }
     }
 
     //=========================================== ↓↓↓↓↓↓ 接口默认实现 ↓↓↓↓↓↓ ===========================================
@@ -270,7 +276,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         if (mainStage.isShowing()) {
             //不显示splash，当即调用了一遍showMainView()，但是InitThread又调用了一遍showMainView()
             mainScene = mainStage.getScene();
-            if(config.getLaunchListener() != null && config.getInitThreadDirectly() != null) {
+            if (config.getLaunchListener() != null && config.getInitThreadDirectly() != null) {
                 config.getLaunchListener().onFinishInit(this, mainView, mainScene);
             }
             return;
@@ -303,4 +309,18 @@ public abstract class JFXApplication extends Application implements ApplicationI
     public void setMainView(FXMLView mainView) {
         this.mainView = mainView;
     }
+
+    public void exit(boolean shutdownNow) {
+        if (shutdownNow) {
+            threadPool.shutdownNow();
+        } else {
+            threadPool.shutdown();
+        }
+        Platform.exit();
+    }
+
+    public void exit() {
+        exit(true);
+    }
+
 }

@@ -4,6 +4,8 @@ import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import javafx.stage.Stage;
 
+import java.util.concurrent.ExecutorService;
+
 /**
  * @author Alan Scipio
  * @since 2022/6/23
@@ -19,6 +21,20 @@ public class AppContext {
     private Stage mainStage;
 
     private BaseController mainController;
+
+    private ExecutorService threadPool;
+
+    //====================================================================================================================================
+
+    public void exit(boolean shutdownNow) {
+        appInstance.exit(shutdownNow);
+    }
+
+    public void exit() {
+        appInstance.exit();
+    }
+
+    //====================================================================================================================================
 
     public ApplicationConfig getAppConfig() {
         return appConfig;
@@ -58,5 +74,13 @@ public class AppContext {
 
     protected void setAppClass(Class<? extends JFXApplication> appClass) {
         this.appClass = appClass;
+    }
+
+    public ExecutorService getThreadPool() {
+        return threadPool;
+    }
+
+    protected void setThreadPool(ExecutorService threadPool) {
+        this.threadPool = threadPool;
     }
 }
