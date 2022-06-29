@@ -91,10 +91,14 @@ public class AppConfigBean extends BaseConfigBean {
         }
     }
 
-    public AppInitThread getInitThread() throws Exception {
+    public AppInitThread getInitThreadObj() throws Exception {
         if(initThreadObj == null && StringUtils.isNotNull(initThread)) {
             initThreadObj = (AppInitThread) buildInstance(AppInitThread.class, initThread);
         }
+        return initThreadObj;
+    }
+
+    public AppInitThread getInitThreadObjDirectly() {
         return initThreadObj;
     }
 
@@ -185,8 +189,8 @@ public class AppConfigBean extends BaseConfigBean {
         this.initThread = initThread;
     }
 
-    public AppInitThread getInitThreadObj() {
-        return initThreadObj;
+    public String getInitThread() {
+        return initThread;
     }
 
     public MainViewBean getMainView() {
