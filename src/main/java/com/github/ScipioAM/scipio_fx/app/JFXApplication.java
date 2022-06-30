@@ -225,6 +225,10 @@ public abstract class JFXApplication extends Application implements ApplicationI
 
     @Override
     public FXMLView buildMainView() throws IOException {
+        if (mainView != null) {
+            //避免没有splash但有AppInitThread时被调用两次
+            return mainView;
+        }
         //加载
         URL mainViewUrl = config.getMainViewUrl();
         FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, null);

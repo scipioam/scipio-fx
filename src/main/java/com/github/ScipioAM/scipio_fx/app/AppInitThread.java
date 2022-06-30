@@ -1,5 +1,6 @@
 package com.github.ScipioAM.scipio_fx.app;
 
+import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import javafx.application.Platform;
 import lombok.Setter;
@@ -27,8 +28,8 @@ public abstract class AppInitThread implements Runnable {
             FXMLView mainView = application.buildMainView();
             application.setMainView(mainView);
 
-            //初始化结束时（显示主画面之前）的回调
-            onFinished(startTime);
+            //初始化结束时（可能是显示主画面之前）的回调
+            onFinished(mainView, startTime);
 
             //显示主界面
             Platform.runLater(() -> application.showMainView()); //显示前后皆有回调
@@ -54,7 +55,9 @@ public abstract class AppInitThread implements Runnable {
      *
      * @param startTime 开始执行的时间点
      */
-    protected void onFinished(long startTime) {
+    protected void onFinished(FXMLView mainView, long startTime) {
+        BaseController mainController = mainView.getController();
+        mainController.onInitThreadFinished();
     }
 
 }

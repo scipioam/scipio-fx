@@ -1,6 +1,6 @@
 package com.github.ScipioAM.scipio_fx.view;
 
-import com.github.ScipioAM.scipio_fx.constant.AppView;
+import com.github.ScipioAM.scipio_fx.constant.AppViewId;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.utils.StageUtil;
 import javafx.scene.Parent;
@@ -23,7 +23,7 @@ public class ViewLoadOptions {
 
     private URL fxmlUrl;
 
-    private AppView viewInfo;
+    private AppViewId viewInfo;
 
     private String title;
 
@@ -49,7 +49,7 @@ public class ViewLoadOptions {
         return this;
     }
 
-    public ViewLoadOptions setViewInfo(AppView viewInfo) {
+    public ViewLoadOptions setViewInfo(AppViewId viewInfo) {
         this.viewInfo = viewInfo;
         if (viewInfo != null) {
             this.title = viewInfo.title();
@@ -66,7 +66,7 @@ public class ViewLoadOptions {
         return this;
     }
 
-    public ViewLoadOptions setFxml(Class<?> clazz, AppView viewInfo) {
+    public ViewLoadOptions setFxml(Class<?> clazz, AppViewId viewInfo) {
         setViewInfo(viewInfo);
         if (viewInfo != null) {
             setFxmlUrl(clazz, viewInfo.fxmlPath());

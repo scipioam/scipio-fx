@@ -46,6 +46,13 @@ public abstract class BaseController implements Initializable {
     }
 
     /**
+     * 初始化子线程结束时的回调
+     * （未配置初始化子线程则不会被调用）
+     */
+    public void onInitThreadFinished() {
+    }
+
+    /**
      * 程序停止时的回调
      */
     public void onStop() throws Exception {
