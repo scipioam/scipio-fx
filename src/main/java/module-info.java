@@ -8,7 +8,6 @@ module com.github.scipio.scipio_fx {
     requires transitive MaterialFX;
     requires transitive static lombok;
     requires transitive jakarta.persistence;
-    requires transitive jakarta.transaction;
 
     exports com.github.ScipioAM.scipio_fx.app;
     exports com.github.ScipioAM.scipio_fx.app.config;

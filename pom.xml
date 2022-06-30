@@ -57,7 +57,6 @@
 
         <!-- ================= 持久化 ================= -->
         <jpa.api.version>3.1.0</jpa.api.version>
-        <jpa.transaction.version>2.0.1</jpa.transaction.version>
     </properties>
 
     <dependencies>
@@ -115,17 +114,11 @@
             <version>${yaml.version}</version>
         </dependency>
         <!-- ===================================== 持久化 ===================================== -->
-        <!-- jpa api -->
+        <!-- jpa -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>${jpa.api.version}</version>
-        </dependency>
-        <!-- jpa 事务 -->
-        <dependency>
-            <groupId>jakarta.transaction</groupId>
-            <artifactId>jakarta.transaction-api</artifactId>
-            <version>${jpa.transaction.version}</version>
         </dependency>
     </dependencies>
 
