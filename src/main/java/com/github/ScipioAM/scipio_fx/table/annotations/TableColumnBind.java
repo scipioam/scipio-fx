@@ -19,6 +19,9 @@ import static java.lang.annotation.ElementType.FIELD;
 @Documented
 public @interface TableColumnBind {
 
+    //TODO 1.ScipioFX修改：应该可选，是否加载父类的字段
+    //TODO 2.ScipioFX修改：应该可选，值为空时显示空串而不是null
+
     /**
      * 列标题
      */
