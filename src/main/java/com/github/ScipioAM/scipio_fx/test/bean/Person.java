@@ -30,11 +30,11 @@ public class Person extends Human implements Serializable {
     @TableColumnBind(title = "ID", filtered = true, alignment = Pos.CENTER, compared = true)
     private final IntegerProperty id = new SimpleIntegerProperty();
 
-    @TableColumnBind(title = "NAME", compared = false)
+    @TableColumnBind(title = "NAME", compared = true)
     @TableColumnComparator(value = MFXPersonNameComparator.class, bindField = true)
     private final StringProperty name = new SimpleStringProperty();
 
-    @TableColumnBind(title = "NICKNAME")
+//    @TableColumnBind(title = "NICKNAME")
     private final StringProperty nickName = new SimpleStringProperty();
 
     @TableColumnBind(title = "AGE", compared = true)
@@ -43,7 +43,7 @@ public class Person extends Human implements Serializable {
     @TableColumnBind(title = "GENDER")
     private final StringProperty gender = new SimpleStringProperty();
 
-    @TableColumnBind(title = "EM")
+//    @TableColumnBind(title = "EM")
     private final StringProperty email = new SimpleStringProperty();
 
     @TableColumnTimeFormat(pattern = "yyyy.MM.dd")

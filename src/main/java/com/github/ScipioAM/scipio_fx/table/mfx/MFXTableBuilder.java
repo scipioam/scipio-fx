@@ -118,6 +118,12 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
             }
             filters.add(filter);
         }
+        //百分比列宽
+        double widthPercent = bindInfo.widthPercent();
+        if (widthPercent > 0.0 && widthPercent <= 1.0) {
+            column.prefWidthProperty().bind(tableView.widthProperty().multiply(widthPercent));
+        }
+
         tableView.getTableColumns().add(column);
     }
 

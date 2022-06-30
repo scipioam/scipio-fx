@@ -41,8 +41,9 @@ public class FXTableController extends BaseController {
     private void setup_builder() {
         try {
             FXTableBuilder<Person> builder = FXTableBuilder.builder(tableView);
-                    builder.setDataType(Person.class)
-                    .initDataSource(tableData);
+            builder.setDataType(Person.class)
+                    .initDataSource(tableData)
+                    .setReadSuperClassFields(true);
             builder.build();
 
             Person.buildTestData(tableData);
