@@ -1,12 +1,14 @@
 module com.github.scipio.scipio_fx {
-    requires transitive javafx.controls;
-    requires transitive javafx.fxml;
 
-    requires transitive static lombok;
     requires org.controlsfx.controls;
     requires org.yaml.snakeyaml;
-    requires transitive MaterialFX;
 
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
+    requires transitive MaterialFX;
+    requires transitive static lombok;
+    requires transitive jakarta.persistence;
+    requires transitive jakarta.transaction;
 
     exports com.github.ScipioAM.scipio_fx.app;
     exports com.github.ScipioAM.scipio_fx.app.config;
@@ -23,6 +25,8 @@ module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.exception;
     exports com.github.ScipioAM.scipio_fx.combobox;
     exports com.github.ScipioAM.scipio_fx.combobox.mfx;
+    exports com.github.ScipioAM.scipio_fx.persistence;
+    exports com.github.ScipioAM.scipio_fx.persistence.annotations;
 
     opens com.github.ScipioAM.scipio_fx.test.util;
     opens com.github.ScipioAM.scipio_fx.test;
