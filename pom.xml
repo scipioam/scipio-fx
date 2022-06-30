@@ -54,7 +54,10 @@
 
         <!-- ================= 功能库 ================= -->
         <yaml.version>1.30</yaml.version>
-<!--        <yaml-rb.version>2.4.0</yaml-rb.version>-->
+
+        <!-- ================= 持久化 ================= -->
+        <jpa.api.version>3.1.0</jpa.api.version>
+        <jpa.transaction.version>2.0.1</jpa.transaction.version>
     </properties>
 
     <dependencies>
@@ -111,12 +114,19 @@
             <artifactId>snakeyaml</artifactId>
             <version>${yaml.version}</version>
         </dependency>
-        <!-- Yaml读取为ResourceBundle -->
-<!--        <dependency>-->
-<!--            <groupId>dev.akkinoc.util</groupId>-->
-<!--            <artifactId>yaml-resource-bundle</artifactId>-->
-<!--            <version>${yaml-rb.version}</version>-->
-<!--        </dependency>-->
+        <!-- ===================================== 持久化 ===================================== -->
+        <!-- jpa api -->
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>${jpa.api.version}</version>
+        </dependency>
+        <!-- jpa 事务 -->
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+            <version>${jpa.transaction.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
