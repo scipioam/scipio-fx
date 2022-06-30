@@ -28,6 +28,7 @@ public abstract class AppInitThread implements Runnable {
             FXMLView mainView = application.buildMainView();
             application.setMainView(mainView);
 
+            JFXApplication.context.setInitThreadFinished(true);
             //初始化结束时（可能是显示主画面之前）的回调
             onFinished(mainView, startTime);
 
