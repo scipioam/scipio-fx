@@ -33,6 +33,11 @@ public class FXTableController extends BaseController {
         setup_builder();
     }
 
+    @Override
+    public void onInitThreadFinished() {
+        System.out.println("FXTableController: onInitThreadFinished()");
+    }
+
     private void setup_builder() {
         try {
             FXTableBuilder<Person> builder = FXTableBuilder.builder(tableView);

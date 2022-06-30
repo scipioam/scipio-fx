@@ -1,8 +1,7 @@
 package com.github.ScipioAM.scipio_fx.test.controllers;
 
-import com.github.ScipioAM.scipio_fx.constant.AppView;
+import com.github.ScipioAM.scipio_fx.constant.AppViewId;
 import com.github.ScipioAM.scipio_fx.constant.Language;
-import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import com.github.ScipioAM.scipio_fx.dialog.mfx.MFXDialogHelper;
 import com.github.ScipioAM.scipio_fx.test.original.TestMFXNotification;
@@ -77,7 +76,7 @@ public class MainController extends BaseMainController {
     }
 
     @Override
-    public void loadChildViews(AppView viewInfo, Object initArgs) {
+    public void loadChildViews(AppViewId viewInfo, Object initArgs) {
         System.out.println("loadChildViews() called.");
     }
 }
