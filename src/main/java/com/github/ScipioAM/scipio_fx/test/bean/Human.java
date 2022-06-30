@@ -12,4 +12,6 @@ public class Human {
     @TableColumnBind(title = "RACE")
     private String race;
 
+    private String a;
+
 }
