@@ -9,7 +9,10 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @since 2022/6/13
@@ -26,6 +29,8 @@ public abstract class AbstractTableBuilder<T> {
     @Setter(AccessLevel.NONE)
     protected boolean initEmptyData = false; //当数据源是空的时候，为其添加一行空数据后再删除，否则ui会出问题不更新数据源的变化
 
+    protected boolean readSuperClassFields = false; //是否读取父类的@TableColumnBind注解
+
     /**
      * 构建tableView
      *
@@ -34,28 +39,44 @@ public abstract class AbstractTableBuilder<T> {
     public ObservableList<T> build() throws Exception {
         //检查构建参数
         checkAndInit();
+        //读取所有要构建的字段
+        List<TableColumnBindEntry> entries = new ArrayList<>();
+        getBindEntries(dataType, entries, readSuperClassFields);
+        //排序
+        entries.sort(Comparator.comparing(TableColumnBindEntry::getSort));
         //列构建
-        int bindCount = 0;
-        Field[] fields = dataType.getDeclaredFields();
-        for (Field field : fields) {
+        for (TableColumnBindEntry entry : entries) {
             //字段信息
-            TableColumnBind bindInfo = field.getAnnotation(TableColumnBind.class);
-            if (bindInfo == null) {
-                continue;
-            } else {
-                bindCount++;
-            }
-            fieldColumnBuild(field, bindInfo);
+            fieldColumnBuild(entry.getField(), entry.getBindInfo());
         }
         //列构建的统计总结
-        if (bindCount == 0) {
+        if (entries.size() == 0) {
             throw new IllegalStateException("type[" + dataType.getName() + "] must declared at least one annotation of [" + TableColumnBind.class.getName() + "]");
         } else {
-            System.out.println(bindCount + " columns of TableView have been build, based on type[" + dataType.getName() + "]");
+            System.out.println(entries.size() + " columns of TableView have been build, based on type[" + dataType.getName() + "]");
         }
         //其他构建
         otherBuild();
         return dataSource;
+    }
+
+    private void getBindEntries(Class<?> type, List<TableColumnBindEntry> entries, boolean readSuperClassFields) {
+        if (type == Object.class) {
+            return;
+        }
+        Field[] fields = type.getDeclaredFields();
+        for (Field field : fields) {
+            //字段信息
+            TableColumnBind bindInfo = field.getAnnotation(TableColumnBind.class);
+            if (bindInfo != null) {
+                TableColumnBindEntry entry = new TableColumnBindEntry(field, bindInfo, bindInfo.order());
+                entries.add(entry);
+            }
+        }
+        if (readSuperClassFields) {
+            Class<?> superClass = type.getSuperclass();
+            getBindEntries(superClass, entries, true);
+        }
     }
 
     /**

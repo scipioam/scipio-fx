@@ -64,4 +64,16 @@ public @interface TableColumnBind {
      */
     Class<? extends TableCell<?, ?>> cellImpl() default EmptyTableCell.class;
 
+    /**
+     * 列顺序
+     *
+     * @return 数字越大越靠右
+     */
+    int order() default 100;
+
+    /**
+     * 如果字符串值为null，显示为空白（而不是null字样）
+     */
+    boolean blankIfNull() default true;
+
 }

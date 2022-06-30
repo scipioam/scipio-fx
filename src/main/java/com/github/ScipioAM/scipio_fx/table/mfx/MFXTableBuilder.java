@@ -101,7 +101,7 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         }
         //列数据绑定
         MFXRowCellBuilder<T> rcBuilder = rowCellBuilder != null ? rowCellBuilder : new MFXDefaultRowCellBuilder<>();
-        column.setRowCellFactory(t -> rcBuilder.build(t, dataType, field));
+        column.setRowCellFactory(t -> rcBuilder.build(t, dataType, field, bindInfo));
         //过滤器信息
         if (bindInfo.filtered()) {
             String filterName = bindInfo.filterName();
@@ -150,10 +150,12 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
 
     //===============================================================================================================================================
 
+    @Override
     public MFXTableBuilder<T> setDataType(Class<T> dataType) {
         return (MFXTableBuilder<T>) super.setDataType(dataType);
     }
 
+    @Override
     public MFXTableBuilder<T> initDataSource(boolean initEmptyData) {
         return (MFXTableBuilder<T>) super.initDataSource(initEmptyData);
     }
@@ -161,6 +163,11 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
     @Override
     public MFXTableBuilder<T> initDataSource(Collection<T> initData) {
         return (MFXTableBuilder<T>) super.initDataSource(initData);
+    }
+
+    @Override
+    public MFXTableBuilder<T> setReadSuperClassFields(boolean readSuperClassFields) {
+        return (MFXTableBuilder<T>) super.setReadSuperClassFields(readSuperClassFields);
     }
 
     /**
