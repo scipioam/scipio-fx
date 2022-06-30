@@ -19,9 +19,6 @@ import static java.lang.annotation.ElementType.FIELD;
 @Documented
 public @interface TableColumnBind {
 
-    //TODO 1.ScipioFX修改：应该可选，是否加载父类的字段
-    //TODO 2.ScipioFX修改：应该可选，值为空时显示空串而不是null
-
     /**
      * 列标题
      */
@@ -66,5 +63,17 @@ public @interface TableColumnBind {
      * 单元格的自定义实现，默认为没有自定义实现
      */
     Class<? extends TableCell<?, ?>> cellImpl() default EmptyTableCell.class;
+
+    /**
+     * 列顺序
+     *
+     * @return 数字越大越靠右
+     */
+    int order() default 100;
+
+    /**
+     * 如果字符串值为null，显示为空白（而不是null字样）
+     */
+    boolean blankIfNull() default true;
 
 }

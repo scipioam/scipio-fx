@@ -42,6 +42,7 @@ public class MFXTableController extends BaseController {
                     .initDataSource(true)
                     .setDataType(Person.class)
                     .setRowsPerPage(10)
+                    .setReadSuperClassFields(true)
                     .build();
             Person.buildTestData(tableData);
         } catch (Exception e) {

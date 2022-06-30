@@ -25,7 +25,7 @@ import java.util.List;
  * @since 2022/6/9
  */
 @NoArgsConstructor
-public class Person implements Serializable {
+public class Person extends Human implements Serializable {
 
     @TableColumnBind(title = "ID", filtered = true, alignment = Pos.CENTER, compared = true)
     private final IntegerProperty id = new SimpleIntegerProperty();
