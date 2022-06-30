@@ -76,4 +76,10 @@ public @interface TableColumnBind {
      */
     boolean blankIfNull() default true;
 
+    /**
+     * 百分比列宽（0-1）
+     * @return 超出范围就不设定（小于等于0或大于1）
+     */
+    double widthPercent() default 0.0;
+
 }

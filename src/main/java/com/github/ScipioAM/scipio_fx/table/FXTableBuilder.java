@@ -7,6 +7,7 @@ import com.github.ScipioAM.scipio_fx.table.cell.*;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,6 +39,8 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
     private boolean isTableView2 = false; //是否为controlsFX包里的威力加强版（TableView2）
     private FXTableColumnBuildListener<T> columnBuildListener;
     private FXTableColumnBuilder<T> columnBuilder;
+    @SuppressWarnings("rawtypes")
+    private Callback<TableView.ResizeFeatures, Boolean> resizePolicy;
 
     //===============================================================================================================================================
 
@@ -98,6 +101,15 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
                 column.setComparator(comparator);
             }
         }
+        //百分比列宽
+        double widthPercent = bindInfo.widthPercent();
+        if (widthPercent > 0.0 && widthPercent <= 1.0) {
+            column.prefWidthProperty().bind(tableView.widthProperty().multiply(widthPercent));
+        }
+        //列宽自适应策略
+        if (resizePolicy != null) {
+            tableView.setColumnResizePolicy(resizePolicy);
+        }
 
         tableView.getColumns().add(column);
     }
@@ -105,7 +117,7 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void buildCellFactory(TableColumn<T, ?> column, Field field, TableColumnBind bindInfo) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         TableColumnTimeFormat formatInfo = field.getAnnotation(TableColumnTimeFormat.class);
-        Class<? extends TableCell<?,?>> cellImpl = bindInfo.cellImpl();
+        Class<? extends TableCell<?, ?>> cellImpl = bindInfo.cellImpl();
         if (formatInfo != null && cellImpl == EmptyTableCell.class) {
             Class<?> fieldType = field.getType();
             String pattern = formatInfo.pattern();
@@ -151,5 +163,13 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
     @Override
     public FXTableBuilder<T> setDataType(Class<T> dataType) {
         return (FXTableBuilder<T>) super.setDataType(dataType);
+    }
+
+    /**
+     * 设置列宽平均自适应
+     */
+    public FXTableBuilder<T> setColumnResizePolicyConstrained() {
+        this.resizePolicy = TableView.CONSTRAINED_RESIZE_POLICY;
+        return this;
     }
 }
