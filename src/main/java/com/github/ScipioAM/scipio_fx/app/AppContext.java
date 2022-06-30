@@ -24,6 +24,8 @@ public class AppContext {
 
     private ExecutorService threadPool;
 
+    private Boolean initThreadFinished = false;
+
     //====================================================================================================================================
 
     public void exit(boolean shutdownNow) {
@@ -82,5 +84,13 @@ public class AppContext {
 
     protected void setThreadPool(ExecutorService threadPool) {
         this.threadPool = threadPool;
+    }
+
+    public Boolean getInitThreadFinished() {
+        return initThreadFinished;
+    }
+
+    protected void setInitThreadFinished(Boolean initThreadFinished) {
+        this.initThreadFinished = initThreadFinished;
     }
 }
