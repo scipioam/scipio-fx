@@ -19,17 +19,6 @@ public class JPAEntityDao {
     protected final EntityManagerFactory entityManagerFactory;
     protected final EntityManager entityManager;
 
-    //=========================================== ↓↓↓↓↓↓ 供子类介入的方法 ↓↓↓↓↓↓ ===========================================
-
-    protected void beforeAdd(DBEntity entity) {
-    }
-
-    protected void beforeUpdate(DBEntity entity) {
-    }
-
-    protected void beforeDelete(DBEntity entity) {
-    }
-
     //=========================================== ↓↓↓↓↓↓ 初始化 ↓↓↓↓↓↓ ===========================================
 
     public JPAEntityDao() {
@@ -92,7 +81,6 @@ public class JPAEntityDao {
         EntityTransaction transaction = beginTransaction();
         try {
             DBEntity dbEntity = (DBEntity) entity;
-            beforeAdd(dbEntity);
             entityManager.persist(entity);
             transaction.commit();
         } catch (Exception e) {
@@ -111,7 +99,6 @@ public class JPAEntityDao {
         EntityTransaction transaction = beginTransaction();
         try {
             DBEntity dbEntity = (DBEntity) entity;
-            beforeUpdate(dbEntity);
             entityManager.merge(dbEntity);
             transaction.commit();
         } catch (Exception e) {
@@ -164,7 +151,6 @@ public class JPAEntityDao {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
-            beforeDelete((DBEntity) entity);
             entityManager.remove(entity);
             transaction.commit();
         } catch (Exception e) {
@@ -189,75 +175,95 @@ public class JPAEntityDao {
     /**
      * 根据主键查询
      *
-     * @param clazz      查询的实体类
+     * @param entityType 查询的实体类
      * @param primaryKey 主键
      */
-    public <T extends DBEntity> T findById(Class<T> clazz, Object primaryKey) {
-        return entityManager.find(clazz, primaryKey);
+    public <T extends DBEntity> T findById(Class<T> entityType, Object primaryKey) {
+        return entityManager.find(entityType, primaryKey);
     }
 
     /**
      * 查询全部
      */
     @SuppressWarnings("unchecked")
-    public <T extends DBEntity> List<T> findAll(Class<T> clazz) {
-        Query query = entityManager.createQuery("from " + clazz.getName());
-        return (List<T>) query.getResultList();
+    public <T extends DBEntity> List<T> findAll(Class<T> entityType) {
+        Query queryJpq = entityManager.createQuery("from " + entityType.getSimpleName());
+        return (List<T>) queryJpq.getResultList();
     }
 
     /**
      * 条件查询
      */
     @SuppressWarnings("unchecked")
-    public <T extends DBEntity> List<T> find(Class<T> clazz, Where where) {
-        String jpql = where.buildQueryJpql(clazz.getSimpleName());
-        Query query = entityManager.createQuery(jpql);
-        return (List<T>) query.getResultList();
+    public <T extends DBEntity> List<T> find(Class<T> entityType, Where where) {
+        String jpql = where.buildQueryJpql(entityType.getSimpleName());
+        Query queryJpq = entityManager.createQuery(jpql);
+        return (List<T>) queryJpq.getResultList();
     }
 
     /**
      * count查询（全部字段）
      *
-     * @param entityName 实体类名（不是表名）
      * @return count数
      */
-    public long countAll(String entityName) {
-        Query query = entityManager.createQuery("select count(*) from " + entityName);
-        return (Long) query.getSingleResult();
+    public <T extends DBEntity> long countAll(Class<T> entityType) {
+        Query queryJpq = entityManager.createQuery("select count(*) from " + entityType.getSimpleName());
+        return (Long) queryJpq.getSingleResult();
+    }
+
+    public <T extends DBEntity> long countAll(Class<T> entityType, Where where) {
+        String jpql = "select count(*) " + where.buildQueryJpql(entityType.getSimpleName());
+        Query queryJpq = entityManager.createQuery(jpql);
+        return (Long) queryJpq.getSingleResult();
     }
 
     /**
      * count查询（全部字段）
      *
-     * @param entityName 实体类名称（不是表名）
      * @param fieldName  实体类里的字段名（不是DB字段名）
      * @return count数
      */
-    public long count(String entityName, String fieldName) {
-        Query query = entityManager.createQuery("select count(" + fieldName + ") from " + entityName);
-        return (Long) query.getSingleResult();
+    public <T extends DBEntity> long count(Class<T> entityType, String fieldName) {
+        Query queryJpq = entityManager.createQuery("select count(" + fieldName + ") from " + entityType.getSimpleName());
+        return (Long) queryJpq.getSingleResult();
+    }
+
+    public <T extends DBEntity> long count(Class<T> entityType, String fieldName, Where where) {
+        String jpql = "select count(" + fieldName + ") " + where.buildQueryJpql(entityType.getSimpleName());
+        Query queryJpq = entityManager.createQuery(jpql);
+        return (Long) queryJpq.getSingleResult();
     }
 
     /**
      * 查询最大值的一行数据
      *
-     * @param entityName 实体类名称（不是表名）
      * @param fieldName  实体类里的字段名（不是DB字段名）
      */
-    public Object findMax(String entityName, String fieldName) {
-        Query query = entityManager.createQuery("select max(" + fieldName + ") from " + entityName);
-        return query.getSingleResult();
+    public <T extends DBEntity> Object findMax(Class<T> entityType, String fieldName) {
+        Query queryJpq = entityManager.createQuery("select max(" + fieldName + ") from " + entityType.getSimpleName());
+        return queryJpq.getSingleResult();
+    }
+
+    public <T extends DBEntity> Object findMax(Class<T> entityType, String fieldName, Where where) {
+        String jpql = "select max(" + fieldName + ") " + where.buildQueryJpql(entityType.getSimpleName());
+        Query queryJpq = entityManager.createQuery(jpql);
+        return queryJpq.getSingleResult();
     }
 
     /**
      * 查询最小值的一行数据
      *
-     * @param entityName 实体类名称（不是表名）
      * @param fieldName  实体类里的字段名（不是DB字段名）
      */
-    public Object findMin(String entityName, String fieldName) {
-        Query query = entityManager.createQuery("select min(" + fieldName + ") from " + entityName);
-        return query.getSingleResult();
+    public <T extends DBEntity> Object findMin(Class<T> entityType, String fieldName) {
+        Query queryJpq = entityManager.createQuery("select min(" + fieldName + ") from " + entityType.getSimpleName());
+        return queryJpq.getSingleResult();
+    }
+
+    public <T extends DBEntity> Object findMin(Class<T> entityType, String fieldName, Where where) {
+        String jpql = "select min(" + fieldName + ") " + where.buildQueryJpql(entityType.getSimpleName());
+        Query queryJpq = entityManager.createQuery(jpql);
+        return queryJpq.getSingleResult();
     }
 
     //=========================================== ↓↓↓↓↓↓ 内部私有方法 ↓↓↓↓↓↓ ===========================================
@@ -288,7 +294,7 @@ public class JPAEntityDao {
                 } else {
                     field.setAccessible(true);
                     Object value = field.get(instance);
-                    if(value == null && !(field.isAnnotationPresent(UpdateNull.class))) {
+                    if (value == null && !(field.isAnnotationPresent(UpdateNull.class))) {
                         //跳过null值字段
                         continue;
                     }
