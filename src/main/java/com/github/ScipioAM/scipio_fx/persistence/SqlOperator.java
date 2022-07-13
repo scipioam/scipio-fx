@@ -5,7 +5,6 @@ package com.github.ScipioAM.scipio_fx.persistence;
  */
 public enum SqlOperator {
 
-    //TODO 待补充
     EQUAL("="),
     NOT_EQUAL("<>"),
     LESS("<"),
@@ -14,6 +13,12 @@ public enum SqlOperator {
     GREATER_EQUAL(">="),
     IS_NULL("is null"),
     IS_NOT_NULL("is not null"),
+    LIKE("like"),
+    NOT_LIKE("not like"),
+    BETWEEN("between"),
+    NOT_BETWEEN("not between"),
+    IN("in"),
+    NOT_IN("not in"),
     ;
 
     public final String op;
