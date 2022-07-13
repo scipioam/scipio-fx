@@ -1,5 +1,6 @@
 package com.github.ScipioAM.scipio_fx.persistence;
 
+import com.github.ScipioAM.scipio_fx.utils.SeFunction;
 import lombok.Getter;
 
 import java.util.LinkedHashMap;
@@ -78,6 +79,16 @@ public class Where {
      */
     public Where eq(String fieldName, Object value) {
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.EQUAL));
+        return this;
+    }
+
+    /**
+     * 等于
+     */
+    public Where eq(SeFunction<?> func) {
+        String fieldName = func.getPropertyByMethod();
+        Object fieldValue = func.get();
+        conditions.put(fieldName, new WhereCondition(fieldValue, SqlOperator.EQUAL));
         return this;
     }
 
