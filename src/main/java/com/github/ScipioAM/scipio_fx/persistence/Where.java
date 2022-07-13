@@ -28,7 +28,7 @@ public class Where {
             WhereCondition condition = entry.getValue();
 
             //where语句开头（字段，操作符）
-            jpql.append(entry.getKey()).append(condition.getSqlOperator()).append(' ');
+            jpql.append(entry.getKey()).append(' ').append(condition.getSqlOperator()).append(' ');
 
             //where语句中间（值）
             boolean isFunctionCall = condition.isFunctionCall();
