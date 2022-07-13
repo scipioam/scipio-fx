@@ -33,7 +33,7 @@ public class Where {
 
             jpql.append(" and ");
         }
-        jpql.delete(jpql.length() - 6, jpql.length() - 1);
+        jpql.delete(jpql.length() - 5, jpql.length() - 1);
         return jpql.toString();
     }
 
