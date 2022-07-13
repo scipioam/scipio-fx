@@ -141,7 +141,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where condition(SeFunction<?, ?> func, WhereCondition condition) {
+    public <T extends DBEntity> Where condition(SeFunction<T, ?> func, WhereCondition condition) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, condition);
         return this;
@@ -162,7 +162,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where condition(SeFunction<?, ?> func, Object value, SqlOperator operator) {
+    public <T extends DBEntity> Where condition(SeFunction<T, ?> func, Object value, SqlOperator operator) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, operator));
         return this;
@@ -195,7 +195,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where eq(SeFunction<?, ?> func, Object value) {
+    public <T extends DBEntity> Where eq(SeFunction<T, ?> func, Object value) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.EQUAL));
         return this;
@@ -228,7 +228,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where ne(SeFunction<?, ?> func, Object value) {
+    public <T extends DBEntity> Where ne(SeFunction<T, ?> func, Object value) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.NOT_EQUAL));
         return this;
@@ -261,7 +261,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where lt(SeFunction<?, ?> func, Object value) {
+    public <T extends DBEntity> Where lt(SeFunction<T, ?> func, Object value) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.LESS));
         return this;
@@ -294,7 +294,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where le(SeFunction<?, ?> func, Object value) {
+    public <T extends DBEntity> Where le(SeFunction<T, ?> func, Object value) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.LESS_EQUAL));
         return this;
@@ -327,7 +327,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where gt(SeFunction<?, ?> func, Object value) {
+    public <T extends DBEntity> Where gt(SeFunction<T, ?> func, Object value) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.GREATER));
         return this;
@@ -360,7 +360,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where ge(SeFunction<?, ?> func, Object value) {
+    public <T extends DBEntity> Where ge(SeFunction<T, ?> func, Object value) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.GREATER_EQUAL));
         return this;
@@ -413,7 +413,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where like(SeFunction<?, ?> func, Object value) {
+    public <T extends DBEntity> Where like(SeFunction<T, ?> func, Object value) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.LIKE));
         return this;
@@ -446,7 +446,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where notLike(SeFunction<?, ?> func, Object value) {
+    public <T extends DBEntity> Where notLike(SeFunction<T, ?> func, Object value) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.NOT_LIKE));
         return this;
@@ -479,7 +479,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where between(SeFunction<?, ?> func, Object value, Object value2) {
+    public <T extends DBEntity> Where between(SeFunction<T, ?> func, Object value, Object value2) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.BETWEEN).setValue2(value2));
         return this;
@@ -500,7 +500,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where notBetween(SeFunction<?, ?> func, Object value, Object value2) {
+    public <T extends DBEntity> Where notBetween(SeFunction<T, ?> func, Object value, Object value2) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.NOT_BETWEEN).setValue2(value2));
         return this;
@@ -521,7 +521,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where in(SeFunction<?, ?> func, List<?> valueList) {
+    public <T extends DBEntity> Where in(SeFunction<T, ?> func, List<?> valueList) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition().setOperator(SqlOperator.IN).setValueList(valueList));
         return this;
@@ -542,7 +542,7 @@ public class Where {
      *
      * @param func 根据方法名，会自动转为实体类字段名（不是DB字段名）
      */
-    public Where notIn(SeFunction<?, ?> func, List<?> valueList) {
+    public <T extends DBEntity> Where notIn(SeFunction<T, ?> func, List<?> valueList) {
         String fieldName = func.getPropertyByMethod();
         conditions.put(fieldName, new WhereCondition().setOperator(SqlOperator.NOT_IN).setValueList(valueList));
         return this;
