@@ -1,5 +1,6 @@
 package com.github.ScipioAM.scipio_fx.persistence;
 
+import com.github.ScipioAM.scipio_fx.utils.SeFunction;
 import lombok.Getter;
 
 import java.util.LinkedHashMap;
@@ -14,16 +15,26 @@ public class Where {
     private final Map<String, WhereCondition> conditions = new LinkedHashMap<>();
 
     public String buildQueryJpql(String entityName) {
-        StringBuilder hql = new StringBuilder()
+        StringBuilder jpql = new StringBuilder()
                 .append("from ")
                 .append(entityName)
                 .append(" where ");
         for (Map.Entry<String, WhereCondition> entry : conditions.entrySet()) {
             WhereCondition condition = entry.getValue();
-            hql.append(entry.getKey()).append(condition.getSqlOperator()).append(condition.getValue()).append(" and ");
+
+            jpql.append(entry.getKey()).append(condition.getSqlOperator());
+
+            Object value = condition.getValue();
+            if (value instanceof String) {
+                jpql.append('\'').append(value).append('\'');
+            } else if (value != null) {
+                jpql.append(value);
+            }
+
+            jpql.append(" and ");
         }
-        hql.delete(hql.length() - 5, hql.length() - 1);
-        return hql.toString();
+        jpql.delete(jpql.length() - 6, jpql.length() - 1);
+        return jpql.toString();
     }
 
     public static Where build() {
@@ -68,6 +79,16 @@ public class Where {
      */
     public Where eq(String fieldName, Object value) {
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.EQUAL));
+        return this;
+    }
+
+    /**
+     * 等于
+     */
+    public Where eq(SeFunction<?> func) {
+        String fieldName = func.getPropertyByMethod();
+        Object fieldValue = func.get();
+        conditions.put(fieldName, new WhereCondition(fieldValue, SqlOperator.EQUAL));
         return this;
     }
 
@@ -118,6 +139,26 @@ public class Where {
      */
     public Where ge(String fieldName, Object value) {
         conditions.put(fieldName, new WhereCondition(value, SqlOperator.GREATER_EQUAL));
+        return this;
+    }
+
+    /**
+     * where语句：字段 is null
+     *
+     * @param fieldName 实体类字段名（不是DB字段名）
+     */
+    public Where isNull(String fieldName) {
+        conditions.put(fieldName, new WhereCondition(null, SqlOperator.GREATER_EQUAL));
+        return this;
+    }
+
+    /**
+     * where语句：字段 is not null
+     *
+     * @param fieldName 实体类字段名（不是DB字段名）
+     */
+    public Where isNotNull(String fieldName) {
+        conditions.put(fieldName, new WhereCondition(null, SqlOperator.GREATER_EQUAL));
         return this;
     }
 

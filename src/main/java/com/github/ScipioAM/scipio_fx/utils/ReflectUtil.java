@@ -1,6 +1,7 @@
 package com.github.ScipioAM.scipio_fx.utils;
 
 import java.lang.reflect.*;
+import java.util.Locale;
 
 /**
  * @author Alan Scipio
@@ -74,6 +75,29 @@ public class ReflectUtil {
             methodName.append(arr[i]);
         }
         return methodName.toString();
+    }
+
+    /**
+     * 根据方法名（getter或setter方法），获取属性名
+     *
+     * @param methodName 方法名
+     * @return 推测的属性名
+     * @author Clinton Begin (org.apache.ibatis.reflection.property.PropertyNamer)
+     */
+    public static String beanMethodToProperty(String methodName) {
+        if (methodName.startsWith("is")) {
+            methodName = methodName.substring(2);
+        } else if (methodName.startsWith("get") || methodName.startsWith("set")) {
+            methodName = methodName.substring(3);
+        } else {
+            throw new IllegalStateException("Error parsing property name '" + methodName + "'.  Didn't start with 'is', 'get' or 'set'.");
+        }
+
+        if (methodName.length() == 1 || (methodName.length() > 1 && !Character.isUpperCase(methodName.charAt(1)))) {
+            methodName = methodName.substring(0, 1).toLowerCase(Locale.ENGLISH) + methodName.substring(1);
+        }
+
+        return methodName;
     }
 
     //==================================================================================================================

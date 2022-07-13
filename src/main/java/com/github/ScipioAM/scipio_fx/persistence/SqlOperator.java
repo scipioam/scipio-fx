@@ -12,6 +12,8 @@ public enum SqlOperator {
     LESS_EQUAL("<="),
     GREATER(">"),
     GREATER_EQUAL(">="),
+    IS_NULL("is null"),
+    IS_NOT_NULL("is not null"),
     ;
 
     public final String op;
