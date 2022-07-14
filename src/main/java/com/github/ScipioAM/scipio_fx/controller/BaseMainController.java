@@ -85,6 +85,6 @@ public abstract class BaseMainController extends BaseController {
      * @param viewInfo 子view的标识key
      * @param initArgs 自定义参数
      */
-    public abstract void loadChildViews(AppViewId viewInfo, Object initArgs);
+    public abstract void loadChildView(AppViewId viewInfo, Object initArgs);
 
 }
