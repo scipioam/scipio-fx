@@ -35,7 +35,7 @@ public class JPAEntityDao {
     protected void beforeAdd(Object entity) {
     }
 
-    protected void beforeUpdate(Object entity, Query query) {
+    protected void beforeUpdate(Object entity) {
     }
 
     protected void beforeDeleteById(Object entity) {
@@ -113,10 +113,10 @@ public class JPAEntityDao {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
+            beforeUpdate(entity);
             //构建query对象
             Query query = buildUpdateQuery(entityManager, entity, null, false);
             //执行sql
-            beforeUpdate(entity, query);
             int affectedRows = query.executeUpdate();
             transaction.commit();
             return affectedRows;
@@ -140,10 +140,10 @@ public class JPAEntityDao {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
+            beforeUpdate(entity);
             //构建query对象
             Query query = buildUpdateQuery(entityManager, entity, where, false);
             //执行sql
-            beforeUpdate(entity, query);
             int affectedRows = query.executeUpdate();
             transaction.commit();
             return affectedRows;
@@ -163,10 +163,10 @@ public class JPAEntityDao {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
+            beforeUpdate(entity);
             //构建query对象
             Query query = buildUpdateQuery(entityManager, entity, null, true);
             //执行sql
-            beforeUpdate(entity, query);
             int affectedRows = query.executeUpdate();
             transaction.commit();
             return affectedRows;
@@ -188,10 +188,10 @@ public class JPAEntityDao {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
+            beforeUpdate(entity);
             //构建query对象
             Query query = buildUpdateQuery(entityManager, entity, where, true);
             //执行sql
-            beforeUpdate(entity, query);
             int affectedRows = query.executeUpdate();
             transaction.commit();
             return affectedRows;
