@@ -104,7 +104,11 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         column.setRowCellFactory(t -> rcBuilder.build(t, dataType, field, bindInfo));
         //过滤器信息
         if (bindInfo.filtered()) {
+            //过滤器名称，如果不设置就默认采用列标题
             String filterName = bindInfo.filterName();
+            if (filterName == null || "".equals(filterName)) {
+                filterName = bindInfo.title();
+            }
             TableColumnFilter filterInfo = field.getAnnotation(TableColumnFilter.class);
             AbstractFilter<T, ?> filter;
             if (filterInfo == null) {
