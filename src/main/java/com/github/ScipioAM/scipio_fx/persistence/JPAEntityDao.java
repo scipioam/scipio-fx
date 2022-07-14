@@ -30,6 +30,20 @@ public class JPAEntityDao {
         entityManager = entityManagerFactory.createEntityManager();
     }
 
+    //=========================================== ↓↓↓↓↓↓ 供子类重写的方法 ↓↓↓↓↓↓ ===========================================
+
+    protected void beforeAdd(Object entity) {
+    }
+
+    protected void beforeUpdate(Object entity, Query query) {
+    }
+
+    protected void beforeDeleteById(Object entity) {
+    }
+
+    protected void beforeDelete(Class<?> entityType, Query query) {
+    }
+
     //=========================================== ↓↓↓↓↓↓ 基本API ↓↓↓↓↓↓ ===========================================
 
     /**
@@ -76,10 +90,11 @@ public class JPAEntityDao {
      *
      * @param entity 要新增的数据
      */
-    public <T extends DBEntity> void add(T entity) {
+    public void add(Object entity) {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
+            beforeAdd(entity);
             entityManager.persist(entity);
             transaction.commit();
         } catch (Exception e) {
@@ -94,13 +109,14 @@ public class JPAEntityDao {
      * @param entity 要修改的数据，主键根据字段上的{@link Id}注解来自动构建
      * @return 受影响的行数
      */
-    public <T extends DBEntity> int updateById(T entity) throws Exception {
+    public int updateById(Object entity) throws Exception {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
             //构建query对象
             Query query = buildUpdateQuery(entityManager, entity, null, false);
             //执行sql
+            beforeUpdate(entity, query);
             int affectedRows = query.executeUpdate();
             transaction.commit();
             return affectedRows;
@@ -115,10 +131,9 @@ public class JPAEntityDao {
      *
      * @param entity 要更新的数据
      * @param where  自定义where条件
-     * @param <T>    数据的类型
      * @return 受影响的行数
      */
-    public <T extends DBEntity> int update(T entity, Where where) throws Exception {
+    public int update(Object entity, Where where) throws Exception {
         if (where == null) {
             throw new IllegalArgumentException("where condition is null");
         }
@@ -128,6 +143,7 @@ public class JPAEntityDao {
             //构建query对象
             Query query = buildUpdateQuery(entityManager, entity, where, false);
             //执行sql
+            beforeUpdate(entity, query);
             int affectedRows = query.executeUpdate();
             transaction.commit();
             return affectedRows;
@@ -143,13 +159,14 @@ public class JPAEntityDao {
      *
      * @param entity 要修改的数据，where条件根据字段上的注解来
      */
-    public <T extends DBEntity> int updateWithNullById(T entity) throws Exception {
+    public int updateWithNullById(Object entity) throws Exception {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
             //构建query对象
             Query query = buildUpdateQuery(entityManager, entity, null, true);
             //执行sql
+            beforeUpdate(entity, query);
             int affectedRows = query.executeUpdate();
             transaction.commit();
             return affectedRows;
@@ -164,7 +181,7 @@ public class JPAEntityDao {
      *
      * @param entity 要修改的数据，where条件根据字段上的注解来
      */
-    public <T extends DBEntity> int updateWithNull(T entity, Where where) throws Exception {
+    public int updateWithNull(Object entity, Where where) throws Exception {
         if (where == null) {
             throw new IllegalArgumentException("where condition is null");
         }
@@ -174,6 +191,7 @@ public class JPAEntityDao {
             //构建query对象
             Query query = buildUpdateQuery(entityManager, entity, where, true);
             //执行sql
+            beforeUpdate(entity, query);
             int affectedRows = query.executeUpdate();
             transaction.commit();
             return affectedRows;
@@ -192,6 +210,7 @@ public class JPAEntityDao {
      */
     public <T extends DBEntity> int delete(Class<T> entityType, Where where) {
         Query queryJpq = where.buildQuery("delete", entityManager, entityType.getSimpleName());
+        beforeDelete(entityType, queryJpq);
         return queryJpq.executeUpdate();
     }
 
@@ -204,6 +223,7 @@ public class JPAEntityDao {
         checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
+            beforeDeleteById(entity);
             entityManager.remove(entity);
             transaction.commit();
         } catch (Exception e) {
@@ -356,9 +376,8 @@ public class JPAEntityDao {
      *
      * @param where 为null则自动构建主键where条件，否则为传入的非null自定义where条件
      */
-    @SuppressWarnings("unchecked")
-    protected <T extends DBEntity> Query buildUpdateQuery(EntityManager entityManager, T entity, Where where, boolean forceNull) throws Exception {
-        Class<T> entityType = (Class<T>) entity.getClass();
+    protected Query buildUpdateQuery(EntityManager entityManager, Object entity, Where where, boolean forceNull) throws Exception {
+        Class<?> entityType = entity.getClass();
         List<WhereCondition> fieldList = new ArrayList<>();
         //构建updateJpql语句
         StringBuilder jpql = new StringBuilder()
