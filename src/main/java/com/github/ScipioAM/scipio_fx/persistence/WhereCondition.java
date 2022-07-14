@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 /**
  * @since 2022/6/30
  */
@@ -14,7 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @Accessors(chain = true)
 @Data
-public class WhereCondition {
+class WhereCondition {
+
+    private String fieldName;
 
     /** 常规的检索值 */
     private Object value;
@@ -22,17 +22,21 @@ public class WhereCondition {
     /** BETWEEN和NOT BETWEEN语句专用的第2个检索值 */
     private Object value2;
 
-    /** IN和NOT IN语句专用的检索值 */
-    private List<?> valueList;
-
     private SqlOperator operator;
 
-    /** 是否为调用sql的函数。true：是 */
-    private boolean isFunctionCall = false;
+    /** 是否为update set的值 */
+    private boolean isUpdateValue = false;
 
-    public WhereCondition(Object value, SqlOperator operator) {
+    public WhereCondition(String fieldName, Object value, SqlOperator operator) {
+        this.fieldName = fieldName;
         this.value = value;
         this.operator = operator;
+    }
+
+    public WhereCondition(String fieldName, Object value, boolean isUpdateValue) {
+        this.fieldName = fieldName;
+        this.value = value;
+        this.isUpdateValue = isUpdateValue;
     }
 
     public String getSqlOperator() {
