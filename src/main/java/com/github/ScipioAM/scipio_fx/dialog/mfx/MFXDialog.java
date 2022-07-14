@@ -1,6 +1,7 @@
 package com.github.ScipioAM.scipio_fx.dialog.mfx;
 
 import com.github.ScipioAM.scipio_fx.constant.Language;
+import com.github.ScipioAM.scipio_fx.dialog.DialogBtnListener;
 import com.github.ScipioAM.scipio_fx.dialog.IDialog;
 import io.github.palexdev.materialfx.dialogs.MFXDialogs;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
@@ -31,41 +32,69 @@ public class MFXDialog implements IDialog {
     private final MFXGenericDialog dialogContent;
     private final MFXStageDialog dialogContainer;
 
-    /** 对话框类型 */
+    /**
+     * 对话框类型
+     */
     private final MFXDialogType dialogType;
-    /** 标题文本 */
+    /**
+     * 标题文本
+     */
     private String headerText;
-    /** 内容文本 */
+    /**
+     * 内容文本
+     */
     private String contentText;
-    /** 是否显示右上角关闭图标 */
+    /**
+     * 是否显示右上角关闭图标
+     */
     private boolean showClose = true;
-    /** 是否显示右上角最小化图标 */
+    /**
+     * 是否显示右上角最小化图标
+     */
     private boolean showMinimize = true;
-    /** 是否显示右上角置顶图标 */
+    /**
+     * 是否显示右上角置顶图标
+     */
     private boolean showAlwaysOnTop = false;
-    /** 是否可被拖拽 */
+    /**
+     * 是否可被拖拽
+     */
     private boolean draggable = true;
-    /** 是否可点击对话框外的区域后，关闭对话框 */
+    /**
+     * 是否可点击对话框外的区域后，关闭对话框
+     */
     private boolean overlayClose = false;
-    /** 是否开启遮罩特效 */
+    /**
+     * 是否开启遮罩特效
+     */
     private boolean shadowMask = false;
-    /**  */
+    /**
+     *
+     */
     private Pane parentPane;
-    /**  */
+    /**
+     *
+     */
     private Node headerIcon;
 
     @Getter(AccessLevel.NONE)
     private final List<MFXDialogButton> buttons = new ArrayList<>();
 
-    /**  */
+    /**
+     *
+     */
     @Getter(AccessLevel.NONE)
-    private EventHandler<MouseEvent> onCloseAction;
-    /**  */
+    private DialogBtnListener onCloseAction;
+    /**
+     *
+     */
     @Getter(AccessLevel.NONE)
-    private EventHandler<MouseEvent> onMinimizeAction;
-    /**  */
+    private DialogBtnListener onMinimizeAction;
+    /**
+     *
+     */
     @Getter(AccessLevel.NONE)
-    private EventHandler<MouseEvent> onAlwaysOnTopAction;
+    private DialogBtnListener onAlwaysOnTopAction;
 
     //==================================== ↓↓↓↓↓↓ 初始化 ↓↓↓↓↓↓ ====================================
 
@@ -267,10 +296,12 @@ public class MFXDialog implements IDialog {
         return this;
     }
 
-    public MFXDialog addButton(String btnText, EventHandler<MouseEvent> btnAction, Integer sortToRight) {
+    public MFXDialog addButton(String btnText, DialogBtnListener btnAction, Integer sortToRight) {
         MFXDialogButton btn = MFXDialogButton.create()
-                .setText(btnText)
-                .setAction(btnAction);
+                .setText(btnText);
+        if (btnAction != null) {
+            btn.setAction(event -> btnAction.onClicked(event, this));
+        }
         if (sortToRight == null) {
             //自动确定值
             //从0开始，因为是先确定sort值再加到list里去的
@@ -281,15 +312,15 @@ public class MFXDialog implements IDialog {
         return this;
     }
 
-    public MFXDialog addButton(String btnText, EventHandler<MouseEvent> btnAction) {
+    public MFXDialog addButton(String btnText, DialogBtnListener btnAction) {
         return addButton(btnText, btnAction, null);
     }
 
-    public MFXDialog addOkButton(String btnText, EventHandler<MouseEvent> btnAction) {
+    public MFXDialog addOkButton(String btnText, DialogBtnListener btnAction) {
         return addButton(btnText, btnAction, 0);
     }
 
-    public MFXDialog addOkButton(EventHandler<MouseEvent> btnAction, Language language) {
+    public MFXDialog addOkButton(DialogBtnListener btnAction, Language language) {
         String btnText;
         switch (language) {
             case CN:
@@ -299,23 +330,23 @@ public class MFXDialog implements IDialog {
             default:
                 btnText = "O K";
                 break;
-        };
+        }
         return addOkButton(btnText, btnAction);
     }
 
     public MFXDialog addOkButton(Language language) {
-        return addOkButton(getCloseAction(), language);
+        return addOkButton(getDefaultCloseAction(), language);
     }
 
     public MFXDialog addOkButton(String btnText) {
-        return addOkButton(btnText, getCloseAction());
+        return addOkButton(btnText, getDefaultCloseAction());
     }
 
-    public MFXDialog addCancelButton(String btnText, EventHandler<MouseEvent> btnAction) {
+    public MFXDialog addCancelButton(String btnText, DialogBtnListener btnAction) {
         return addButton(btnText, btnAction, 1);
     }
 
-    public MFXDialog addCancelButton(EventHandler<MouseEvent> btnAction, Language language) {
+    public MFXDialog addCancelButton(DialogBtnListener btnAction, Language language) {
         String btnText;
         switch (language) {
             case CN:
@@ -330,51 +361,54 @@ public class MFXDialog implements IDialog {
     }
 
     public MFXDialog addCancelButton(Language language) {
-        return addCancelButton(getCloseAction(), language);
+        return addCancelButton(getDefaultCloseAction(), language);
     }
 
     public MFXDialog addCancelButton(String btnText) {
-        return addCancelButton(btnText, getCloseAction());
+        return addCancelButton(btnText, getDefaultCloseAction());
     }
 
-    public MFXDialog setOnCloseAction(EventHandler<MouseEvent> onCloseAction) {
+    public MFXDialog setOnCloseAction(DialogBtnListener onCloseAction) {
         this.onCloseAction = onCloseAction;
-        dialogContent.setOnClose(onCloseAction);
+        if (onCloseAction != null) {
+            dialogContent.setOnClose(event -> onCloseAction.onClicked(event, this));
+        }
         return this;
     }
 
     public MFXDialog setOnCloseAction() {
-        onCloseAction = getCloseAction();
-        dialogContent.setOnClose(onCloseAction);
-        return this;
+        DialogBtnListener defaultCloseAction = getDefaultCloseAction();
+        return setOnCloseAction(defaultCloseAction);
     }
 
-    public MFXDialog setOnMinimizeAction(EventHandler<MouseEvent> onMinimizeAction) {
+    public MFXDialog setOnMinimizeAction(DialogBtnListener onMinimizeAction) {
         this.onMinimizeAction = onMinimizeAction;
-        dialogContent.setOnMinimize(onMinimizeAction);
+        if (onMinimizeAction != null) {
+            dialogContent.setOnMinimize(event -> onMinimizeAction.onClicked(event, this));
+        }
         return this;
     }
 
     public MFXDialog setOnMinimizeAction() {
-        onMinimizeAction = (event) -> minimize();
-        dialogContent.setOnMinimize(onMinimizeAction);
-        return this;
+        DialogBtnListener onMinimizeAction = (event, dialog) -> ((MFXDialog) dialog).minimize();
+        return setOnMinimizeAction(onMinimizeAction);
     }
 
-    public MFXDialog setOnAlwaysOnTopAction(EventHandler<MouseEvent> onAlwaysOnTopAction) {
+    public MFXDialog setOnAlwaysOnTopAction(DialogBtnListener onAlwaysOnTopAction) {
         this.onAlwaysOnTopAction = onAlwaysOnTopAction;
-        dialogContent.setOnAlwaysOnTop(onAlwaysOnTopAction);
+        if (onAlwaysOnTopAction != null) {
+            dialogContent.setOnAlwaysOnTop(event -> onAlwaysOnTopAction.onClicked(event, this));
+        }
         return this;
     }
 
     public MFXDialog setOnAlwaysOnTopAction() {
-        onAlwaysOnTopAction = (event) -> alwaysOnTop();
-        dialogContent.setOnAlwaysOnTop(onAlwaysOnTopAction);
-        return this;
+        DialogBtnListener onAlwaysOnTopAction = (event, dialog) -> ((MFXDialog) dialog).alwaysOnTop();
+        return setOnMinimizeAction(onAlwaysOnTopAction);
     }
 
-    public EventHandler<MouseEvent> getCloseAction() {
-        return (event) -> close();
+    public DialogBtnListener getDefaultCloseAction() {
+        return DialogBtnListener.CLOSE_DIALOG;
     }
 
 }

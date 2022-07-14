@@ -1,8 +1,7 @@
 package com.github.ScipioAM.scipio_fx.dialog.mfx;
 
 import com.github.ScipioAM.scipio_fx.constant.Language;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
+import com.github.ScipioAM.scipio_fx.dialog.DialogBtnListener;
 
 /**
  * {@link MFXDialog}的工具类
@@ -25,7 +24,7 @@ public class MFXDialogHelper {
      * @param okBtnAction ok按钮的动作回调
      * @return 构建好的对话框对象
      */
-    public static MFXDialog showDialog(MFXDialogType type, String headerText, String contentText, Language language, EventHandler<MouseEvent> okBtnAction) {
+    public static MFXDialog showDialog(MFXDialogType type, String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
         MFXDialog dialog = new MFXDialog(type)
                 .setHeaderText(headerText)
                 .setContentText(contentText);
@@ -38,7 +37,7 @@ public class MFXDialogHelper {
         return dialog;
     }
 
-    public static MFXDialog showInfo(String headerText, String contentText, Language language, EventHandler<MouseEvent> okBtnAction) {
+    public static MFXDialog showInfo(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
         return showDialog(MFXDialogType.INFO, headerText, contentText, language, okBtnAction);
     }
 
@@ -50,7 +49,7 @@ public class MFXDialogHelper {
         return showInfo(headerText, contentText, Language.EN, null);
     }
 
-    public static MFXDialog showWarn(String headerText, String contentText, Language language, EventHandler<MouseEvent> okBtnAction) {
+    public static MFXDialog showWarn(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
         return showDialog(MFXDialogType.WARN, headerText, contentText, language, okBtnAction);
     }
 
@@ -62,7 +61,7 @@ public class MFXDialogHelper {
         return showWarn(headerText, contentText, Language.EN, null);
     }
 
-    public static MFXDialog showError(String headerText, String contentText, Language language, EventHandler<MouseEvent> okBtnAction) {
+    public static MFXDialog showError(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
         return showDialog(MFXDialogType.ERROR, headerText, contentText, language, okBtnAction);
     }
 
