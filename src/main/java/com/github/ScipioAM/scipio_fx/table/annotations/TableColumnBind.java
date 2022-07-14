@@ -41,7 +41,7 @@ public @interface TableColumnBind {
     /**
      * 过滤器里字段的标题
      *
-     * @return 默认就是java的字段名
+     * @return 如果不设置就默认采用列标题
      */
     String filterName() default "";
 
