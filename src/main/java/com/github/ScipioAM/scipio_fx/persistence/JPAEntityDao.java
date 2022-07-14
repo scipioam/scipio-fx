@@ -95,6 +95,7 @@ public class JPAEntityDao {
      * @return 受影响的行数
      */
     public <T extends DBEntity> int updateById(T entity) throws Exception {
+        checkBeforeCUD(entity);
         EntityTransaction transaction = beginTransaction();
         try {
             //构建query对象
@@ -345,7 +346,7 @@ public class JPAEntityDao {
     private void checkBeforeCUD(Object entity) throws IllegalArgumentException, ClassCastException {
         if (entity == null) {
             throw new IllegalArgumentException("entity is null");
-        } else if (!entity.getClass().isAssignableFrom(DBEntity.class)) {
+        } else if (!DBEntity.class.isAssignableFrom(entity.getClass())) {
             throw new ClassCastException("entity type is illegal ! expect type(interface) [" + DBEntity.class + "] , actual type [" + entity.getClass().getName() + "]");
         }
     }
