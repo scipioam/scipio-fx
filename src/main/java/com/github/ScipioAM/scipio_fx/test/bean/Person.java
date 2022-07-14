@@ -1,5 +1,6 @@
 package com.github.ScipioAM.scipio_fx.test.bean;
 
+import com.github.ScipioAM.scipio_fx.persistence.DBEntity;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnBind;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnComparator;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnTimeFormat;
@@ -25,7 +26,7 @@ import java.util.List;
  * @since 2022/6/9
  */
 @NoArgsConstructor
-public class Person implements Serializable {
+public class Person implements Serializable, DBEntity {
 
     @TableColumnBind(title = "ID", filtered = true, alignment = Pos.CENTER, compared = true)
     private final IntegerProperty id = new SimpleIntegerProperty();
