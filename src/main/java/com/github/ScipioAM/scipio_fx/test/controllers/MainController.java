@@ -76,7 +76,7 @@ public class MainController extends BaseMainController {
     }
 
     @Override
-    public void loadChildViews(AppViewId viewInfo, Object initArgs) {
+    public void loadChildView(AppViewId viewInfo, Object initArgs) {
         System.out.println("loadChildViews() called.");
     }
 }
