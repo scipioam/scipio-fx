@@ -26,7 +26,7 @@ public class FXInputsController extends BaseController {
     private TextField tf1;
 
     @Override
-    public void onLoadInit(Parent rootNode, Object initArg) {
+    public void onLoadInit(Parent rootNode, Object... initArgs) {
         setupSegmentedButton();
 
         ValidationSupport validationSupport = new ValidationSupport();

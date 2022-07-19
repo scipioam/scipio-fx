@@ -30,7 +30,7 @@ public class MFXTableController extends BaseController {
     private ObservableList<Person> tableData;
 
     @Override
-    public void onLoadInit(Parent rootNode, Object initArg) {
+    public void onLoadInit(Parent rootNode, Object... initArgs) {
 //        setupTableView();
         setupTV_builder();
     }

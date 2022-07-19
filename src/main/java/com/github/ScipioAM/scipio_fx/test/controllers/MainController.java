@@ -27,7 +27,7 @@ public class MainController extends BaseMainController {
     private Console console;
 
     @Override
-    public void onLoadInit(Parent rootNode, Object initArg) {
+    public void onLoadInit(Parent rootNode, Object... initArgs) {
         console = new Console(textArea, true);
     }
 

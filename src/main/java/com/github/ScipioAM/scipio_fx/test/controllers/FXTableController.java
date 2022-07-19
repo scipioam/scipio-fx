@@ -28,7 +28,7 @@ public class FXTableController extends BaseController {
     private final ObservableList<Person> tableData = FXCollections.observableArrayList();
 
     @Override
-    public void onLoadInit(Parent rootNode, Object initArg) {
+    public void onLoadInit(Parent rootNode, Object... initArgs) {
 //        setupTableView();
         setup_builder();
     }

@@ -36,13 +36,17 @@ public class FXMLView {
     /**
      * 显示界面
      */
-    public void show() {
+    public void show(Object... showArgs) {
         if (stage != null) {
-            controller.onShow(stage);
+            controller.onShow(stage, showArgs);
             stage.show();
         } else {
             System.err.println("Stage object is null while call FXMLView.show() !");
         }
+    }
+
+    public void show() {
+        show((Object[]) null);
     }
 
     /**

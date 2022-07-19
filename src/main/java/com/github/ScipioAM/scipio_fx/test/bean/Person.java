@@ -28,27 +28,27 @@ import java.util.List;
 @NoArgsConstructor
 public class Person implements Serializable, DBEntity {
 
-    @TableColumnBind(title = "ID", filtered = true, alignment = Pos.CENTER, compared = true)
+    @TableColumnBind(title = "ID", filtered = true, alignment = Pos.CENTER, compared = true, widthPercent = 0.2)
     private final IntegerProperty id = new SimpleIntegerProperty();
 
-    @TableColumnBind(title = "NAME", compared = true)
+    @TableColumnBind(title = "NAME", compared = true, widthPercent = 0.3)
     @TableColumnComparator(value = MFXPersonNameComparator.class, bindField = true)
     private final StringProperty name = new SimpleStringProperty();
 
 //    @TableColumnBind(title = "NICKNAME")
     private final StringProperty nickName = new SimpleStringProperty();
 
-    @TableColumnBind(title = "AGE", compared = true)
+    @TableColumnBind(title = "AGE", compared = true, widthPercent = 0.2)
     private final IntegerProperty age = new SimpleIntegerProperty();
 
-    @TableColumnBind(title = "GENDER")
+    @TableColumnBind(title = "GENDER", widthPercent = 0.1)
     private final StringProperty gender = new SimpleStringProperty();
 
 //    @TableColumnBind(title = "EM")
     private final StringProperty email = new SimpleStringProperty();
 
     @TableColumnTimeFormat(pattern = "yyyy.MM.dd")
-    @TableColumnBind(title = "BIRTHDAY")
+    @TableColumnBind(title = "BIRTHDAY", widthPercent = 0.2)
     @Getter @Setter
     private LocalDate birthday;
 
