@@ -27,7 +27,8 @@ public class ViewLoadOptions {
 
     private String title;
 
-    private Object initArgs;
+    @Setter(AccessLevel.NONE)
+    private Object[] initArgs;
 
     @Setter(AccessLevel.NONE)
     private StageStyle stageStyle;
@@ -83,6 +84,7 @@ public class ViewLoadOptions {
 
     /**
      * 是否需要构建Stage
+     *
      * @return true:需要
      */
     public boolean isNeedStage() {
@@ -97,6 +99,14 @@ public class ViewLoadOptions {
         Stage stage = StageUtil.buildStage(stageStyle, modality, container.getScene().getWindow(), view.getView(), title);
         view.setStage(stage);
         controller.setParentStage(stage);
+    }
+
+    public void setInitArgs(Object... initArgs) {
+        this.initArgs = initArgs;
+    }
+
+    public void setInitArg(Object initArg) {
+        this.initArgs = new Object[]{initArg};
     }
 
 }

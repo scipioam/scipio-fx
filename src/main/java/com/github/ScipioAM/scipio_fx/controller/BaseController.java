@@ -32,17 +32,18 @@ public abstract class BaseController implements Initializable {
      * controller初始化回调，晚于{@link #onCreate}
      *
      * @param rootNode 本view的根节点
-     * @param initArg  初始化时带的参数，可能为null
+     * @param initArgs 初始化时的自定义参数，可以为null
      */
-    public void onLoadInit(Parent rootNode, Object initArg) {
+    public void onLoadInit(Parent rootNode, Object... initArgs) {
     }
 
     /**
      * 显示时的回调
      *
      * @param thisStage 本界面所从属的stage
+     * @param showArgs  显示时的自定义参数，可以为努力了
      */
-    public void onShow(Stage thisStage) {
+    public void onShow(Stage thisStage, Object... showArgs) {
     }
 
     /**

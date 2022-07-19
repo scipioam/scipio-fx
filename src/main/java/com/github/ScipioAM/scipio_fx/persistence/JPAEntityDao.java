@@ -209,9 +209,17 @@ public class JPAEntityDao {
      * @return 受影响的行数
      */
     public <T extends DBEntity> int delete(Class<T> entityType, Where where) {
-        Query queryJpq = where.buildQuery("delete", entityManager, entityType.getSimpleName());
-        beforeDelete(entityType, queryJpq);
-        return queryJpq.executeUpdate();
+        EntityTransaction transaction = beginTransaction();
+        try {
+            Query queryJpq = where.buildQuery("delete", entityManager, entityType.getSimpleName());
+            beforeDelete(entityType, queryJpq);
+            int affectedRows = queryJpq.executeUpdate();
+            transaction.commit();
+            return affectedRows;
+        } catch (Exception e) {
+            transaction.rollback();
+            throw e;
+        }
     }
 
     /**
