@@ -101,12 +101,14 @@ public class ViewLoadOptions {
         controller.setParentStage(stage);
     }
 
-    public void setInitArgs(Object... initArgs) {
+    public ViewLoadOptions setInitArgs(Object... initArgs) {
         this.initArgs = initArgs;
+        return this;
     }
 
-    public void setInitArg(Object initArg) {
+    public ViewLoadOptions setInitArg(Object initArg) {
         this.initArgs = new Object[]{initArg};
+        return this;
     }
 
 }
