@@ -25,7 +25,7 @@ public class ComboBoxSupport extends OptionsSupport {
             StringConverter<T> converter = new StringConverter<>() {
                 @Override
                 public String toString(T object) {
-                    return displayFunc.apply(object);
+                    return object == null ? "" : displayFunc.apply(object);
                 }
 
                 @Override
