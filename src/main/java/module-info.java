@@ -1,4 +1,4 @@
-module com.github.scipio.scipio_fx {
+open module com.github.scipio.scipio_fx {
 
     requires org.controlsfx.controls;
     requires org.yaml.snakeyaml;
@@ -25,12 +25,6 @@ module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.combobox;
     exports com.github.ScipioAM.scipio_fx.combobox.mfx;
     exports com.github.ScipioAM.scipio_fx.persistence;
-
-    opens com.github.ScipioAM.scipio_fx.test.util;
-    opens com.github.ScipioAM.scipio_fx.test;
-    opens com.github.ScipioAM.scipio_fx.test.bean;
-    opens com.github.ScipioAM.scipio_fx.test.original;
-    opens com.github.ScipioAM.scipio_fx.test.controllers;
-    opens com.github.ScipioAM.scipio_fx.test.threads;
+    exports com.github.ScipioAM.scipio_fx.persistence.converter;
 
 }
