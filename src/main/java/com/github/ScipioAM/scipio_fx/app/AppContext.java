@@ -2,6 +2,7 @@ package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
+import com.github.ScipioAM.scipio_fx.search.SearchThread;
 import javafx.stage.Stage;
 
 import java.util.concurrent.ExecutorService;
@@ -28,12 +29,31 @@ public class AppContext {
 
     //====================================================================================================================================
 
+    /**
+     * 退出程序
+     *
+     * @param shutdownNow 是否立马关闭线程池
+     */
     public void exit(boolean shutdownNow) {
         appInstance.exit(shutdownNow);
     }
 
+    /**
+     * 退出程序
+     */
     public void exit() {
         appInstance.exit();
+    }
+
+    /**
+     * 执行搜索子线程
+     *
+     * @param searchThread 搜索子线程实例
+     */
+    public void submitSearchThread(SearchThread searchThread) {
+        if (searchThread != null) {
+            getThreadPool().submit(searchThread);
+        }
     }
 
     //====================================================================================================================================
