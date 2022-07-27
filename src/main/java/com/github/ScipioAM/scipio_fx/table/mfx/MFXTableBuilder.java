@@ -180,6 +180,16 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         return (MFXTableBuilder<T>) super.setReadSuperClassFields(readSuperClassFields);
     }
 
+    @Override
+    public MFXTableBuilder<T> setExcludeFields(Collection<String> excludeFields) {
+        return (MFXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    }
+
+    @Override
+    public MFXTableBuilder<T> setExcludeFields(String... excludeFields) {
+        return (MFXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    }
+
     /**
      * 手动添加过滤器
      */

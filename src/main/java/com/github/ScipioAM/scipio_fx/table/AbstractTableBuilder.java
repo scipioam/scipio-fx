@@ -9,10 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @since 2022/6/13
@@ -30,6 +27,8 @@ public abstract class AbstractTableBuilder<T> {
     protected boolean initEmptyData = false; //当数据源是空的时候，为其添加一行空数据后再删除，否则ui会出问题不更新数据源的变化
 
     protected boolean readSuperClassFields = false; //是否读取父类的@TableColumnBind注解
+
+    protected final Map<String, String> excludeFieldsCache = new HashMap<>(); //通过代码排除的列（字段名）
 
     /**
      * 构建tableView
@@ -66,6 +65,11 @@ public abstract class AbstractTableBuilder<T> {
         }
         Field[] fields = type.getDeclaredFields();
         for (Field field : fields) {
+            String fieldName = field.getName();
+            //排除指定的字段
+            if (excludeFieldsCache.size() > 0 && excludeFieldsCache.containsKey(fieldName)) {
+                continue;
+            }
             //字段信息
             TableColumnBind bindInfo = field.getAnnotation(TableColumnBind.class);
             if (bindInfo != null) {
@@ -118,6 +122,22 @@ public abstract class AbstractTableBuilder<T> {
             initEmptyData = (initData.size() == 0);
         }
         return this;
+    }
+
+    public AbstractTableBuilder<T> setExcludeFields(Collection<String> excludeFields) {
+        if(excludeFields == null || excludeFields.size() == 0) {
+            excludeFieldsCache.clear();
+        } else {
+            for(String excludeField : excludeFields) {
+                excludeFieldsCache.put(excludeField, null);
+            }
+        }
+        return this;
+    }
+
+    public AbstractTableBuilder<T> setExcludeFields(String... excludeFields) {
+        List<String> list = Arrays.asList(excludeFields);
+        return setExcludeFields(list);
     }
 
 }

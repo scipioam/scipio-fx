@@ -52,7 +52,7 @@ public class MainController extends BaseMainController {
     protected void onTest4BtnClick() {
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setTitle("Test4 MFX表格")
-                .setFxmlUrl(this.getClass(), "/views/table-mfx.fxml")
+                .setFxmlUrl(this.getClass(), "/test-views/table-mfx.fxml")
                 .defaultStageOptions(rootPane);
         FXMLView.loadAndShow(mfxTableTestView, options);
     }
@@ -61,7 +61,7 @@ public class MainController extends BaseMainController {
     protected void onTest5BtnClick() {
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setTitle("Test5 FX表格")
-                .setFxmlUrl(this.getClass(), "/views/table-fx.fxml")
+                .setFxmlUrl(this.getClass(), "/test-views/table-fx.fxml")
                 .defaultStageOptions(rootPane);
         FXMLView.loadAndShow(fxTableTestView, options);
     }
@@ -70,7 +70,7 @@ public class MainController extends BaseMainController {
     protected void onTest6BtnClick() {
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setTitle("Test6 输入组件")
-                .setFxmlUrl(this.getClass(), "/views/inputs-fx.fxml")
+                .setFxmlUrl(this.getClass(), "/test-views/inputs-fx.fxml")
                 .defaultStageOptions(rootPane);
         FXMLView.loadAndShow(fxInputsView, options);
     }
