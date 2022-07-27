@@ -165,6 +165,11 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
         return (FXTableBuilder<T>) super.setDataType(dataType);
     }
 
+    @Override
+    public FXTableBuilder<T> setReadSuperClassFields(boolean readSuperClassFields) {
+        return (FXTableBuilder<T>) super.setReadSuperClassFields(readSuperClassFields);
+    }
+
     /**
      * 设置列宽平均自适应
      */
