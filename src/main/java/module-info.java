@@ -25,6 +25,7 @@ module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.combobox;
     exports com.github.ScipioAM.scipio_fx.combobox.mfx;
     exports com.github.ScipioAM.scipio_fx.persistence;
+    exports com.github.ScipioAM.scipio_fx.persistence.converter;
 
 //    opens com.github.ScipioAM.scipio_fx.test.util;
 //    opens com.github.ScipioAM.scipio_fx.test;
