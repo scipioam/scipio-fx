@@ -29,11 +29,12 @@ public abstract class AppInitThread implements Runnable {
             application.setMainView(mainView);
 
             JFXApplication.context.setInitThreadFinished(true);
-            //初始化结束时（可能是显示主画面之前）的回调
-            onFinished(mainView, startTime);
 
             //显示主界面
             Platform.runLater(() -> application.showMainView()); //显示前后皆有回调
+
+            //初始化结束时的回调
+            onFinished(mainView, startTime);
 
         } catch (Exception e) {
             if (launchListener != null) {
