@@ -1,7 +1,7 @@
 # ScipioFX
 
 #### 介绍
-JavaFX轻量级框架
+JavaFX轻量级框架 (Java 17+)
 
 #### 使用说明
 
