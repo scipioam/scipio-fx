@@ -170,6 +170,16 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
         return (FXTableBuilder<T>) super.setReadSuperClassFields(readSuperClassFields);
     }
 
+    @Override
+    public FXTableBuilder<T> setExcludeFields(Collection<String> excludeFields) {
+        return (FXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    }
+
+    @Override
+    public FXTableBuilder<T> setExcludeFields(String... excludeFields) {
+        return (FXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    }
+
     /**
      * 设置列宽平均自适应
      */
@@ -177,4 +187,5 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
         this.resizePolicy = TableView.CONSTRAINED_RESIZE_POLICY;
         return this;
     }
+
 }
