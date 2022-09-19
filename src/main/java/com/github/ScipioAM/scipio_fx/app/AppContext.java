@@ -3,6 +3,7 @@ package com.github.ScipioAM.scipio_fx.app;
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.concurrent.ServicePool;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
+import javafx.concurrent.Service;
 import javafx.stage.Stage;
 
 import java.util.concurrent.Callable;
@@ -64,6 +65,14 @@ public class AppContext {
         } else {
             throw new IllegalArgumentException("task is null while submit java.util.concurrent.Callable type of task");
         }
+    }
+
+    public void startService(Class<?> serviceClass) {
+        servicePool.startService(serviceClass);
+    }
+
+    public void addService(Service<?> service) {
+        servicePool.addService(service);
     }
 
     //====================================================================================================================================
