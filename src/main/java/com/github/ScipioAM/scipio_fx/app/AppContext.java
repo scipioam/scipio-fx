@@ -1,11 +1,13 @@
 package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
+import com.github.ScipioAM.scipio_fx.concurrent.ServicePool;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
-import com.github.ScipioAM.scipio_fx.search.SearchThread;
 import javafx.stage.Stage;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * @author Alan Scipio
@@ -24,6 +26,8 @@ public class AppContext {
     private BaseController mainController;
 
     private ExecutorService threadPool;
+
+    private ServicePool servicePool = new ServicePool();
 
     private Boolean initThreadFinished = false;
 
@@ -46,13 +50,19 @@ public class AppContext {
     }
 
     /**
-     * 执行搜索子线程
-     *
-     * @param searchThread 搜索子线程实例
+     * 执行后台子线程
      */
-    public void submitSearchThread(SearchThread searchThread) {
-        if (searchThread != null) {
-            getThreadPool().submit(searchThread);
+    public void submitTask(Runnable task) {
+        if (task != null) {
+            getThreadPool().submit(task);
+        }
+    }
+
+    public <T> Future<T> submitTask(Callable<T> task) {
+        if (task != null) {
+            return getThreadPool().submit(task);
+        } else {
+            throw new IllegalArgumentException("task is null while submit java.util.concurrent.Callable type of task");
         }
     }
 
@@ -113,4 +123,13 @@ public class AppContext {
     protected void setInitThreadFinished(Boolean initThreadFinished) {
         this.initThreadFinished = initThreadFinished;
     }
+
+    public ServicePool getServicePool() {
+        return servicePool;
+    }
+
+    protected void setServicePool(ServicePool servicePool) {
+        this.servicePool = servicePool;
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.search;
+package com.github.ScipioAM.scipio_fx.concurrent;
 
 /**
  * 搜索失败的监回调
@@ -14,7 +14,7 @@ public interface SearchErrorListener {
      * @param exception  异常处理
      * @param searchImpl 搜索的实现实例
      */
-    void onError(Throwable exception, SearchImplementation searchImpl);
+    void onError(Throwable exception, SearchImplementation<?> searchImpl);
 
     SearchErrorListener PRINTER = (e, searchImpl) -> e.printStackTrace();
 

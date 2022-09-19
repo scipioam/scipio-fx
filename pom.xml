@@ -44,9 +44,10 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <!-- ================= 基本 ================= -->
-        <javafx.version>17.0.2</javafx.version>
+        <javafx.version>18.0.2</javafx.version>
         <junit.version>5.9.0</junit.version>
         <lombok.version>1.18.24</lombok.version>
+        <slf4j.version>1.7.36</slf4j.version>
 
         <!-- ================= UI库 ================= -->
         <controlsfx.version>11.1.1</controlsfx.version>
@@ -90,7 +91,14 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+            <optional>true</optional>
             <scope>provided</scope>
+        </dependency>
+        <!-- Slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <!-- ===================================== UI库 ===================================== -->
         <!-- ControlsFX -->
@@ -119,6 +127,7 @@
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>${jpa.api.version}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

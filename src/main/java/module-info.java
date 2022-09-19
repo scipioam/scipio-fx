@@ -2,6 +2,7 @@ open module com.github.scipio.scipio_fx {
 
     requires org.controlsfx.controls;
     requires org.yaml.snakeyaml;
+    requires org.slf4j;
 
     requires transitive javafx.controls;
     requires transitive javafx.fxml;
@@ -26,6 +27,6 @@ open module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.combobox.mfx;
     exports com.github.ScipioAM.scipio_fx.persistence;
     exports com.github.ScipioAM.scipio_fx.persistence.converter;
-    exports com.github.ScipioAM.scipio_fx.search;
+    exports com.github.ScipioAM.scipio_fx.concurrent;
 
 }

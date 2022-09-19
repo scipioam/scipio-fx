@@ -49,16 +49,16 @@ public class MFXDialogHelper {
         return showInfo(headerText, contentText, Language.EN, null);
     }
 
-    public static MFXDialog showWarn(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
+    public static MFXDialog showWarning(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
         return showDialog(MFXDialogType.WARN, headerText, contentText, language, okBtnAction);
     }
 
-    public static MFXDialog showWarn(String headerText, String contentText, Language language) {
-        return showWarn(headerText, contentText, language, null);
+    public static MFXDialog showWarning(String headerText, String contentText, Language language) {
+        return showWarning(headerText, contentText, language, null);
     }
 
-    public static MFXDialog showWarn(String headerText, String contentText) {
-        return showWarn(headerText, contentText, Language.EN, null);
+    public static MFXDialog showWarning(String headerText, String contentText) {
+        return showWarning(headerText, contentText, Language.EN, null);
     }
 
     public static MFXDialog showError(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {

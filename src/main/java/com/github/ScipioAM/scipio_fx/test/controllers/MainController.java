@@ -4,7 +4,9 @@ import com.github.ScipioAM.scipio_fx.constant.AppViewId;
 import com.github.ScipioAM.scipio_fx.constant.Language;
 import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import com.github.ScipioAM.scipio_fx.dialog.mfx.MFXDialogHelper;
+import com.github.ScipioAM.scipio_fx.test.TestApplication;
 import com.github.ScipioAM.scipio_fx.test.original.TestMFXNotification;
+import com.github.ScipioAM.scipio_fx.test.threads.ConsoleTask;
 import com.github.ScipioAM.scipio_fx.view.Console;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.ViewLoadOptions;
@@ -25,6 +27,7 @@ public class MainController extends BaseMainController {
     private TextArea textArea;
 
     private Console console;
+    private ConsoleTask consoleTask = null;
 
     @Override
     public void onLoadInit(Parent rootNode, Object... initArgs) {
@@ -32,24 +35,24 @@ public class MainController extends BaseMainController {
     }
 
     @FXML
-    protected void onTest1BtnClick() {
+    private void onTest1BtnClick() {
         console.clear();
 //        console.output(RandomUtil.getString(5));
     }
 
     @FXML
-    protected void onTest2BtnClick() {
+    private void onTest2BtnClick() {
 //        TestMFXDialog.showDialog(rootPane, "content text");
         MFXDialogHelper.showInfo("Header", "This is a content", Language.CN);
     }
 
     @FXML
-    protected void onTest3BtnClick() {
+    private void onTest3BtnClick() {
         TestMFXNotification.show(parentStage);
     }
 
     @FXML
-    protected void onTest4BtnClick() {
+    private void onTest4BtnClick() {
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setTitle("Test4 MFX表格")
                 .setFxmlUrl(this.getClass(), "/test-views/table-mfx.fxml")
@@ -58,7 +61,7 @@ public class MainController extends BaseMainController {
     }
 
     @FXML
-    protected void onTest5BtnClick() {
+    private void onTest5BtnClick() {
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setTitle("Test5 FX表格")
                 .setFxmlUrl(this.getClass(), "/test-views/table-fx.fxml")
@@ -67,12 +70,41 @@ public class MainController extends BaseMainController {
     }
 
     @FXML
-    protected void onTest6BtnClick() {
+    private void onTest6BtnClick() {
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setTitle("Test6 输入组件")
                 .setFxmlUrl(this.getClass(), "/test-views/inputs-fx.fxml")
                 .defaultStageOptions(rootPane);
         FXMLView.loadAndShow(fxInputsView, options);
+    }
+
+    @FXML
+    private void onTest7BtnClick() {
+        consoleTask = new ConsoleTask(console);
+//        consoleTask.setOnSucceeded(event -> console.output("OnSucceeded")); //会报错: A bound value cannot be set
+        consoleTask.setSucceedListener(ctx -> ctx.updateUiMessage("执行成功"));
+        consoleTask.setCanceledListener(ctx -> System.out.println("ConsoleTask has been canceled"));
+        TestApplication.context.submitTask(consoleTask);
+    }
+
+    @FXML
+    private void onTest72BtnClick() {
+        try {
+            if (consoleTask != null) {
+                String taskResult = consoleTask.getTaskResult();
+                System.out.println("获取consoleTask的执行结果(FutureTask)：[" + taskResult + "]");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onTest73BtnClick() {
+        if (consoleTask != null) {
+            boolean cancelResult = consoleTask.cancel();
+            System.out.println("已取消consoleTask，取消结果：" + cancelResult);
+        }
     }
 
     @Override

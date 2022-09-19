@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
 <StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="com.github.ScipioAM.scipio_fx.test.controllers.MainController">
     <VBox alignment="CENTER" prefHeight="600" prefWidth="800" spacing="10.0">
         <padding>
@@ -19,5 +20,10 @@
         <Button onAction="#onTest4BtnClick" text="Test4___MFXTableView" />
         <Button onAction="#onTest5BtnClick" text="Test5___FXTableView" />
         <Button onAction="#onTest6BtnClick" text="Test6___FX输入组件" />
+        <HBox spacing="10.0" alignment="CENTER">
+            <Button onAction="#onTest7BtnClick" text="Test7.1___启动后台子线程" />
+            <Button onAction="#onTest72BtnClick" text="Test7.2___后台子线程操作" />
+            <Button onAction="#onTest73BtnClick" text="Test7.3___取消后台子线程" />
+        </HBox>
     </VBox>
 </StackPane>

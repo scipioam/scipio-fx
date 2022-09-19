@@ -1,0 +1,64 @@
+package com.github.ScipioAM.scipio_fx.concurrent;
+
+import javafx.application.Platform;
+
+import java.util.List;
+
+/**
+ * 搜索子线程。用于避免耗时的搜索操作阻塞住UI线程
+ *
+ * @param <T> 搜索的数据类型
+ * @since 2022/7/27
+ */
+public class SearchTask<T> extends AppAbstractTask<List<T>> implements AppBackgroundThread<List<T>> {
+
+    private final SearchImplementation<T> searchImpl;
+    private final SearchFinishListener<T> finishListener;
+    private final SearchErrorListener errorListener;
+
+    public SearchTask(SearchImplementation<T> searchImpl, SearchFinishListener<T> finishListener, SearchErrorListener errorListener) {
+        this.searchImpl = searchImpl;
+        this.finishListener = finishListener;
+        this.errorListener = errorListener;
+    }
+
+    public SearchTask(SearchImplementation<T> searchImpl, SearchFinishListener<T> finishListener) {
+        this(searchImpl, finishListener, SearchErrorListener.PRINTER);
+    }
+
+    @Override
+    public List<T> doCall() {
+        //执行搜索
+        List<T> data = null;
+        try {
+            data = searchImpl.doSearch();
+        } catch (Exception e) {
+            errorListener.onError(e, searchImpl);
+        }
+        //搜索完成后的数据回显
+        final List<T> finalData = data;
+        Platform.runLater(() -> finishListener.searchFinished(finalData));
+        return data;
+    }
+
+    @Override
+    public SearchTask<T> setUiMessage(String uiMessage) {
+        return (SearchTask<T>) super.setUiMessage(uiMessage);
+    }
+
+    @Override
+    public SearchTask<T> setUiProgress(double uiProgress) {
+        return (SearchTask<T>) super.setUiProgress(uiProgress);
+    }
+
+    @Override
+    public SearchTask<T> setUiTitle(String uiTitle) {
+        return (SearchTask<T>) super.setUiTitle(uiTitle);
+    }
+
+    @Override
+    public SearchTask<T> setUiValue(List<T> uiValue) {
+        return (SearchTask<T>) super.setUiValue(uiValue);
+    }
+
+}
