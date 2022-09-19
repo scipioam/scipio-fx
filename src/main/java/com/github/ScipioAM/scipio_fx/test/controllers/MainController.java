@@ -5,7 +5,7 @@ import com.github.ScipioAM.scipio_fx.constant.Language;
 import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import com.github.ScipioAM.scipio_fx.dialog.mfx.MFXDialogHelper;
 import com.github.ScipioAM.scipio_fx.test.TestApplication;
-import com.github.ScipioAM.scipio_fx.test.original.TestMFXNotification;
+import com.github.ScipioAM.scipio_fx.test.original.TestNotification;
 import com.github.ScipioAM.scipio_fx.test.threads.ConsoleTask;
 import com.github.ScipioAM.scipio_fx.view.Console;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
@@ -48,7 +48,12 @@ public class MainController extends BaseMainController {
 
     @FXML
     private void onTest3BtnClick() {
-        TestMFXNotification.show(parentStage);
+        TestNotification.showMFX(parentStage);
+    }
+
+    @FXML
+    private void onTest32BtnClick() {
+        TestNotification.showControlsFX();
     }
 
     @FXML

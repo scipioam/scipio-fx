@@ -16,7 +16,10 @@
         <TextArea fx:id="textArea" prefWidth="300.0" prefHeight="150.0" />
         <Button onAction="#onTest1BtnClick" text="Test1___清空console" />
         <Button onAction="#onTest2BtnClick" text="Test2___MFX对话框" />
-        <Button onAction="#onTest3BtnClick" text="Test3___MFXNotification" />
+        <HBox spacing="10.0" alignment="CENTER">
+            <Button onAction="#onTest3BtnClick" text="Test3.1___MFXNotification" />
+            <Button onAction="#onTest32BtnClick" text="Test3.2___ControlsFX Notification" />
+        </HBox>
         <Button onAction="#onTest4BtnClick" text="Test4___MFXTableView" />
         <Button onAction="#onTest5BtnClick" text="Test5___FXTableView" />
         <Button onAction="#onTest6BtnClick" text="Test6___FX输入组件" />
