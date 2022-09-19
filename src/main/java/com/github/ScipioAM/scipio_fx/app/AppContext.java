@@ -71,6 +71,10 @@ public class AppContext {
         servicePool.startService(serviceClass);
     }
 
+    public Service<?> getService(Class<?> serviceClass) {
+        return servicePool.getService(serviceClass);
+    }
+
     public void addService(Service<?> service) {
         servicePool.addService(service);
     }
