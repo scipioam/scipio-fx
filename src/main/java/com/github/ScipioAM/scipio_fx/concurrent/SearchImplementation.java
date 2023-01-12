@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.search;
+package com.github.ScipioAM.scipio_fx.concurrent;
 
 import java.util.List;
 
@@ -8,13 +8,13 @@ import java.util.List;
  * @since 2022/7/27
  */
 @FunctionalInterface
-public interface SearchImplementation {
+public interface SearchImplementation<T> {
 
     /**
      * 搜索的具体实现
      *
      * @return 搜索到的数据
      */
-    List<?> doSearch();
+    List<T> doSearch();
 
 }

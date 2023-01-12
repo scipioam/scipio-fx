@@ -85,7 +85,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         threadPool = Executors.newCachedThreadPool();
         context.setThreadPool(threadPool);
         //准备config对象
-        config = ApplicationConfig.build(thisClass);
+        config = buildNewConfigInstance(thisClass);
         if (this.getClass() == thisClass) {
             config.setAppInstance(this);
         }

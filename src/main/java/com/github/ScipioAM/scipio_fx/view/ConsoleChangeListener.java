@@ -46,7 +46,10 @@ class ConsoleChangeListener implements ChangeListener<String> {
                 inputListener.onInput(textArea, trueLine);
             }
             //确定显示
-            textArea.setText(newValue + console.getPrefix(lineList.size()));
+            if (!textArea.textProperty().isBound()) {
+                //避免被task绑定后还set(会报错)
+                textArea.setText(newValue + console.getPrefix(lineList.size()));
+            }
         }
     }
 
