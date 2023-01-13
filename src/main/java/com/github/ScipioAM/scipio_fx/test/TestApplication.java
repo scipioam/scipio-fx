@@ -1,6 +1,5 @@
 package com.github.ScipioAM.scipio_fx.test;
 
-import com.github.ScipioAM.scipio_fx.app.config.AppConfigBean;
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.app.JFXApplication;
@@ -42,7 +41,7 @@ public class TestApplication extends JFXApplication implements LaunchListener, C
 
 
     @Override
-    public void afterLoad(Yaml yaml, AppConfigBean bean, ApplicationConfig config) {
+    public void afterLoad(Yaml yaml, ApplicationConfig config) {
         System.out.println("read config from: " + config.configFileName());
     }
 
