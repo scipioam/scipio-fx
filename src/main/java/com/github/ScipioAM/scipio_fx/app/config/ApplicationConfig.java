@@ -46,10 +46,10 @@ public class ApplicationConfig extends BaseConfigBean {
     private transient URL splashImgUrl;
 
     private String launchListener;
-    private transient LaunchListener launchListenerObj;
+    private transient LaunchListener llObj;
 
     private String initThread;
-    private transient AppInitThread initThreadObj;
+    private transient AppInitThread itObj;
 
     private MainViewBean mainView = new MainViewBean();
 
@@ -203,22 +203,26 @@ public class ApplicationConfig extends BaseConfigBean {
 
     //==============================================================================================================================
 
-    public String getMainViewPath() {
-        return mainView.getPath();
+    public String getLaunchListener() {
+        return launchListener;
     }
 
-    public LaunchListener getLaunchListener() {
-        if (launchListenerObj == null && StringUtils.isNotNull(launchListener)) {
+    public void setLaunchListener(String launchListener) {
+        this.launchListener = launchListener;
+    }
+
+    public LaunchListener getLaunchListenerObj() {
+        if (llObj == null && StringUtils.isNotNull(launchListener)) {
             try {
-                launchListenerObj = (LaunchListener) buildInstance(LaunchListener.class, launchListener);
+                llObj = (LaunchListener) buildInstance(LaunchListener.class, launchListener);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
         }
 
-        if (launchListenerObj != null) {
-            return launchListenerObj;
+        if (llObj != null) {
+            return llObj;
         } else if (appInstance != null) {
             return appInstance.bindLaunchListener();
         } else {
@@ -226,22 +230,35 @@ public class ApplicationConfig extends BaseConfigBean {
         }
     }
 
-    public void setLaunchListener(LaunchListener launchListener) {
-        setLaunchListenerObj(launchListener);
+    public String getInitThread() {
+        return initThread;
     }
 
-    public AppInitThread getInitThread() {
-        if (initThreadObj == null && StringUtils.isNotNull(initThread)) {
+    public void setInitThread(String initThread) {
+        this.initThread = initThread;
+    }
+
+    public void setLaunchListenerObj(LaunchListener launchListenerObj) {
+        this.llObj = launchListenerObj;
+        if (launchListenerObj != null) {
+            launchListener = launchListenerObj.getClass().getName();
+        } else {
+            launchListener = null;
+        }
+    }
+
+    public AppInitThread getInitThreadObj() {
+        if (itObj == null && StringUtils.isNotNull(initThread)) {
             try {
-                initThreadObj = (AppInitThread) buildInstance(AppInitThread.class, initThread);
+                itObj = (AppInitThread) buildInstance(AppInitThread.class, initThread);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
         }
 
-        if (initThreadObj != null) {
-            return initThreadObj;
+        if (itObj != null) {
+            return itObj;
         } else if (appInstance != null) {
             return appInstance.bindInitThread();
         } else {
@@ -249,12 +266,17 @@ public class ApplicationConfig extends BaseConfigBean {
         }
     }
 
-    public AppInitThread getInitThreadDirectly() {
-        return getInitThreadObjDirectly();
+    public void setInitThreadObj(AppInitThread initThreadObj) {
+        this.itObj = initThreadObj;
+        if (initThreadObj != null) {
+            initThread = initThreadObj.getClass().getName();
+        } else {
+            initThread = null;
+        }
     }
 
-    public void setInitThread(AppInitThread initThread) {
-        setInitThreadObj(initThread);
+    public String getMainViewPath() {
+        return mainView.getPath();
     }
 
     public StageStyle getMainStageStyle() {
@@ -297,40 +319,6 @@ public class ApplicationConfig extends BaseConfigBean {
             splashImgUrl = resolveUrl(splashImgPath, appClass, "splashImgUrl", false);
         }
         return splashImgUrl;
-    }
-
-    public void setLaunchListenerObj(LaunchListener launchListenerObj) {
-        this.launchListenerObj = launchListenerObj;
-        if (launchListenerObj != null) {
-            launchListener = launchListenerObj.getClass().getName();
-        } else {
-            launchListener = null;
-        }
-    }
-
-    public AppInitThread getInitThreadObj() {
-        if(initThreadObj == null && StringUtils.isNotNull(initThread)) {
-            try {
-                initThreadObj = (AppInitThread) buildInstance(AppInitThread.class, initThread);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-        return initThreadObj;
-    }
-
-    public AppInitThread getInitThreadObjDirectly() {
-        return initThreadObj;
-    }
-
-    public void setInitThreadObj(AppInitThread initThreadObj) {
-        this.initThreadObj = initThreadObj;
-        if (initThreadObj != null) {
-            initThread = initThreadObj.getClass().getName();
-        } else {
-            initThread = null;
-        }
     }
 
     public String getStageStyle() {
@@ -421,18 +409,6 @@ public class ApplicationConfig extends BaseConfigBean {
 
     public void setSplashImgUrl(URL splashImgUrl) {
         this.splashImgUrl = splashImgUrl;
-    }
-
-    public void setLaunchListener(String launchListener) {
-        this.launchListener = launchListener;
-    }
-
-    public LaunchListener getLaunchListenerObj() {
-        return launchListenerObj;
-    }
-
-    public void setInitThread(String initThread) {
-        this.initThread = initThread;
     }
 
     public MainViewBean getMainView() {

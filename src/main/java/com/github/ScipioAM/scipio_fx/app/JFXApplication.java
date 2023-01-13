@@ -101,8 +101,9 @@ public abstract class JFXApplication extends Application implements ApplicationI
             context.setRootConfig(rootConfig);
             context.setAppConfig(config);
         } catch (Exception e) {
-            if (config.getLaunchListener() != null) {
-                config.getLaunchListener().onLaunchError(this, e);
+            LaunchListener launchListener = config.getLaunchListenerObj();
+            if (launchListener != null) {
+                launchListener.onLaunchError(this, e);
             }
         }
     }
@@ -176,14 +177,15 @@ public abstract class JFXApplication extends Application implements ApplicationI
                 showMainView();
             }
             //启动初始化的子线程
-            AppInitThread initThread = config.getInitThread();
+            AppInitThread initThread = config.getInitThreadObj();
             if (initThread != null) {
-                initThread.setApplication(this).setLaunchListener(config.getLaunchListener());
+                initThread.setApplication(this).setLaunchListener(config.getLaunchListenerObj());
                 threadPool.submit(initThread);
             }
         } catch (Exception e) {
-            if (config.getLaunchListener() != null) {
-                config.getLaunchListener().onLaunchError(this, e);
+            LaunchListener launchListener = config.getLaunchListenerObj();
+            if (launchListener != null) {
+                launchListener.onLaunchError(this, e);
             }
             throw e;
         }
@@ -279,11 +281,12 @@ public abstract class JFXApplication extends Application implements ApplicationI
      */
     protected void showMainView() {
         Scene mainScene;
+        LaunchListener launchListener = config.getLaunchListenerObj();
         if (mainStage.isShowing()) {
             //不显示splash，当即调用了一遍showMainView()，但是InitThread又调用了一遍showMainView()
             mainScene = mainStage.getScene();
-            if (config.getLaunchListener() != null && config.getInitThreadDirectly() != null) {
-                config.getLaunchListener().onFinishInit(this, mainView, mainScene);
+            if (launchListener != null && config.getInitThreadObj() != null) {
+                launchListener.onFinishInit(this, mainView, mainScene);
             }
             return;
         } else {
@@ -304,13 +307,13 @@ public abstract class JFXApplication extends Application implements ApplicationI
         //主窗口关闭时，必然调用exit方法
         mainStage.setOnCloseRequest(windowsEvent -> exit(false));
         //完成初始化后(显示主界面之前)的回调
-        if (config.getLaunchListener() != null && config.getInitThreadDirectly() == null) {
-            config.getLaunchListener().onFinishInit(this, mainView, mainScene);
+        if (launchListener != null && config.getInitThreadObj() == null) {
+            launchListener.onFinishInit(this, mainView, mainScene);
         }
         mainStage.show();
         //显示主界面后的回调
-        if (config.getLaunchListener() != null) {
-            config.getLaunchListener().afterShowMainView(this, mainView);
+        if (launchListener != null) {
+            launchListener.afterShowMainView(this, mainView);
         }
     }
 

@@ -29,5 +29,5 @@ app:
   # custom config definition
   #custom:
 
-#测试自定义配置项
+#custom root config property for test
 testA: asd
