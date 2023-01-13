@@ -1,6 +1,7 @@
 package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
+import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
 import com.github.ScipioAM.scipio_fx.concurrent.ServicePool;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import javafx.concurrent.Service;
@@ -15,6 +16,8 @@ import java.util.concurrent.Future;
  * @since 2022/6/23
  */
 public class AppContext {
+
+    private RootConfig rootConfig;
 
     private ApplicationConfig appConfig;
 
@@ -143,6 +146,19 @@ public class AppContext {
 
     protected void setServicePool(ServicePool servicePool) {
         this.servicePool = servicePool;
+    }
+
+    public RootConfig getRootConfig() {
+        return rootConfig;
+    }
+
+    public void setRootConfig(RootConfig rootConfig) {
+        this.rootConfig = rootConfig;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends RootConfig> T getTrueRootConfig() {
+        return (T) rootConfig;
     }
 
 }

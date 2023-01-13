@@ -1,6 +1,6 @@
 package com.github.ScipioAM.scipio_fx.app;
 
-import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfigWrapper;
+import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
@@ -29,7 +29,7 @@ public interface ApplicationInterface {
     URL splashImgUrl();
 
     default ApplicationConfig buildNewConfigInstance(Class<? extends JFXApplication> thisClass) {
-        return ApplicationConfig.build(ApplicationConfigWrapper.class, thisClass);
+        return ApplicationConfig.build(RootConfig.class, thisClass);
     }
 
     default ConfigLoadListener configLoadListener() {

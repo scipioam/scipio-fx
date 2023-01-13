@@ -1,7 +1,7 @@
 package com.github.ScipioAM.scipio_fx.test;
 
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
-import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfigWrapper;
+import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
 import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.app.JFXApplication;
 import com.github.ScipioAM.scipio_fx.app.LaunchListener;
@@ -42,7 +42,7 @@ public class TestApplication extends JFXApplication implements LaunchListener, C
 
 
     @Override
-    public void afterLoad(Yaml yaml, ApplicationConfigWrapper wrapper, ApplicationConfig config) {
+    public void afterLoad(Yaml yaml, RootConfig wrapper, ApplicationConfig config) {
         System.out.println("read config from: " + config.configFileName());
     }
 
