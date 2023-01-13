@@ -24,10 +24,9 @@ public interface ConfigLoadListener {
      * 加载后的回调
      *
      * @param yaml   读取器
-     * @param bean   读取的数据
      * @param config 实例对象
      */
-    default void afterLoad(Yaml yaml, AppConfigBean bean, ApplicationConfig config) {
+    default void afterLoad(Yaml yaml, ApplicationConfig config) {
     }
 
 }
