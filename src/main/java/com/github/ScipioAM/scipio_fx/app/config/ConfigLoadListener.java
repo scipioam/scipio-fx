@@ -23,10 +23,11 @@ public interface ConfigLoadListener {
     /**
      * 加载后的回调
      *
-     * @param yaml   读取器
-     * @param config 实例对象
+     * @param yaml    读取器
+     * @param wrapper 外包装
+     * @param config  实例对象
      */
-    default void afterLoad(Yaml yaml, ApplicationConfig config) {
+    default void afterLoad(Yaml yaml, ApplicationConfigWrapper wrapper, ApplicationConfig config) {
     }
 
 }

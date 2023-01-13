@@ -96,12 +96,13 @@ public class ApplicationConfig extends BaseConfigBean {
 
         //加载配置文件
         ApplicationConfig loadedBean;
+        ApplicationConfigWrapper wrapper;
         try {
             if (wrapperClass == null) {
                 wrapperClass = ApplicationConfigWrapper.class;
             }
             InputStream in = appClass.getResourceAsStream(configFileName());
-            ApplicationConfigWrapper wrapper = yaml.loadAs(in, wrapperClass);
+            wrapper = yaml.loadAs(in, wrapperClass);
             loadedBean = wrapper.getApp();
             if (loadedBean == null) {
                 throw new ConfigLoadException("load config failed, loadConfig object is null");
@@ -146,7 +147,7 @@ public class ApplicationConfig extends BaseConfigBean {
 
         //加载后的回调
         if (loadListener != null) {
-            loadListener.afterLoad(yaml, this);
+            loadListener.afterLoad(yaml, wrapper, this);
         }
         return this;
     }
