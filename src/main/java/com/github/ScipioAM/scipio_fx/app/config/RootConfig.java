@@ -3,7 +3,7 @@ package com.github.ScipioAM.scipio_fx.app.config;
 /**
  * @since 2022/6/23
  */
-public class ApplicationConfigWrapper {
+public class RootConfig {
 
     protected ApplicationConfig app;
 

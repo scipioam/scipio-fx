@@ -2,6 +2,7 @@ package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
+import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.FXMLViewLoader;
@@ -96,13 +97,14 @@ public abstract class JFXApplication extends Application implements ApplicationI
         }
         //加载配置
         try {
-            config.loadConfig();
+            RootConfig rootConfig = config.loadConfig();
+            context.setRootConfig(rootConfig);
+            context.setAppConfig(config);
         } catch (Exception e) {
             if (config.getLaunchListener() != null) {
                 config.getLaunchListener().onLaunchError(this, e);
             }
         }
-        context.setAppConfig(config);
     }
 
     //=========================================== ↓↓↓↓↓↓ 启动入口API ↓↓↓↓↓↓ ===========================================

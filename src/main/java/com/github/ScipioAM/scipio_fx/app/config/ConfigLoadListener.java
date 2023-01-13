@@ -27,7 +27,7 @@ public interface ConfigLoadListener {
      * @param wrapper 外包装
      * @param config  实例对象
      */
-    default void afterLoad(Yaml yaml, ApplicationConfigWrapper wrapper, ApplicationConfig config) {
+    default void afterLoad(Yaml yaml, RootConfig wrapper, ApplicationConfig config) {
     }
 
 }

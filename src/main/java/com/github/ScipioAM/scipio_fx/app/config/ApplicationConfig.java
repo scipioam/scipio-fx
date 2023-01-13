@@ -23,7 +23,7 @@ public class ApplicationConfig extends BaseConfigBean {
 
     public final static String DEFAULT_SPLASH_IMG_PATH = "/img/splash.gif";
 
-    private transient Class<? extends ApplicationConfigWrapper> wrapperClass;
+    private transient Class<? extends RootConfig> rootConfigClass;
 
     private transient Class<? extends JFXApplication> appClass;
     private transient JFXApplication appInstance;
@@ -57,13 +57,13 @@ public class ApplicationConfig extends BaseConfigBean {
 
     //==============================================================================================================================
 
-    public static ApplicationConfig build(Class<? extends ApplicationConfigWrapper> wrapperClass) {
+    public static ApplicationConfig build(Class<? extends RootConfig> wrapperClass) {
         ApplicationConfig instance = new ApplicationConfig();
-        instance.setWrapperClass(wrapperClass);
+        instance.setRootConfigClass(wrapperClass);
         return instance;
     }
 
-    public static ApplicationConfig build(Class<? extends ApplicationConfigWrapper> wrapperClass, Class<? extends JFXApplication> appClass) {
+    public static ApplicationConfig build(Class<? extends RootConfig> wrapperClass, Class<? extends JFXApplication> appClass) {
         ApplicationConfig instance = build(wrapperClass);
         instance.setAppClass(appClass);
         return instance;
@@ -81,29 +81,31 @@ public class ApplicationConfig extends BaseConfigBean {
      * @throws InstantiationException    反射构建启动监听器的实例失败
      * @throws IllegalAccessException    反射构建启动监听器的实例失败
      */
-    public ApplicationConfig loadConfig(Class<? extends JFXApplication> appClass) throws Exception {
+    public RootConfig loadConfig(Class<? extends JFXApplication> appClass) throws Exception {
         if (appInstance == null) {
             appInstance = appClass.getDeclaredConstructor().newInstance();
         }
 
         Yaml yaml = new Yaml();
+        RootConfig newRoot = new RootConfig();
+        newRoot.setApp(this);
         //加载前的回调，此方法可整体替换原本的加载逻辑
         if (loadListener != null) {
             if (!loadListener.onLoad(yaml, this)) {
-                return this;
+                return newRoot;
             }
         }
 
         //加载配置文件
         ApplicationConfig loadedBean;
-        ApplicationConfigWrapper wrapper;
+        RootConfig rootConfig;
         try {
-            if (wrapperClass == null) {
-                wrapperClass = ApplicationConfigWrapper.class;
+            if (rootConfigClass == null) {
+                rootConfigClass = RootConfig.class;
             }
             InputStream in = appClass.getResourceAsStream(configFileName());
-            wrapper = yaml.loadAs(in, wrapperClass);
-            loadedBean = wrapper.getApp();
+            rootConfig = yaml.loadAs(in, rootConfigClass);
+            loadedBean = rootConfig.getApp();
             if (loadedBean == null) {
                 throw new ConfigLoadException("load config failed, loadConfig object is null");
             }
@@ -147,12 +149,13 @@ public class ApplicationConfig extends BaseConfigBean {
 
         //加载后的回调
         if (loadListener != null) {
-            loadListener.afterLoad(yaml, wrapper, this);
+            loadListener.afterLoad(yaml, newRoot, this);
         }
-        return this;
+
+        return newRoot;
     }
 
-    public ApplicationConfig loadConfig() throws Exception {
+    public RootConfig loadConfig() throws Exception {
         if (appClass != null) {
             return loadConfig(appClass);
         } else if (appInstance != null) {
@@ -420,11 +423,12 @@ public class ApplicationConfig extends BaseConfigBean {
         this.custom = custom;
     }
 
-    public Class<? extends ApplicationConfigWrapper> getWrapperClass() {
-        return wrapperClass;
+    public Class<? extends RootConfig> getRootConfigClass() {
+        return rootConfigClass;
     }
 
-    public void setWrapperClass(Class<? extends ApplicationConfigWrapper> wrapperClass) {
-        this.wrapperClass = wrapperClass;
+    public void setRootConfigClass(Class<? extends RootConfig> rootConfigClass) {
+        this.rootConfigClass = rootConfigClass;
     }
+
 }
