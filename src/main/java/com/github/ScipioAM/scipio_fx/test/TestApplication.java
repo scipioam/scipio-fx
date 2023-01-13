@@ -38,12 +38,19 @@ public class TestApplication extends JFXApplication implements LaunchListener, C
         return this;
     }
 
+    @Override
+    public ApplicationConfig buildNewConfigInstance(Class<? extends JFXApplication> thisClass) {
+        return ApplicationConfig.build(TestRootConfig.class, thisClass);
+    }
+
     //==============================================================================================================================
 
 
     @Override
-    public void afterLoad(Yaml yaml, RootConfig wrapper, ApplicationConfig config) {
+    public void afterLoad(Yaml yaml, RootConfig rootConfig, ApplicationConfig config) {
         System.out.println("read config from: " + config.configFileName());
+        TestRootConfig testRootConfig = (TestRootConfig) rootConfig;
+        System.out.println(testRootConfig.getTestA());
     }
 
     @Override

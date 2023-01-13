@@ -87,35 +87,52 @@ public class ApplicationConfig extends BaseConfigBean {
         }
 
         Yaml yaml = new Yaml();
-        RootConfig newRoot = new RootConfig();
-        newRoot.setApp(this);
+        RootConfig rootConfig;
         //加载前的回调，此方法可整体替换原本的加载逻辑
         if (loadListener != null) {
             if (!loadListener.onLoad(yaml, this)) {
-                return newRoot;
+                if (rootConfigClass != null) {
+                    try {
+                        rootConfig = rootConfigClass.getDeclaredConstructor().newInstance();
+                        rootConfig.setApp(this);
+                        return rootConfig;
+                    } catch (Exception e) {
+                        return null;
+                    }
+                } else {
+                    rootConfig = new RootConfig();
+                    rootConfig.setApp(this);
+                    return rootConfig;
+                }
             }
         }
 
         //加载配置文件
-        ApplicationConfig loadedBean;
-        RootConfig rootConfig;
+        ApplicationConfig loadedAppBean;
         try {
             if (rootConfigClass == null) {
                 rootConfigClass = RootConfig.class;
             }
             InputStream in = appClass.getResourceAsStream(configFileName());
             rootConfig = yaml.loadAs(in, rootConfigClass);
-            loadedBean = rootConfig.getApp();
-            if (loadedBean == null) {
+            loadedAppBean = rootConfig.getApp();
+            rootConfig.setApp(this);
+            if (loadedAppBean == null) {
                 throw new ConfigLoadException("load config failed, loadConfig object is null");
             }
         } catch (Exception e) {
             throw new ConfigLoadException("Got exception while Read config file [" + configFileName() + "], " + e, e);
         }
 
+        setVersion(loadedAppBean.getVersion());
+        setCustom(loadedAppBean.getCustom());
+        setMainView(loadedAppBean.getMainView());
+
         //优先级处理:标题
         if (StringUtils.isNotNull(appInstance.title())) {
             setTitle(appInstance.title());
+        } else {
+            setTitle(loadedAppBean.getTitle());
         }
         //优先级处理:主画面的路径
         URL mainViewUrl = appInstance.mainViewUrl();
@@ -126,33 +143,37 @@ public class ApplicationConfig extends BaseConfigBean {
         URL iconUrl = appInstance.iconUrl();
         if (iconUrl != null) {
             setIconUrl(iconUrl);
+        } else {
+            setIconPath(loadedAppBean.getIconPath());
         }
         //优先级处理:启动画面的图片路径
         URL splashImgUrl = appInstance.splashImgUrl();
         if (splashImgUrl != null) {
             setSplashImgUrl(splashImgUrl);
+        } else {
+            setSplashImgPath(loadedAppBean.getSplashImgPath());
         }
         //优先级处理:启动监听器
         LaunchListener bindLL = appInstance.bindLaunchListener();
         if (bindLL != null) {
             setLaunchListenerObj(bindLL);
+        } else {
+            setLaunchListener(loadedAppBean.getLaunchListener());
         }
         //优先级处理:初始化子线程
         AppInitThread bindIT = appInstance.bindInitThread();
         if (bindIT != null) {
             setInitThreadObj(bindIT);
+        } else {
+            setInitThread(loadedAppBean.getInitThread());
         }
-
-        setVersion(loadedBean.getVersion());
-        setCustom(loadedBean.getCustom());
-        setMainView(loadedBean.getMainView());
 
         //加载后的回调
         if (loadListener != null) {
-            loadListener.afterLoad(yaml, newRoot, this);
+            loadListener.afterLoad(yaml, rootConfig, this);
         }
 
-        return newRoot;
+        return rootConfig;
     }
 
     public RootConfig loadConfig() throws Exception {
@@ -201,7 +222,6 @@ public class ApplicationConfig extends BaseConfigBean {
         } else if (appInstance != null) {
             return appInstance.bindLaunchListener();
         } else {
-            System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getLaunchListener()");
             return null;
         }
     }
@@ -211,12 +231,20 @@ public class ApplicationConfig extends BaseConfigBean {
     }
 
     public AppInitThread getInitThread() {
+        if (initThreadObj == null && StringUtils.isNotNull(initThread)) {
+            try {
+                initThreadObj = (AppInitThread) buildInstance(AppInitThread.class, initThread);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
         if (initThreadObj != null) {
             return initThreadObj;
         } else if (appInstance != null) {
             return appInstance.bindInitThread();
         } else {
-            System.err.println("Did not load config but call the method: " + this.getClass().getName() + "#getInitThread()");
             return null;
         }
     }
