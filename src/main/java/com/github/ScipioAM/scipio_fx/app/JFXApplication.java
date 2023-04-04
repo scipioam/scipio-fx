@@ -165,7 +165,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
                 if (iconUrl != null) {
                     splashStage.getIcons().add(new Image(iconUrl.toExternalForm()));
                 }
-                splashScreen.setSplashImgUrl(config.getSplashImgUrl());
+                splashScreen.setSplashImgUrl(config.getSplashImgUrl(this.getClass()));
                 Scene splashScene = new Scene(splashScreen.buildViews(), Color.TRANSPARENT);
                 splashStage.setScene(splashScene);
                 splashStage.setResizable(false);
