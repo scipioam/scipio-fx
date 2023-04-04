@@ -9,8 +9,8 @@ open module scipio_fx_test {
     requires transitive MaterialFX;
     requires transitive static lombok;
     requires transitive jakarta.persistence;
-    requires com.github.scipio.scipio_fx;
+    requires transitive org.junit.jupiter.api;
 
-    requires org.junit.jupiter.api;
+    requires com.github.scipio.scipio_fx;
 
 }

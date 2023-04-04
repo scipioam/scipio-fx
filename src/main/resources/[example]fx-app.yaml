@@ -6,30 +6,30 @@ app:
   title: This is a title
 
   # main window`s icon relative path
-  #iconPath: /img/r.png
+  iconPath: /img/r.png
 
   # splash image relative path
-  #splashImgPath:
+  splashImgPath:
 
   # main window`s config
   mainView:
     # main window`s content fxml relative path
     path: /test-views/main.fxml
     # javafx.stage.StageStyle (both lower case and upper case can be accepted)
-    #stageStyle: utility
+    stageStyle: utility
     # is main window can be draggable by any position (false/true, off/on. 0/1)
-    #draggable:
+    draggable:
     # is main window can be resizable to any size of window (false/true, off/on. 0/1)
-    #resizable: false
+    resizable: false
 
   # full class name which implemented the launch listener interface
-  #launchListener:
+  launchListener:
 
   # full class name which extends the init thread super class
-  #initThread: com.github.ScipioAM.scipio_fx.test.threads.TestInitThread
+  initThread: com.github.ScipioAM.scipio_fx.test.threads.TestInitThread
 
   # custom config definition
-  #custom:
+  custom:
 
 #custom root config property for test
 testA: asd

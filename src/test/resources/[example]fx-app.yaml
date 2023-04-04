@@ -6,7 +6,7 @@ app:
   title: This is a title
 
   # main window`s icon relative path
-  #iconPath: /img/r.png
+  iconPath: /test-img/r.png
 
   # splash image relative path
   #splashImgPath:

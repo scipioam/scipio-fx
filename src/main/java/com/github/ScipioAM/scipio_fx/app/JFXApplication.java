@@ -263,7 +263,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
      */
     protected void initPrimaryStage(Stage primaryStage) {
         //设置图标
-        URL iconUrl = config.getIconUrl();
+        URL iconUrl = config.getIconUrl(this.getClass());
         if (iconUrl != null) {
             primaryStage.getIcons().add(new Image(iconUrl.toExternalForm()));
         }
