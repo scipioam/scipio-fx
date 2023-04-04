@@ -295,6 +295,14 @@ public class ApplicationConfig extends BaseConfigBean {
         mainView.setDraggableBool(mainViewDraggable);
     }
 
+    public boolean isMainViewResizable() {
+        return mainView.isResizableBool();
+    }
+
+    public void setMainViewResizable(boolean mainViewResizable) {
+        mainView.setResizableBool(mainViewResizable);
+    }
+
     public URL getMainViewUrl() {
         return mainView.getMainViewUrl(appClass);
     }

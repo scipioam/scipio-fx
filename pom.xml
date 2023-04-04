@@ -6,7 +6,7 @@
 
     <groupId>com.github.ScipioAM</groupId>
     <artifactId>scipio-fx</artifactId>
-    <version>1.0.8-p2</version>
+    <version>1.0.8-p3</version>
     <packaging>jar</packaging>
 
     <licenses>
