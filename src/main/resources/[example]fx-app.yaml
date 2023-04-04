@@ -19,6 +19,8 @@ app:
     #stageStyle: utility
     # is main window can be draggable by any position (false/true, off/on. 0/1)
     #draggable:
+    # is main window can be resizable to any size of window (false/true, off/on. 0/1)
+    resizable: false
 
   # full class name which implemented the launch listener interface
   #launchListener:

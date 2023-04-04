@@ -250,6 +250,9 @@ public abstract class JFXApplication extends Application implements ApplicationI
                 mainStage.setY(event.getScreenY() + yOffset);
             });
         }
+        if (!config.isMainViewResizable()) {
+            mainStage.setResizable(false);
+        }
         return mainView;
     }
 

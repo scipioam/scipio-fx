@@ -23,6 +23,9 @@ public class MainViewBean extends BaseConfigBean {
     private String draggable;
     private boolean draggableBool = false;
 
+    private String resizable;
+    private boolean resizableBool = true;
+
     public URL getMainViewUrl(Class<?> appClass) {
         if (mainViewUrl == null) {
             mainViewUrl = resolveUrl(path, appClass, "mainViewPath", true);
@@ -43,6 +46,21 @@ public class MainViewBean extends BaseConfigBean {
         this.draggableBool = draggableBool;
         this.draggable = draggableBool + "";
     }
+
+    public void setResizable(String resizable) {
+        this.resizable = resizable;
+        if (StringUtils.isNotNull(resizable)) {
+            this.resizableBool = (resizable.equalsIgnoreCase("true") || resizable.equalsIgnoreCase("on") || resizable.equals("1"));
+        } else {
+            this.resizableBool = false;
+        }
+    }
+
+    public void setResizableBool(boolean resizableBool) {
+        this.resizableBool = resizableBool;
+        this.resizable = resizableBool + "";
+    }
+
 
     public StageStyle getStageStyleEnum() {
         if (stageStyleEnum == null && StringUtils.isNotNull(stageStyle)) {
