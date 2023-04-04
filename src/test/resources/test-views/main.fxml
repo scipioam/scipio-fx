@@ -7,7 +7,7 @@
 
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="com.github.ScipioAM.scipio_fx.test.controllers.MainController">
+<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="apptest.controllers.MainController">
     <VBox alignment="CENTER" prefHeight="600" prefWidth="800" spacing="10.0">
         <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="5.0" />
