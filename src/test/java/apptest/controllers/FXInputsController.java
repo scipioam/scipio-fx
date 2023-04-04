@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.test.controllers;
+package apptest.controllers;
 
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import javafx.fxml.FXML;

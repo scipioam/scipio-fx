@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.test.threads;
+package apptest.threads;
 
 import java.util.concurrent.Callable;
 

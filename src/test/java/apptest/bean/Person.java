@@ -1,10 +1,9 @@
-package com.github.ScipioAM.scipio_fx.test.bean;
+package apptest.bean;
 
 import com.github.ScipioAM.scipio_fx.persistence.DBEntity;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnBind;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnComparator;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnTimeFormat;
-import com.github.ScipioAM.scipio_fx.test.util.RandomUtil;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,6 +12,7 @@ import javafx.geometry.Pos;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import apptest.util.RandomUtil;
 
 import java.io.Serializable;
 import java.time.LocalDate;

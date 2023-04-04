@@ -1,10 +1,10 @@
-package com.github.ScipioAM.scipio_fx.test;
+package apptest;
 
-import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
-import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
-import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.app.JFXApplication;
 import com.github.ScipioAM.scipio_fx.app.LaunchListener;
+import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
+import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
+import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import org.yaml.snakeyaml.Yaml;
 

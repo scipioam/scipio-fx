@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.test;
+package apptest;
 
 import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
 import lombok.Data;

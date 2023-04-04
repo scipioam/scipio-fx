@@ -1,10 +1,9 @@
-package com.github.ScipioAM.scipio_fx.test.controllers;
+package apptest.controllers;
 
+import apptest.bean.Person;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.table.FXTableBuilder;
 import com.github.ScipioAM.scipio_fx.table.cell.LocalDateTableCell;
-import com.github.ScipioAM.scipio_fx.test.bean.Person;
-import com.github.ScipioAM.scipio_fx.test.util.RandomUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.controlsfx.control.tableview2.TableColumn2;
 import org.controlsfx.control.tableview2.TableView2;
+import apptest.util.RandomUtil;
 
 import java.time.LocalDate;
 

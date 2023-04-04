@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.test.util;
+package apptest.util;
 
 import java.util.*;
 

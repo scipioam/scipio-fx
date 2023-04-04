@@ -1,12 +1,10 @@
-package com.github.ScipioAM.scipio_fx.test.controllers;
+package apptest.controllers;
 
+import apptest.TestApplication;
 import com.github.ScipioAM.scipio_fx.constant.AppViewId;
 import com.github.ScipioAM.scipio_fx.constant.Language;
 import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import com.github.ScipioAM.scipio_fx.dialog.mfx.MFXDialogHelper;
-import com.github.ScipioAM.scipio_fx.test.TestApplication;
-import com.github.ScipioAM.scipio_fx.test.original.TestNotification;
-import com.github.ScipioAM.scipio_fx.test.threads.ConsoleTask;
 import com.github.ScipioAM.scipio_fx.view.Console;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.ViewLoadOptions;
@@ -14,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
+import apptest.original.TestNotification;
+import apptest.threads.ConsoleTask;
 
 public class MainController extends BaseMainController {
 

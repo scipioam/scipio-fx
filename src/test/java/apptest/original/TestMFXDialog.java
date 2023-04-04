@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.test.original;
+package apptest.original;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.dialogs.MFXDialogs;

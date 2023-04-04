@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.test.threads;
+package apptest.threads;
 
 import com.github.ScipioAM.scipio_fx.app.AppInitThread;
 import com.github.ScipioAM.scipio_fx.app.JFXApplication;

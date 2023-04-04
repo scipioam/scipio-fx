@@ -1,3 +1,5 @@
+package apptest.other;
+
 import org.junit.jupiter.api.Test;
 
 /**

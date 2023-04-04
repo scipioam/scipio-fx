@@ -1,4 +1,4 @@
-package com.github.ScipioAM.scipio_fx.test.bean;
+package apptest.bean;
 
 import com.github.ScipioAM.scipio_fx.utils.ReflectUtil;
 
