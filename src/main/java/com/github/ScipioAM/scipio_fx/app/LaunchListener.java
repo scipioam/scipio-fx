@@ -2,6 +2,7 @@ package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  * 启动监听器
@@ -35,6 +36,15 @@ public interface LaunchListener {
      */
     default void onLaunchError(JFXApplication app, Exception e) {
         e.printStackTrace();
+    }
+
+    /**
+     * 主画面显示前，加载Scene前
+     *
+     * @param mainStage 主stage对象
+     * @param mainScene 主scene对象
+     */
+    default void beforeLoadMainScene(Stage mainStage, Scene mainScene) {
     }
 
 }

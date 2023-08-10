@@ -297,6 +297,10 @@ public abstract class JFXApplication extends Application implements ApplicationI
             mainScene = new Scene(mainView.getView());
         }
 
+        if (launchListener != null) {
+            launchListener.beforeLoadMainScene(mainStage, mainScene);
+        }
+
         mainStage.setScene(mainScene);
         if (splashScreen != null && splashScreen.isVisible()) {
             Stage splashStage = splashScreen.getStage();
