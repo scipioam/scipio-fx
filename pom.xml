@@ -6,7 +6,7 @@
 
     <groupId>com.github.ScipioAM</groupId>
     <artifactId>scipio-fx</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <packaging>jar</packaging>
 
     <licenses>
@@ -51,7 +51,7 @@
 
         <!-- ================= UI库 ================= -->
         <controlsfx.version>11.1.2</controlsfx.version>
-        <materialfx.version>11.15.0</materialfx.version>
+        <materialfx.version>11.16.1</materialfx.version>
 
         <!-- ================= 功能库 ================= -->
         <yaml.version>2.0</yaml.version>

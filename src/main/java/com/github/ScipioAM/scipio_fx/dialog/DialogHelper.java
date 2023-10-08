@@ -22,16 +22,7 @@ public class DialogHelper {
 
     //==================================== ↓↓↓↓↓↓ 异常dialog ↓↓↓↓↓↓ ====================================
 
-    public static ExceptionDialog showExceptionDialog(Throwable e, String title, String headerText, String contentText) {
-        ExceptionDialog dialog = new ExceptionDialog(e);
-        dialog.setTitle(title);
-        dialog.setHeaderText(headerText);
-        dialog.setContentText(contentText);
-        dialog.show();
-        return dialog;
-    }
-
-    public static ExceptionDialog showExceptionDialog(Throwable e, Language language) {
+    public static ExceptionDialog buildExceptionDialog(Throwable e, Language language) {
         ExceptionDialog dialog = new ExceptionDialog(e);
         switch (language) {
             case EN:
@@ -45,12 +36,26 @@ public class DialogHelper {
                 dialog.setContentText(StringUtils.isNull(e.getMessage()) ? "无信息" : e.getMessage());
                 break;
         }
+        return dialog;
+    }
+
+    public static ExceptionDialog showExceptionDialog(Throwable e, Language language) {
+        ExceptionDialog dialog = buildExceptionDialog(e, language);
         dialog.show();
         return dialog;
     }
 
     public static ExceptionDialog showExceptionDialog(Throwable e) {
         return showExceptionDialog(e, Language.CN);
+    }
+
+    public static Optional<ButtonType> showExceptionDialogHandle(Throwable e, Language language) {
+        ExceptionDialog dialog = buildExceptionDialog(e, language);
+        return dialog.showAndWait();
+    }
+
+    public static Optional<ButtonType> showExceptionDialogHandle(Throwable e) {
+        return showExceptionDialogHandle(e, Language.CN);
     }
 
     //==================================== ↓↓↓↓↓↓ 常规dialog ↓↓↓↓↓↓ ====================================
