@@ -128,7 +128,7 @@ public class AppContext {
         return threadPool;
     }
 
-    protected void setThreadPool(ExecutorService threadPool) {
+    public void setThreadPool(ExecutorService threadPool) {
         this.threadPool = threadPool;
     }
 
