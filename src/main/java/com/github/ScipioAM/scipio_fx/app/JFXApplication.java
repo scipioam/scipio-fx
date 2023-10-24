@@ -62,7 +62,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
     /**
      * 线程池
      */
-    protected final ExecutorService threadPool;
+    protected ExecutorService threadPool;
 
     /**
      * 位移值，用于（尤其是无边框情况下）可拖拽
@@ -83,8 +83,8 @@ public abstract class JFXApplication extends Application implements ApplicationI
         context = customContext;
         context.setAppClass(thisClass);
         context.setAppInstance(this);
-        threadPool = Executors.newCachedThreadPool();
-        context.setThreadPool(threadPool);
+        //创建线程池
+        buildThreadPool();
         //准备config对象
         config = buildNewConfigInstance(thisClass);
         if (this.getClass() == thisClass) {
@@ -196,7 +196,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         if (mainView.getController() != null) {
             mainView.getController().onStop();
         }
-        if (!threadPool.isShutdown()) {
+        if (threadPool != null && !threadPool.isShutdown()) {
             threadPool.shutdownNow();
         }
     }
@@ -339,6 +339,14 @@ public abstract class JFXApplication extends Application implements ApplicationI
 
     public void exit() {
         exit(true);
+    }
+
+    /**
+     * 创建线程池
+     */
+    protected void buildThreadPool() {
+        threadPool = Executors.newCachedThreadPool();
+        context.setThreadPool(threadPool);
     }
 
 }
