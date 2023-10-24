@@ -84,7 +84,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         context.setAppClass(thisClass);
         context.setAppInstance(this);
         //创建线程池
-        buildThreadPool();
+        threadPool = buildThreadPool();
         context.setThreadPool(threadPool);
         //准备config对象
         config = buildNewConfigInstance(thisClass);
@@ -345,8 +345,8 @@ public abstract class JFXApplication extends Application implements ApplicationI
     /**
      * 创建线程池
      */
-    protected void buildThreadPool() {
-        threadPool = Executors.newCachedThreadPool();
+    protected ExecutorService buildThreadPool() {
+        return Executors.newCachedThreadPool();
     }
 
 }
