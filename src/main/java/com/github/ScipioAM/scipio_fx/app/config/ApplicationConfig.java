@@ -56,10 +56,10 @@ public class ApplicationConfig extends BaseConfigBean {
 
     private Map<String, Object> custom;
 
-    private boolean useMaterialFX = false;
-    private boolean isUseMaterialFXThemeOnly = false;
-    private String materialFXInitializer;
-    private transient MaterialFXInitializer materialFXInitializerObj;
+    private boolean useMaterialFx = false;
+    private boolean useMaterialFxThemeOnly = false;
+    private String materialFxInitializer;
+    private transient MaterialFXInitializer materialFxInitializerObj;
 
     //==============================================================================================================================
 
@@ -133,6 +133,9 @@ public class ApplicationConfig extends BaseConfigBean {
         setVersion(loadedAppBean.getVersion());
         setCustom(loadedAppBean.getCustom());
         setMainView(loadedAppBean.getMainView());
+        setUseMaterialFx(loadedAppBean.isUseMaterialFx());
+        setUseMaterialFxThemeOnly(loadedAppBean.isUseMaterialFxThemeOnly());
+        setMaterialFxInitializer(loadedAppBean.getMaterialFxInitializer());
 
         //优先级处理:标题
         if (StringUtils.isNotNull(appInstance.title())) {
@@ -449,45 +452,43 @@ public class ApplicationConfig extends BaseConfigBean {
         this.rootConfigClass = rootConfigClass;
     }
 
-    public boolean isUseMaterialFX() {
-        return useMaterialFX;
+    public String getMaterialFxInitializer() {
+        return materialFxInitializer;
     }
 
-    public void setUseMaterialFX(boolean useMaterialFX) {
-        this.useMaterialFX = useMaterialFX;
+    public void setMaterialFxInitializer(String materialFxInitializer) {
+        this.materialFxInitializer = materialFxInitializer;
     }
 
-    public boolean isUseMaterialFXThemeOnly() {
-        return isUseMaterialFXThemeOnly;
+    public boolean isUseMaterialFx() {
+        return useMaterialFx;
     }
 
-    public void setUseMaterialFXThemeOnly(boolean useMaterialFXThemeOnly) {
-        isUseMaterialFXThemeOnly = useMaterialFXThemeOnly;
+    public void setUseMaterialFx(boolean useMaterialFx) {
+        this.useMaterialFx = useMaterialFx;
     }
 
-    public String getMaterialFXInitializer() {
-        return materialFXInitializer;
+    public boolean isUseMaterialFxThemeOnly() {
+        return useMaterialFxThemeOnly;
     }
 
-    public void setMaterialFXInitializer(String materialFXInitializer) {
-        this.materialFXInitializer = materialFXInitializer;
+    public void setUseMaterialFxThemeOnly(boolean useMaterialFxThemeOnly) {
+        this.useMaterialFxThemeOnly = useMaterialFxThemeOnly;
     }
 
-    public MaterialFXInitializer getMaterialFXInitializerObj() {
-        if (materialFXInitializerObj == null && StringUtils.isNotNull(materialFXInitializer)) {
+    public MaterialFXInitializer getMaterialFxInitializerObj() {
+        if (materialFxInitializerObj == null && StringUtils.isNotNull(materialFxInitializer)) {
             try {
-                materialFXInitializerObj = (MaterialFXInitializer) buildInstance(MaterialFXInitializer.class, materialFXInitializer);
+                materialFxInitializerObj = (MaterialFXInitializer) buildInstance(MaterialFXInitializer.class, materialFxInitializer);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
-        } else if (materialFXInitializerObj == null && StringUtils.isNotNull(materialFXInitializer)) {
-
         }
-        return materialFXInitializerObj;
+        return materialFxInitializerObj;
     }
 
-    public void setMaterialFXInitializerObj(MaterialFXInitializer materialFXInitializerObj) {
-        this.materialFXInitializerObj = materialFXInitializerObj;
+    public void setMaterialFxInitializerObj(MaterialFXInitializer materialFxInitializerObj) {
+        this.materialFxInitializerObj = materialFxInitializerObj;
     }
 }

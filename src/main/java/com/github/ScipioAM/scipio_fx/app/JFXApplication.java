@@ -288,7 +288,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
      */
     protected void showMainView() {
         //MaterialFX初始化
-        if (config.isUseMaterialFX()) {
+        if (config.isUseMaterialFx()) {
             initMaterialFX();
         }
 
@@ -337,12 +337,12 @@ public abstract class JFXApplication extends Application implements ApplicationI
      * MaterialFX初始化
      */
     protected void initMaterialFX() {
-        MaterialFXInitializer materialFXInitializer = config.getMaterialFXInitializerObj();
+        MaterialFXInitializer materialFXInitializer = config.getMaterialFxInitializerObj();
         UserAgentBuilder builder = UserAgentBuilder.builder();
         if (materialFXInitializer == null) {
             materialFXInitializer = new DefaultMaterialFXInitializer();
         }
-        materialFXInitializer.init(builder, config.isUseMaterialFXThemeOnly());
+        materialFXInitializer.init(builder, config.isUseMaterialFxThemeOnly());
     }
 
     public void setMainView(FXMLView mainView) {
