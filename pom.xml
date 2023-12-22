@@ -44,17 +44,17 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <!-- ================= 基本 ================= -->
-        <javafx.version>20</javafx.version>
-        <junit.version>5.9.2</junit.version>
-        <lombok.version>1.18.26</lombok.version>
-        <slf4j.version>2.0.7</slf4j.version>
+        <javafx.version>21.0.1</javafx.version>
+        <junit.version>5.10.1</junit.version>
+        <lombok.version>1.18.30</lombok.version>
+        <slf4j.version>2.0.9</slf4j.version>
 
         <!-- ================= UI库 ================= -->
         <controlsfx.version>11.1.2</controlsfx.version>
-        <materialfx.version>11.16.1</materialfx.version>
+        <materialfx.version>11.17.0</materialfx.version>
 
         <!-- ================= 功能库 ================= -->
-        <yaml.version>2.0</yaml.version>
+        <yaml.version>2.2</yaml.version>
 
         <!-- ================= 持久化 ================= -->
         <jpa.api.version>3.1.0</jpa.api.version>

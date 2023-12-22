@@ -31,5 +31,9 @@ app:
   # custom config definition
   custom:
 
+  useMaterialFX: false
+  isUseMaterialFXThemeOnly: false
+  materialFXInitializer: com.github.ScipioAM.scipio_fx.app.mfx.DefaultMaterialFXInitializer
+
 #custom root config property for test
 testA: asd

@@ -3,6 +3,7 @@ package com.github.ScipioAM.scipio_fx.app.config;
 import com.github.ScipioAM.scipio_fx.app.AppInitThread;
 import com.github.ScipioAM.scipio_fx.app.JFXApplication;
 import com.github.ScipioAM.scipio_fx.app.LaunchListener;
+import com.github.ScipioAM.scipio_fx.app.mfx.MaterialFXInitializer;
 import com.github.ScipioAM.scipio_fx.exception.ConfigLoadException;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 import javafx.stage.StageStyle;
@@ -54,6 +55,11 @@ public class ApplicationConfig extends BaseConfigBean {
     private MainViewBean mainView = new MainViewBean();
 
     private Map<String, Object> custom;
+
+    private boolean useMaterialFX = false;
+    private boolean isUseMaterialFXThemeOnly = false;
+    private String materialFXInitializer;
+    private transient MaterialFXInitializer materialFXInitializerObj;
 
     //==============================================================================================================================
 
@@ -443,4 +449,45 @@ public class ApplicationConfig extends BaseConfigBean {
         this.rootConfigClass = rootConfigClass;
     }
 
+    public boolean isUseMaterialFX() {
+        return useMaterialFX;
+    }
+
+    public void setUseMaterialFX(boolean useMaterialFX) {
+        this.useMaterialFX = useMaterialFX;
+    }
+
+    public boolean isUseMaterialFXThemeOnly() {
+        return isUseMaterialFXThemeOnly;
+    }
+
+    public void setUseMaterialFXThemeOnly(boolean useMaterialFXThemeOnly) {
+        isUseMaterialFXThemeOnly = useMaterialFXThemeOnly;
+    }
+
+    public String getMaterialFXInitializer() {
+        return materialFXInitializer;
+    }
+
+    public void setMaterialFXInitializer(String materialFXInitializer) {
+        this.materialFXInitializer = materialFXInitializer;
+    }
+
+    public MaterialFXInitializer getMaterialFXInitializerObj() {
+        if (materialFXInitializerObj == null && StringUtils.isNotNull(materialFXInitializer)) {
+            try {
+                materialFXInitializerObj = (MaterialFXInitializer) buildInstance(MaterialFXInitializer.class, materialFXInitializer);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (materialFXInitializerObj == null && StringUtils.isNotNull(materialFXInitializer)) {
+
+        }
+        return materialFXInitializerObj;
+    }
+
+    public void setMaterialFXInitializerObj(MaterialFXInitializer materialFXInitializerObj) {
+        this.materialFXInitializerObj = materialFXInitializerObj;
+    }
 }

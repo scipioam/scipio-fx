@@ -3,10 +3,13 @@ package com.github.ScipioAM.scipio_fx.app;
 import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
+import com.github.ScipioAM.scipio_fx.app.mfx.DefaultMaterialFXInitializer;
+import com.github.ScipioAM.scipio_fx.app.mfx.MaterialFXInitializer;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.FXMLViewLoader;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
+import io.github.palexdev.materialfx.theming.UserAgentBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -284,6 +287,11 @@ public abstract class JFXApplication extends Application implements ApplicationI
      * 显示主界面
      */
     protected void showMainView() {
+        //MaterialFX初始化
+        if (config.isUseMaterialFX()) {
+            initMaterialFX();
+        }
+
         Scene mainScene;
         LaunchListener launchListener = config.getLaunchListenerObj();
         if (mainStage.isShowing()) {
@@ -323,6 +331,18 @@ public abstract class JFXApplication extends Application implements ApplicationI
         if (launchListener != null) {
             launchListener.afterShowMainView(this, mainView);
         }
+    }
+
+    /**
+     * MaterialFX初始化
+     */
+    protected void initMaterialFX() {
+        MaterialFXInitializer materialFXInitializer = config.getMaterialFXInitializerObj();
+        UserAgentBuilder builder = UserAgentBuilder.builder();
+        if (materialFXInitializer == null) {
+            materialFXInitializer = new DefaultMaterialFXInitializer();
+        }
+        materialFXInitializer.init(builder, config.isUseMaterialFXThemeOnly());
     }
 
     public void setMainView(FXMLView mainView) {

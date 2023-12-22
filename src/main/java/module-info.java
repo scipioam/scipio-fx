@@ -12,6 +12,7 @@ module com.github.scipio.scipio_fx {
 
     exports com.github.ScipioAM.scipio_fx.app;
     exports com.github.ScipioAM.scipio_fx.app.config;
+    exports com.github.ScipioAM.scipio_fx.app.mfx;
     exports com.github.ScipioAM.scipio_fx.constant;
     exports com.github.ScipioAM.scipio_fx.controller;
     exports com.github.ScipioAM.scipio_fx.dialog;
