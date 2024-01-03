@@ -98,7 +98,7 @@ public class MFXDialog implements IDialog {
 
     //==================================== ↓↓↓↓↓↓ 初始化 ↓↓↓↓↓↓ ====================================
 
-    public MFXDialog(MFXDialogType dialogType) {
+    public MFXDialog(MFXDialogType dialogType, Pane ownerNode) {
         if (dialogType == null) {
             throw new IllegalArgumentException("dialogType can not be null !");
         }
@@ -123,20 +123,26 @@ public class MFXDialog implements IDialog {
                 throw new IllegalArgumentException("unknown dialogType:" + dialogType);
         }
         dialogContainer = new MFXStageDialog();
+        if (ownerNode != null) {
+            dialogContainer.setOwnerNode(ownerNode);
+            dialogContainer.setScrimOwner(true);
+        } else {
+            dialogContainer.setScrimOwner(false);
+        }
         dialogContainer.setContent(dialogContent);
         init();
     }
 
-    public static MFXDialog info() {
-        return new MFXDialog(MFXDialogType.INFO);
+    public static MFXDialog info(Pane ownerNode) {
+        return new MFXDialog(MFXDialogType.INFO, ownerNode);
     }
 
-    public static MFXDialog warn() {
-        return new MFXDialog(MFXDialogType.WARN);
+    public static MFXDialog warn(Pane ownerNode) {
+        return new MFXDialog(MFXDialogType.WARN, ownerNode);
     }
 
-    public static MFXDialog error() {
-        return new MFXDialog(MFXDialogType.ERROR);
+    public static MFXDialog error(Pane ownerNode) {
+        return new MFXDialog(MFXDialogType.ERROR, ownerNode);
     }
 
 //    public static MFXDialog filter() {

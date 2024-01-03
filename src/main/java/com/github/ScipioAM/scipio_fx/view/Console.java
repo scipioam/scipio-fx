@@ -101,7 +101,7 @@ public class Console {
      */
     public Console output(String text) {
         StringBuilder s = new StringBuilder(textArea.getText());
-        if (lineList.size() > 0) {
+        if (!lineList.isEmpty()) {
             //第n行的情况下（n > 1）
             s.append('\n').append(getPrefix(lineList.size())).append(text);
         } else if (input) {
@@ -149,7 +149,7 @@ public class Console {
      */
     String getPrefix(int lineIndex) {
         if (StringUtils.isNull(linePrefix)) {
-            return "[" + (lineIndex + 1) + "]";
+            return "[" + (lineIndex + 1) + "] ";
         } else {
             return linePrefix;
         }

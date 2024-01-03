@@ -2,6 +2,7 @@ package com.github.ScipioAM.scipio_fx.dialog.mfx;
 
 import com.github.ScipioAM.scipio_fx.constant.Language;
 import com.github.ScipioAM.scipio_fx.dialog.DialogBtnListener;
+import javafx.scene.layout.Pane;
 
 /**
  * {@link MFXDialog}的工具类
@@ -17,6 +18,7 @@ public class MFXDialogHelper {
     /**
      * 构建并显示对话框
      *
+     * @param ownerNode   [可选]对话框的父节点
      * @param type        对话框类型
      * @param headerText  标题文本
      * @param contentText 内容文本
@@ -24,8 +26,8 @@ public class MFXDialogHelper {
      * @param okBtnAction ok按钮的动作回调
      * @return 构建好的对话框对象
      */
-    public static MFXDialog showDialog(MFXDialogType type, String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
-        MFXDialog dialog = new MFXDialog(type)
+    public static MFXDialog showDialog(Pane ownerNode, MFXDialogType type, String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
+        MFXDialog dialog = new MFXDialog(type, ownerNode)
                 .setHeaderText(headerText)
                 .setContentText(contentText);
         if (okBtnAction != null) {
@@ -37,36 +39,64 @@ public class MFXDialogHelper {
         return dialog;
     }
 
+    public static MFXDialog showInfo(Pane ownerNode, String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
+        return showDialog(ownerNode, MFXDialogType.INFO, headerText, contentText, language, okBtnAction);
+    }
+
     public static MFXDialog showInfo(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
-        return showDialog(MFXDialogType.INFO, headerText, contentText, language, okBtnAction);
+        return showDialog(null, MFXDialogType.INFO, headerText, contentText, language, okBtnAction);
     }
 
     public static MFXDialog showInfo(String headerText, String contentText, Language language) {
         return showInfo(headerText, contentText, language, null);
     }
 
+    public static MFXDialog showInfo(Pane ownerNode, String headerText, String contentText) {
+        return showInfo(headerText, contentText, Language.EN, null);
+    }
+
     public static MFXDialog showInfo(String headerText, String contentText) {
         return showInfo(headerText, contentText, Language.EN, null);
     }
 
+    //=================================================================================================================================================================
+
+    public static MFXDialog showWarning(Pane ownerNode, String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
+        return showDialog(ownerNode, MFXDialogType.WARN, headerText, contentText, language, okBtnAction);
+    }
+
     public static MFXDialog showWarning(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
-        return showDialog(MFXDialogType.WARN, headerText, contentText, language, okBtnAction);
+        return showDialog(null, MFXDialogType.WARN, headerText, contentText, language, okBtnAction);
     }
 
     public static MFXDialog showWarning(String headerText, String contentText, Language language) {
         return showWarning(headerText, contentText, language, null);
     }
 
+    public static MFXDialog showWarning(Pane ownerNode, String headerText, String contentText) {
+        return showWarning(ownerNode, headerText, contentText, Language.EN, null);
+    }
+
     public static MFXDialog showWarning(String headerText, String contentText) {
         return showWarning(headerText, contentText, Language.EN, null);
     }
 
+    //=================================================================================================================================================================
+
+    public static MFXDialog showError(Pane ownerNode, String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
+        return showDialog(ownerNode, MFXDialogType.ERROR, headerText, contentText, language, okBtnAction);
+    }
+
     public static MFXDialog showError(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
-        return showDialog(MFXDialogType.ERROR, headerText, contentText, language, okBtnAction);
+        return showDialog(null, MFXDialogType.ERROR, headerText, contentText, language, okBtnAction);
     }
 
     public static MFXDialog showError(String headerText, String contentText, Language language) {
         return showError(headerText, contentText, language, null);
+    }
+
+    public static MFXDialog showError(Pane ownerNode, String headerText, String contentText) {
+        return showError(ownerNode, headerText, contentText, Language.EN, null);
     }
 
     public static MFXDialog showError(String headerText, String contentText) {
