@@ -15,9 +15,6 @@ import java.io.File;
  */
 public class FileChooser {
 
-    private FileChooser() {
-    }
-
     /**
      * 显示选择文件的窗口
      *
