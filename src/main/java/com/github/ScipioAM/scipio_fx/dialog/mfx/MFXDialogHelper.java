@@ -52,7 +52,7 @@ public class MFXDialogHelper {
     }
 
     public static MFXDialog showInfo(Pane ownerNode, String headerText, String contentText) {
-        return showInfo(headerText, contentText, Language.EN, null);
+        return showInfo(ownerNode, headerText, contentText, Language.EN, null);
     }
 
     public static MFXDialog showInfo(String headerText, String contentText) {
