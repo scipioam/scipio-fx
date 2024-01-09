@@ -49,37 +49,37 @@ public class QuickNotify {
         show(title, content, DEFAULT_POS);
     }
 
-    public void showError(String title, String content, Pos position) {
+    public static void showError(String title, String content, Pos position) {
         build(title, content, position, null).showError();
     }
 
-    public void showError(String title, String content) {
+    public static void showError(String title, String content) {
         showError(title, content, DEFAULT_POS);
     }
 
-    public void showWarning(String title, String content, Pos position) {
+    public static void showWarning(String title, String content, Pos position) {
         build(title, content, position, null).showWarning();
     }
 
-    public void showWarning(String title, String content) {
+    public static void showWarning(String title, String content) {
         showWarning(title, content, DEFAULT_POS);
     }
 
-    public void showInfo(String title, String content, Pos position) {
+    public static void showInfo(String title, String content, Pos position) {
         build(title, content, position, null).showInformation();
     }
 
-    public void showInfo(String title, String content) {
+    public static void showInfo(String title, String content) {
         showInfo(title, content, DEFAULT_POS);
     }
 
-    public void showConfirm(String title, String content, Pos position, Action... buttons) {
+    public static void showConfirm(String title, String content, Pos position, Action... buttons) {
         build(title, content, position, null)
                 .action(buttons)
                 .showConfirm();
     }
 
-    public void showConfirm(String title, String content, Action... buttons) {
+    public static void showConfirm(String title, String content, Action... buttons) {
         showConfirm(title, content, DEFAULT_POS, buttons);
     }
 
