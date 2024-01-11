@@ -33,13 +33,14 @@ import java.util.concurrent.Executors;
  * @since 2022/2/22
  */
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
 @Accessors(chain = true)
 @Setter(AccessLevel.NONE)
 public abstract class JFXApplication extends Application implements ApplicationInterface {
 
     protected static Class<? extends JFXApplication> thisClass;
 
+    @Getter
     public static AppContext context;
 
     /**
@@ -55,6 +56,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
     /**
      * 主界面view对象
      */
+    @Setter
     protected FXMLView mainView;
 
     /**
@@ -78,12 +80,17 @@ public abstract class JFXApplication extends Application implements ApplicationI
             thisClass = this.getClass();
         }
         //自定义上下文对象
-        AppContext customContext = getContext();
-        if (customContext == null) {
+        Class<? extends AppContext> contextType = getContextType();
+        if (contextType == null) {
             //没有自定义，采用默认的
-            customContext = new AppContext();
+            context = new AppContext();
+        } else {
+            try {
+                context = contextType.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create AppContext instance", e);
+            }
         }
-        context = customContext;
         context.setAppClass(thisClass);
         context.setAppInstance(this);
         //创建线程池
@@ -207,8 +214,8 @@ public abstract class JFXApplication extends Application implements ApplicationI
 
     //=========================================== ↓↓↓↓↓↓ 接口默认实现 ↓↓↓↓↓↓ ===========================================
 
-    public AppContext getContext() {
-        return null;
+    public Class<? extends AppContext> getContextType() {
+        return AppContext.class;
     }
 
     @Override
@@ -343,10 +350,6 @@ public abstract class JFXApplication extends Application implements ApplicationI
             materialFXInitializer = new DefaultMaterialFXInitializer();
         }
         materialFXInitializer.init(builder, appConfig.isUseMaterialFxThemeOnly());
-    }
-
-    public void setMainView(FXMLView mainView) {
-        this.mainView = mainView;
     }
 
     public void exit(boolean shutdownNow) {
