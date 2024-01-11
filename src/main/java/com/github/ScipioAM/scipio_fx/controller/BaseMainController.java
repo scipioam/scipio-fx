@@ -3,6 +3,8 @@ package com.github.ScipioAM.scipio_fx.controller;
 import com.github.ScipioAM.scipio_fx.constant.AppViewId;
 import com.github.ScipioAM.scipio_fx.dialog.DialogHelper;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
+import com.github.ScipioAM.scipio_fx.view.ViewLoadOptions;
+import javafx.scene.Parent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -40,6 +42,11 @@ public abstract class BaseMainController extends BaseController {
         }
     }
 
+    @Override
+    public void onLoadInit(Parent rootNode, Object... initArgs) {
+        onMainControllerInit(rootNode, initArgs);
+    }
+
     /**
      * 存放子view入children
      *
@@ -53,23 +60,12 @@ public abstract class BaseMainController extends BaseController {
     /**
      * 获取子view
      *
-     * @param appViewId         子view的标识key
-     * @param exceptionWhenNull 如果获取为null则抛异常并弹出报错弹窗. true:要这样做
-     * @return 子view
+     * @param appViewId 子view的标识key
+     * @return 子view，如果没有则返回null
      * @throws IllegalStateException 子view为null（children中没有此子view）
      */
-    public FXMLView getChildView(AppViewId appViewId, boolean exceptionWhenNull) throws IllegalStateException {
-        FXMLView view = children.get(appViewId);
-        if (view == null && exceptionWhenNull) {
-            IllegalStateException e = new IllegalStateException("get child view failed, view[id=" + appViewId.id() + ", title=" + appViewId.title() + "] may not be loaded");
-            DialogHelper.showExceptionDialog(e);
-            throw e;
-        }
-        return view;
-    }
-
-    public FXMLView getChildView(AppViewId appViewId) {
-        return getChildView(appViewId, false);
+    public FXMLView getChildView(AppViewId appViewId) throws IllegalStateException {
+        return children.get(appViewId);
     }
 
     /**
@@ -85,6 +81,24 @@ public abstract class BaseMainController extends BaseController {
      * @param viewInfo 子view的标识key
      * @param initArgs 自定义参数
      */
-    public abstract void loadChildView(AppViewId viewInfo, Object initArgs);
+    public FXMLView getOrBuildChildView(AppViewId viewInfo, Object initArgs) {
+        return children.computeIfAbsent(viewInfo, key -> {
+            try {
+                ViewLoadOptions options = ViewLoadOptions.build()
+                        .setFxml(this.getClass(), viewInfo)
+                        .setInitArg(initArgs);
+                FXMLView view = FXMLView.load(options);
+                BaseController childController = view.getController();
+                childController.setParentStage(parentStage);
+                return view;
+            } catch (Exception e) {
+                e.printStackTrace();
+                DialogHelper.showExceptionDialog(e);
+                return null;
+            }
+        });
+    }
+
+    public abstract void onMainControllerInit(Parent rootNode, Object... initArgs);
 
 }

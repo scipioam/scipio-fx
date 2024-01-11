@@ -54,6 +54,8 @@ public class ApplicationConfig extends BaseConfigBean {
 
     private MainViewBean mainView = new MainViewBean();
 
+    private int defaultViewId = -1;
+
     private Map<String, Object> custom;
 
     private boolean useMaterialFx = false;
@@ -125,6 +127,7 @@ public class ApplicationConfig extends BaseConfigBean {
         setUseMaterialFx(loadedAppBean.isUseMaterialFx());
         setUseMaterialFxThemeOnly(loadedAppBean.isUseMaterialFxThemeOnly());
         setMaterialFxInitializer(loadedAppBean.getMaterialFxInitializer());
+        setDefaultViewId(loadedAppBean.getDefaultViewId());
 
         //优先级处理:标题
         if (StringUtils.isNotNull(appInstance.title())) {
@@ -474,5 +477,13 @@ public class ApplicationConfig extends BaseConfigBean {
 
     public void setMaterialFxInitializerObj(MaterialFXInitializer materialFxInitializerObj) {
         this.materialFxInitializerObj = materialFxInitializerObj;
+    }
+
+    public int getDefaultViewId() {
+        return defaultViewId;
+    }
+
+    public void setDefaultViewId(int defaultViewId) {
+        this.defaultViewId = defaultViewId;
     }
 }

@@ -1,7 +1,6 @@
 package apptest.controllers;
 
 import apptest.TestApplication;
-import com.github.ScipioAM.scipio_fx.constant.AppViewId;
 import com.github.ScipioAM.scipio_fx.constant.Language;
 import com.github.ScipioAM.scipio_fx.controller.BaseMainController;
 import com.github.ScipioAM.scipio_fx.dialog.mfx.MFXDialogHelper;
@@ -30,7 +29,7 @@ public class MainController extends BaseMainController {
     private ConsoleTask consoleTask = null;
 
     @Override
-    public void onLoadInit(Parent rootNode, Object... initArgs) {
+    public void onMainControllerInit(Parent rootNode, Object... initArgs) {
         console = new Console(textArea, true);
     }
 
@@ -112,8 +111,4 @@ public class MainController extends BaseMainController {
         }
     }
 
-    @Override
-    public void loadChildView(AppViewId viewInfo, Object initArgs) {
-        System.out.println("loadChildViews() called.");
-    }
 }
