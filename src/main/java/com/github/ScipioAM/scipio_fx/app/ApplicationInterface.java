@@ -1,7 +1,6 @@
 package com.github.ScipioAM.scipio_fx.app;
 
 import com.github.ScipioAM.scipio_fx.app.config.RootConfig;
-import com.github.ScipioAM.scipio_fx.app.config.ApplicationConfig;
 import com.github.ScipioAM.scipio_fx.app.config.ConfigLoadListener;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 
@@ -20,6 +19,10 @@ public interface ApplicationInterface {
         return "fx-app";
     }
 
+    default Class<? extends RootConfig> getRootConfigType() {
+        return RootConfig.class;
+    }
+
     String title();
 
     URL iconUrl();
@@ -28,15 +31,11 @@ public interface ApplicationInterface {
 
     URL splashImgUrl();
 
-    default ApplicationConfig buildNewConfigInstance(Class<? extends JFXApplication> thisClass) {
-        return ApplicationConfig.build(RootConfig.class, thisClass);
-    }
+    //=========================================== ↓↓↓↓↓↓ 绑定 ↓↓↓↓↓↓ ===========================================
 
     default ConfigLoadListener configLoadListener() {
         return null;
     }
-
-    //=========================================== ↓↓↓↓↓↓ 绑定 ↓↓↓↓↓↓ ===========================================
 
     default AppInitThread bindInitThread() {
         return null;

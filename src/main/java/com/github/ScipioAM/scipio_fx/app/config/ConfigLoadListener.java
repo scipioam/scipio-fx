@@ -14,20 +14,8 @@ public interface ConfigLoadListener {
      *
      * @param yaml   读取器
      * @param config 实例对象
-     * @return true:继续原本的加载逻辑
+     * @return null:继续原本的加载逻辑，非null:停止原本的加载逻辑，使用返回的实例对象
      */
-    default boolean onLoad(Yaml yaml, ApplicationConfig config) {
-        return true;
-    }
-
-    /**
-     * 加载后的回调
-     *
-     * @param yaml       读取器
-     * @param rootConfig 根配置对象
-     * @param config     实例对象
-     */
-    default void afterLoad(Yaml yaml, RootConfig rootConfig, ApplicationConfig config) {
-    }
+    RootConfig onLoad(Yaml yaml, ApplicationConfig config);
 
 }

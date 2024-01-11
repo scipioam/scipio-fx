@@ -45,7 +45,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
     /**
      * app配置
      */
-    protected ApplicationConfig config;
+    protected ApplicationConfig appConfig;
 
     /**
      * 主界面的stage
@@ -90,22 +90,22 @@ public abstract class JFXApplication extends Application implements ApplicationI
         threadPool = buildThreadPool();
         context.setThreadPool(threadPool);
         //准备config对象
-        config = buildNewConfigInstance(thisClass);
+        appConfig = ApplicationConfig.build(getRootConfigType(), thisClass);
         if (this.getClass() == thisClass) {
-            config.setAppInstance(this);
+            appConfig.setAppInstance(this);
         }
         //配置加载时的监听器
         ConfigLoadListener configLoadListener = configLoadListener();
         if (configLoadListener != null) {
-            config.setLoadListener(configLoadListener);
+            appConfig.setLoadListener(configLoadListener);
         }
         //加载配置
         try {
-            RootConfig rootConfig = config.loadConfig();
+            RootConfig rootConfig = appConfig.loadConfig();
             context.setRootConfig(rootConfig);
-            context.setAppConfig(config);
+            context.setAppConfig(appConfig);
         } catch (Exception e) {
-            LaunchListener launchListener = config.getLaunchListenerObj();
+            LaunchListener launchListener = appConfig.getLaunchListenerObj();
             if (launchListener != null) {
                 launchListener.onLaunchError(this, e);
             }
@@ -165,11 +165,11 @@ public abstract class JFXApplication extends Application implements ApplicationI
                 //显示启动画面
                 Stage splashStage = new Stage(StageStyle.TRANSPARENT);
                 //设置启动画面的图标
-                URL iconUrl = config.getIconUrl();
+                URL iconUrl = appConfig.getIconUrl();
                 if (iconUrl != null) {
                     splashStage.getIcons().add(new Image(iconUrl.toExternalForm()));
                 }
-                splashScreen.setSplashImgUrl(config.getSplashImgUrl(this.getClass()));
+                splashScreen.setSplashImgUrl(appConfig.getSplashImgUrl(this.getClass()));
                 Scene splashScene = new Scene(splashScreen.buildViews(), Color.TRANSPARENT);
                 splashStage.setScene(splashScene);
                 splashStage.setResizable(false);
@@ -181,13 +181,13 @@ public abstract class JFXApplication extends Application implements ApplicationI
                 showMainView();
             }
             //启动初始化的子线程
-            AppInitThread initThread = config.getInitThreadObj();
+            AppInitThread initThread = appConfig.getInitThreadObj();
             if (initThread != null) {
-                initThread.setApplication(this).setLaunchListener(config.getLaunchListenerObj());
+                initThread.setApplication(this).setLaunchListener(appConfig.getLaunchListenerObj());
                 threadPool.submit(initThread);
             }
         } catch (Exception e) {
-            LaunchListener launchListener = config.getLaunchListenerObj();
+            LaunchListener launchListener = appConfig.getLaunchListenerObj();
             if (launchListener != null) {
                 launchListener.onLaunchError(this, e);
             }
@@ -238,12 +238,12 @@ public abstract class JFXApplication extends Application implements ApplicationI
             return mainView;
         }
         //加载
-        URL mainViewUrl = config.getMainViewUrl();
+        URL mainViewUrl = appConfig.getMainViewUrl();
         FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, (Object[]) null);
         BaseController mainController = mainView.getController();
         context.setMainController(mainController);
         //让主窗体可以被随意拖拽
-        if (config.isMainViewDraggable()) {
+        if (appConfig.isMainViewDraggable()) {
             Parent rootNode = mainView.getView();
             rootNode.setOnMousePressed(event -> {
                 xOffset = mainStage.getX() - event.getScreenX();
@@ -254,7 +254,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
                 mainStage.setY(event.getScreenY() + yOffset);
             });
         }
-        if (!config.isMainViewResizable()) {
+        if (!appConfig.isMainViewResizable()) {
             mainStage.setResizable(false);
         }
         return mainView;
@@ -267,17 +267,17 @@ public abstract class JFXApplication extends Application implements ApplicationI
      */
     protected void initPrimaryStage(Stage primaryStage) {
         //设置图标
-        URL iconUrl = config.getIconUrl(this.getClass());
+        URL iconUrl = appConfig.getIconUrl(this.getClass());
         if (iconUrl != null) {
             primaryStage.getIcons().add(new Image(iconUrl.toExternalForm()));
         }
         //设置标题
-        String title = config.getTitle();
+        String title = appConfig.getTitle();
         if (StringUtils.isNotNull(title)) {
             primaryStage.setTitle(title);
         }
         //StageStyle
-        StageStyle stageStyle = config.getMainStageStyle();
+        StageStyle stageStyle = appConfig.getMainStageStyle();
         if (stageStyle != null) {
             primaryStage.initStyle(stageStyle);
         }
@@ -288,16 +288,16 @@ public abstract class JFXApplication extends Application implements ApplicationI
      */
     protected void showMainView() {
         //MaterialFX初始化
-        if (config.isUseMaterialFx()) {
+        if (appConfig.isUseMaterialFx()) {
             initMaterialFX();
         }
 
         Scene mainScene;
-        LaunchListener launchListener = config.getLaunchListenerObj();
+        LaunchListener launchListener = appConfig.getLaunchListenerObj();
         if (mainStage.isShowing()) {
             //不显示splash，当即调用了一遍showMainView()，但是InitThread又调用了一遍showMainView()
             mainScene = mainStage.getScene();
-            if (launchListener != null && config.getInitThreadObj() != null) {
+            if (launchListener != null && appConfig.getInitThreadObj() != null) {
                 launchListener.onFinishInit(this, mainView, mainScene);
             }
             return;
@@ -323,7 +323,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         //主窗口关闭时，必然调用exit方法
         mainStage.setOnCloseRequest(windowsEvent -> exit(false));
         //完成初始化后(显示主界面之前)的回调
-        if (launchListener != null && config.getInitThreadObj() == null) {
+        if (launchListener != null && appConfig.getInitThreadObj() == null) {
             launchListener.onFinishInit(this, mainView, mainScene);
         }
         mainStage.show();
@@ -337,12 +337,12 @@ public abstract class JFXApplication extends Application implements ApplicationI
      * MaterialFX初始化
      */
     protected void initMaterialFX() {
-        MaterialFXInitializer materialFXInitializer = config.getMaterialFxInitializerObj();
+        MaterialFXInitializer materialFXInitializer = appConfig.getMaterialFxInitializerObj();
         UserAgentBuilder builder = UserAgentBuilder.builder();
         if (materialFXInitializer == null) {
             materialFXInitializer = new DefaultMaterialFXInitializer();
         }
-        materialFXInitializer.init(builder, config.isUseMaterialFxThemeOnly());
+        materialFXInitializer.init(builder, appConfig.isUseMaterialFxThemeOnly());
     }
 
     public void setMainView(FXMLView mainView) {

@@ -96,20 +96,9 @@ public class ApplicationConfig extends BaseConfigBean {
         RootConfig rootConfig;
         //加载前的回调，此方法可整体替换原本的加载逻辑
         if (loadListener != null) {
-            if (!loadListener.onLoad(yaml, this)) {
-                if (rootConfigClass != null) {
-                    try {
-                        rootConfig = rootConfigClass.getDeclaredConstructor().newInstance();
-                        rootConfig.setApp(this);
-                        return rootConfig;
-                    } catch (Exception e) {
-                        return null;
-                    }
-                } else {
-                    rootConfig = new RootConfig();
-                    rootConfig.setApp(this);
-                    return rootConfig;
-                }
+            rootConfig = loadListener.onLoad(yaml, this);
+            if (rootConfig != null) {
+                return rootConfig;
             }
         }
 
@@ -175,11 +164,6 @@ public class ApplicationConfig extends BaseConfigBean {
             setInitThreadObj(bindIT);
         } else {
             setInitThread(loadedAppBean.getInitThread());
-        }
-
-        //加载后的回调
-        if (loadListener != null) {
-            loadListener.afterLoad(yaml, rootConfig, this);
         }
 
         return rootConfig;
