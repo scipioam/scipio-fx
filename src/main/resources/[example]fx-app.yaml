@@ -28,6 +28,8 @@ app:
   # full class name which extends the init thread super class
   initThread: com.github.ScipioAM.scipio_fx.test.threads.TestInitThread
 
+  defaultViewId: 1
+
   # custom config definition
   custom:
 

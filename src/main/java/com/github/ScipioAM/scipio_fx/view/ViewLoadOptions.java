@@ -107,7 +107,11 @@ public class ViewLoadOptions {
     }
 
     public ViewLoadOptions setInitArg(Object initArg) {
-        this.initArgs = new Object[]{initArg};
+        if (initArg != null) {
+            this.initArgs = new Object[]{initArg};
+        } else {
+            this.initArgs = null;
+        }
         return this;
     }
 

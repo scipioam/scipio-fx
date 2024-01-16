@@ -38,10 +38,13 @@ public class FXMLView {
      */
     public void show(Object... showArgs) {
         if (stage != null) {
+            if (showArgs != null && showArgs.length == 1 && showArgs[0] == null) {
+                showArgs = null;
+            }
             controller.onShow(stage, showArgs);
             stage.show();
         } else {
-            System.err.println("Stage object is null while call FXMLView.show() !");
+            throw new IllegalStateException("Stage object is null while call FXMLView.show() !");
         }
     }
 
@@ -56,7 +59,7 @@ public class FXMLView {
         if (stage != null) {
             stage.close();
         } else {
-            System.err.println("Stage object is null while call FXMLView.close() !");
+            throw new IllegalStateException("Stage object is null while call FXMLView.close() !");
         }
     }
 
