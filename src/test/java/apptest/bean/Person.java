@@ -4,6 +4,7 @@ import com.github.ScipioAM.scipio_fx.persistence.DBEntity;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnBind;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnComparator;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnTimeFormat;
+import com.github.ScipioAM.scipio_fx.utils.RandomUtils;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,7 +13,6 @@ import javafx.geometry.Pos;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import apptest.util.RandomUtil;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -64,12 +64,12 @@ public class Person implements Serializable, DBEntity {
 
     public static Person build(int id, String name) {
         String nickName = name + "_nick";
-        int age = RandomUtil.getIntWithRange(18,50);
-        String email = RandomUtil.getStringWithSpecialChar(8, false) + "@mail.com";
-        String gender = RandomUtil.getBoolean() ? "male" : "female";
-        int year = RandomUtil.getIntWithRange(1980,2001);
-        int month = RandomUtil.getIntWithRange(1,12);
-        int day = RandomUtil.getIntWithRange(1,28);
+        int age = RandomUtils.getInt(18,50);
+        String email = RandomUtils.getStringWithSpecialChar(8, false) + "@mail.com";
+        String gender = RandomUtils.getBoolean() ? "male" : "female";
+        int year = RandomUtils.getInt(1980,2001);
+        int month = RandomUtils.getInt(1,12);
+        int day = RandomUtils.getInt(1,28);
         return new Person(id, name, nickName, age, gender, email, LocalDate.of(year, month, day));
     }
 
@@ -91,7 +91,7 @@ public class Person implements Serializable, DBEntity {
         namePool.add("aurora");
         for (int i = 0; i < 10; i++) {
             int id = 10000 + i;
-            String name = RandomUtil.getStringByCustom(namePool);
+            String name = RandomUtils.getStringByCustom(namePool);
             tableData.add(Person.build(id, name));
         }
     }

@@ -3,6 +3,7 @@ package apptest.controllers;
 import apptest.bean.Person;
 import com.github.ScipioAM.scipio_fx.controller.BaseController;
 import com.github.ScipioAM.scipio_fx.table.mfx.MFXTableBuilder;
+import com.github.ScipioAM.scipio_fx.utils.RandomUtils;
 import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
@@ -13,7 +14,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
-import apptest.util.RandomUtil;
 
 import java.util.Comparator;
 
@@ -90,7 +90,7 @@ public class MFXTableController extends BaseController {
 
     @FXML
     private void onclick_btn1() {
-        int id = RandomUtil.getIntWithRange(20000, 30000);
+        int id = RandomUtils.getInt(20000, 30000);
         tableData.add(Person.build(id, "newPerson"));
     }
 

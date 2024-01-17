@@ -3,7 +3,9 @@ package com.github.ScipioAM.scipio_fx.dialog;
 import com.github.ScipioAM.scipio_fx.constant.Language;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 import javafx.concurrent.Worker;
+import javafx.event.EventHandler;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import org.controlsfx.dialog.ExceptionDialog;
 import org.controlsfx.dialog.ProgressDialog;
 
@@ -56,6 +58,18 @@ public class DialogHelper {
 
     public static Optional<ButtonType> showExceptionDialogHandle(Throwable e) {
         return showExceptionDialogHandle(e, Language.CN);
+    }
+
+    public static void showExceptionDialogHandle(Throwable e, Language language, DialogBtnListener listener) {
+        ExceptionDialog dialog = buildExceptionDialog(e, language);
+        Optional<ButtonType> handle = dialog.showAndWait();
+        if (listener != null && handle.isPresent() && handle.get() != ButtonType.CLOSE) {
+            listener.onClicked(null, null);
+        }
+    }
+
+    public static void showExceptionDialogHandle(Throwable e, DialogBtnListener listener) {
+        showExceptionDialogHandle(e, Language.CN, listener);
     }
 
     //==================================== ↓↓↓↓↓↓ 常规dialog ↓↓↓↓↓↓ ====================================

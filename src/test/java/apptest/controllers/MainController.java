@@ -36,7 +36,7 @@ public class MainController extends BaseMainController {
     @FXML
     private void onTest1BtnClick() {
         console.clear();
-//        console.output(RandomUtil.getString(5));
+//        console.output(RandomUtils.getString(5));
     }
 
     @FXML

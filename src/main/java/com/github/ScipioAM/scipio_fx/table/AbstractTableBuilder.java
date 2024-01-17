@@ -49,7 +49,7 @@ public abstract class AbstractTableBuilder<T> {
             fieldColumnBuild(entry.getField(), entry.getBindInfo());
         }
         //列构建的统计总结
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             throw new IllegalStateException("type[" + dataType.getName() + "] must declared at least one annotation of [" + TableColumnBind.class.getName() + "]");
         } else {
             System.out.println(entries.size() + " columns of TableView have been build, based on type[" + dataType.getName() + "]");
@@ -67,7 +67,7 @@ public abstract class AbstractTableBuilder<T> {
         for (Field field : fields) {
             String fieldName = field.getName();
             //排除指定的字段
-            if (excludeFieldsCache.size() > 0 && excludeFieldsCache.containsKey(fieldName)) {
+            if (!excludeFieldsCache.isEmpty() && excludeFieldsCache.containsKey(fieldName)) {
                 continue;
             }
             //字段信息
@@ -119,13 +119,13 @@ public abstract class AbstractTableBuilder<T> {
             } else {
                 dataSource.addAll(initData);
             }
-            initEmptyData = (initData.size() == 0);
+            initEmptyData = (initData.isEmpty());
         }
         return this;
     }
 
     public AbstractTableBuilder<T> setExcludeFields(Collection<String> excludeFields) {
-        if(excludeFields == null || excludeFields.size() == 0) {
+        if(excludeFields == null || excludeFields.isEmpty()) {
             excludeFieldsCache.clear();
         } else {
             for(String excludeField : excludeFields) {

@@ -2,10 +2,8 @@ package com.github.ScipioAM.scipio_fx.table;
 
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnBind;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnComparator;
-import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnTimeFormat;
-import com.github.ScipioAM.scipio_fx.table.cell.*;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import lombok.AccessLevel;
@@ -16,13 +14,8 @@ import lombok.experimental.Accessors;
 import org.controlsfx.control.tableview2.TableView2;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Date;
 
 /**
  * {@link TableView}的构建器
@@ -41,6 +34,8 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
     private FXTableColumnBuilder<T> columnBuilder;
     @SuppressWarnings("rawtypes")
     private Callback<TableView.ResizeFeatures, Boolean> resizePolicy;
+
+    private FXRowClickListener<T> rowClickListener;
 
     //===============================================================================================================================================
 
@@ -114,39 +109,48 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
         tableView.getColumns().add(column);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    private void buildCellFactory(TableColumn<T, ?> column, Field field, TableColumnBind bindInfo) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        TableColumnTimeFormat formatInfo = field.getAnnotation(TableColumnTimeFormat.class);
-        Class<? extends TableCell<?, ?>> cellImpl = bindInfo.cellImpl();
-        if (formatInfo != null && cellImpl == EmptyTableCell.class) {
-            Class<?> fieldType = field.getType();
-            String pattern = formatInfo.pattern();
-            TableCell tc;
-            if (fieldType == LocalDate.class) {
-                tc = new LocalDateTableCell<T>(pattern);
-            } else if (fieldType == LocalDateTime.class) {
-                tc = new LocalDateTimeTableCell<T>(pattern);
-            } else if (fieldType == Date.class) {
-                tc = new DateTableCell<T>(pattern);
-            } else if (fieldType == LocalTime.class) {
-                tc = new LocalTimeTableCell<>(pattern);
-            } else {
-                throw new UnsupportedOperationException("unsupported fieldType for @TableColumnTimeFormat: " + fieldType.getName());
-            }
-            column.setCellFactory(param -> tc);
-        } else if (cellImpl != EmptyTableCell.class) {
-            //自定义实现
-            TableCell tc = cellImpl.getDeclaredConstructor().newInstance();
-            column.setCellFactory(param -> tc);
-        }
-    }
+//    @SuppressWarnings({"unchecked", "rawtypes"})
+//    private void buildCellFactory(TableColumn<T, ?> column, Field field, TableColumnBind bindInfo) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+//        TableColumnTimeFormat formatInfo = field.getAnnotation(TableColumnTimeFormat.class);
+//        Class<? extends TableCell<?, ?>> cellImpl = bindInfo.cellImpl();
+//        if (formatInfo != null && cellImpl == EmptyTableCell.class) {
+//            Class<?> fieldType = field.getType();
+//            String pattern = formatInfo.pattern();
+//            TableCell tc;
+//            if (fieldType == LocalDate.class) {
+//                tc = new LocalDateTableCell<T>(pattern);
+//            } else if (fieldType == LocalDateTime.class) {
+//                tc = new LocalDateTimeTableCell<T>(pattern);
+//            } else if (fieldType == Date.class) {
+//                tc = new DateTableCell<T>(pattern);
+//            } else if (fieldType == LocalTime.class) {
+//                tc = new LocalTimeTableCell<>(pattern);
+//            } else {
+//                throw new UnsupportedOperationException("unsupported fieldType for @TableColumnTimeFormat: " + fieldType.getName());
+//            }
+//            column.setCellFactory(param -> tc);
+//        } else if (cellImpl != EmptyTableCell.class) {
+//            //自定义实现
+//            TableCell tc = cellImpl.getDeclaredConstructor().newInstance();
+//            column.setCellFactory(param -> tc);
+//        }
+//    }
 
     /**
      * 其他构建
      */
     @Override
     protected void otherBuild() {
+        //绑定数据源
         tableView.setItems(dataSource);
+        //行点击事件
+        if (rowClickListener != null) {
+            tableView.setRowFactory(param -> {
+                TableRow<T> row = new TableRow<>();
+                row.setOnMouseClicked(event -> rowClickListener.onClick(event, row));
+                return row;
+            });
+        }
     }
 
     //===============================================================================================================================================
@@ -185,6 +189,13 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
      */
     public FXTableBuilder<T> setColumnResizePolicyConstrained() {
         this.resizePolicy = TableView.CONSTRAINED_RESIZE_POLICY;
+        return this;
+    }
+
+    //不起作用，使用tableView.setMouseClicked()代替
+    @Deprecated
+    public FXTableBuilder<T> setRowClickListener(FXRowClickListener<T> rowClickListener) {
+        this.rowClickListener = rowClickListener;
         return this;
     }
 

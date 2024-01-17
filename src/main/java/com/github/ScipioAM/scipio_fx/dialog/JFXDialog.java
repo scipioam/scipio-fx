@@ -56,7 +56,7 @@ public class JFXDialog implements IDialog {
         dialogObj.setContentText(contentText);
         dialogObj.setOnCloseRequest(onCloseHandler);
         dialogObj.setOnShown(onShownHandler);
-        if(btnMap.size() > 0) {
+        if(!btnMap.isEmpty()) {
             DialogPane dialogPane = dialogObj.getDialogPane();
             ObservableList<ButtonType> buttonTypes = dialogPane.getButtonTypes();
             buttonTypes.addAll(btnMap.keySet());
