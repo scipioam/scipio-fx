@@ -22,29 +22,41 @@ public abstract class SimpleBackgroundTask<T> implements Runnable {
 
     @Override
     public void run() {
+        T data = null;
         try {
-            T data = execute();
-            if (finishUiCallback != null) {
-                finishUiCallback.setData(data);
-            }
+            //运行任务
+            data = execute();
         } catch (Exception e) {
+            //运行失败
             log.error("Background task run failed !", e);
-            if (errorUiCallback == null) {
-                errorUiCallback = new SimpleUiCallback<>() {
-                    @Override
-                    public void execute(T data) {
-                        AlertHelper.showError("", "错 误", "后台任务执行失败！ " + e);
-                    }
-                };
+            onError(e);
+            if (errorUiCallback != null) {
+                Platform.runLater(errorUiCallback);
             }
-            Platform.runLater(errorUiCallback);
         }
         //运行完后的善后
+        onFinish(data);
         if (finishUiCallback != null) {
+            finishUiCallback.setData(data);
             Platform.runLater(finishUiCallback);
         }
     }
 
     protected abstract T execute() throws Exception;
+
+    protected void onError(Throwable e) {
+    }
+
+    protected void onFinish(T data) {
+    }
+
+    public void setDefaultErrorUiCallback() {
+        errorUiCallback = new SimpleUiCallback<>() {
+            @Override
+            public void execute(T data) {
+                AlertHelper.showError("", "执行结果", "后台任务执行失败！");
+            }
+        };
+    }
 
 }
