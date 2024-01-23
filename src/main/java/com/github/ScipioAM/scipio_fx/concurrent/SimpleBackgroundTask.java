@@ -1,6 +1,6 @@
 package com.github.ScipioAM.scipio_fx.concurrent;
 
-import com.github.ScipioAM.scipio_fx.dialog.AlertHelper;
+import com.github.ScipioAM.scipio_fx.dialog.DialogHelper;
 import javafx.application.Platform;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -17,8 +17,9 @@ public abstract class SimpleBackgroundTask<T> implements Runnable {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    protected SimpleUiCallback<T> finishUiCallback;
-    protected SimpleUiCallback<T> errorUiCallback;
+    protected SimpleOnFinishListener<T> onSuccessListener;
+    protected SimpleOnFinishListener<T> onFinishListener;
+    protected SimpleOnErrorListener onErrorListener;
 
     @Override
     public void run() {
@@ -26,23 +27,33 @@ public abstract class SimpleBackgroundTask<T> implements Runnable {
         try {
             //运行任务
             data = execute();
+            onSuccess(data);
+            if (onSuccessListener != null) {
+                T finalData = data;
+                Platform.runLater(() -> onSuccessListener.handle(finalData));
+            }
         } catch (Exception e) {
             //运行失败
             log.error("Background task run failed !", e);
             onError(e);
-            if (errorUiCallback != null) {
-                Platform.runLater(errorUiCallback);
+            if (onErrorListener != null) {
+                Platform.runLater(() -> {
+                    onErrorListener.onError(e);
+                });
             }
         }
         //运行完后的善后
         onFinish(data);
-        if (finishUiCallback != null) {
-            finishUiCallback.setData(data);
-            Platform.runLater(finishUiCallback);
+        if (onFinishListener != null) {
+            T finalData1 = data;
+            Platform.runLater(() -> onFinishListener.handle(finalData1));
         }
     }
 
     protected abstract T execute() throws Exception;
+
+    protected void onSuccess(T data) {
+    }
 
     protected void onError(Throwable e) {
     }
@@ -50,13 +61,8 @@ public abstract class SimpleBackgroundTask<T> implements Runnable {
     protected void onFinish(T data) {
     }
 
-    public void setDefaultErrorUiCallback() {
-        errorUiCallback = new SimpleUiCallback<>() {
-            @Override
-            public void execute(T data) {
-                AlertHelper.showError("", "执行结果", "后台任务执行失败！");
-            }
-        };
+    public void setDefaultOnErrorListener() {
+        onErrorListener = DialogHelper::showExceptionDialog;
     }
 
 }
