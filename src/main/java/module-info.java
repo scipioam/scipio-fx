@@ -8,7 +8,6 @@ module com.github.scipio.scipio_fx {
     requires transitive javafx.fxml;
     requires transitive MaterialFX;
     requires transitive static lombok;
-    requires transitive jakarta.persistence;
 
     exports com.github.ScipioAM.scipio_fx.app;
     exports com.github.ScipioAM.scipio_fx.app.config;
@@ -26,8 +25,6 @@ module com.github.scipio.scipio_fx {
     exports com.github.ScipioAM.scipio_fx.exception;
     exports com.github.ScipioAM.scipio_fx.combobox;
     exports com.github.ScipioAM.scipio_fx.combobox.mfx;
-    exports com.github.ScipioAM.scipio_fx.persistence;
-    exports com.github.ScipioAM.scipio_fx.persistence.converter;
     exports com.github.ScipioAM.scipio_fx.concurrent;
 
 //    opens com.github.ScipioAM.scipio_fx.test.util;

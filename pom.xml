@@ -55,9 +55,6 @@
 
         <!-- ================= 功能库 ================= -->
         <yaml.version>2.2</yaml.version>
-
-        <!-- ================= 持久化 ================= -->
-        <jpa.api.version>3.1.0</jpa.api.version>
     </properties>
 
     <dependencies>
@@ -120,14 +117,6 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>${yaml.version}</version>
-        </dependency>
-        <!-- ===================================== 持久化 ===================================== -->
-        <!-- jpa -->
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>${jpa.api.version}</version>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 
