@@ -13,8 +13,16 @@ import java.util.List;
 public class SearchTask<T> extends AppAbstractTask<List<T>> implements AppBackgroundThread<List<T>> {
 
     private final SearchImplementation<T> searchImpl;
-    private final SearchFinishListener<T> finishListener;
-    private final SearchErrorListener errorListener;
+    private SearchFinishListener<T> finishListener;
+    private SearchErrorListener errorListener;
+
+    public SearchTask(SearchImplementation<T> searchImpl) {
+        this.searchImpl = searchImpl;
+    }
+
+    public SearchTask(SearchImplementation<T> searchImpl, SearchFinishListener<T> finishListener) {
+        this(searchImpl, finishListener, SearchErrorListener.PRINTER);
+    }
 
     public SearchTask(SearchImplementation<T> searchImpl, SearchFinishListener<T> finishListener, SearchErrorListener errorListener) {
         this.searchImpl = searchImpl;
@@ -22,23 +30,30 @@ public class SearchTask<T> extends AppAbstractTask<List<T>> implements AppBackgr
         this.errorListener = errorListener;
     }
 
-    public SearchTask(SearchImplementation<T> searchImpl, SearchFinishListener<T> finishListener) {
-        this(searchImpl, finishListener, SearchErrorListener.PRINTER);
-    }
-
     @Override
     public List<T> doCall() {
         //执行搜索
-        List<T> data = null;
-        try {
-            data = searchImpl.doSearch();
-        } catch (Exception e) {
-            errorListener.onError(e, searchImpl);
-        }
+        List<T> data = searchImpl.doSearch();
         //搜索完成后的数据回显
         final List<T> finalData = data;
         Platform.runLater(() -> finishListener.searchFinished(finalData));
         return data;
+    }
+
+    @Override
+    protected void failed() {
+        super.failed();
+        errorListener.onError(getException(), searchImpl);
+    }
+
+    public SearchTask<T> setFinishListener(SearchFinishListener<T> finishListener) {
+        this.finishListener = finishListener;
+        return this;
+    }
+
+    public SearchTask<T> setErrorListener(SearchErrorListener errorListener) {
+        this.errorListener = errorListener;
+        return this;
     }
 
     @Override

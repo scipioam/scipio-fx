@@ -37,9 +37,7 @@ public abstract class SimpleBackgroundTask<T> implements Runnable {
             log.error("Background task run failed !", e);
             onError(e);
             if (onErrorListener != null) {
-                Platform.runLater(() -> {
-                    onErrorListener.onError(e);
-                });
+                Platform.runLater(() -> onErrorListener.onError(e));
             }
         }
         //运行完后的善后

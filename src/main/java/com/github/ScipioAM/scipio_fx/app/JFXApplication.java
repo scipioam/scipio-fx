@@ -204,7 +204,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
 
     @Override
     public void stop() throws Exception {
-        if (mainView.getController() != null) {
+        if (mainView != null && mainView.getController() != null) {
             mainView.getController().onStop();
         }
         if (threadPool != null && !threadPool.isShutdown()) {

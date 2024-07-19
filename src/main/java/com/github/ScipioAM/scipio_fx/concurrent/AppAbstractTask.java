@@ -136,7 +136,7 @@ public abstract class AppAbstractTask<T> extends Task<T> implements AppBackgroun
     //=========================================== ↓↓↓↓↓↓ Task状态回调 ↓↓↓↓↓↓ ===========================================
 
     /**
-     * 无论什么状态，必然执行的（先执行此done，再执行succeeded,failed,canceled这三个生命周期）
+     * 运行在子线程，无论什么状态，必然执行的（先执行此done，再执行succeeded,failed,canceled这三个生命周期）
      */
     @Override
     protected void done() {
@@ -154,10 +154,13 @@ public abstract class AppAbstractTask<T> extends Task<T> implements AppBackgroun
             uiValue.unbind();
         }
         if (doneListener != null) {
-            doneListener.onDone(this);
+            Platform.runLater(() -> doneListener.onDone(this));
         }
     }
 
+    /**
+     * 运行在FX主线程，任务成功完成时调用
+     */
     @Override
     protected void succeeded() {
         if (succeedListener != null) {
@@ -165,6 +168,9 @@ public abstract class AppAbstractTask<T> extends Task<T> implements AppBackgroun
         }
     }
 
+    /**
+     * 运行在FX主线程，任务失败时调用
+     */
     @Override
     protected void failed() {
         if (getException() != null) {
@@ -178,6 +184,9 @@ public abstract class AppAbstractTask<T> extends Task<T> implements AppBackgroun
         }
     }
 
+    /**
+     * 运行在FX主线程，任务被取消时调用
+     */
     @Override
     protected void cancelled() {
         if (canceledListener != null) {
