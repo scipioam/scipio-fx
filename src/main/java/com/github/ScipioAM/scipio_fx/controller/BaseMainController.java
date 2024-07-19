@@ -79,14 +79,16 @@ public abstract class BaseMainController extends BaseController {
      * 根据标识key加载子view
      *
      * @param viewInfo 子view的标识key
-     * @param initArgs 自定义参数
+     * @param options  view构建参数
      */
-    public FXMLView getOrBuildChildView(AppViewId viewInfo, Object initArgs) {
+    public FXMLView getOrBuildChildView(AppViewId viewInfo, ViewLoadOptions options) {
+        if (options == null) {
+            throw new IllegalArgumentException("options cannot be null");
+        }
         return children.computeIfAbsent(viewInfo, key -> {
             try {
-                ViewLoadOptions options = ViewLoadOptions.build()
-                        .setFxml(this.getClass(), viewInfo)
-                        .setInitArg(initArgs);
+                options.setFxml(this.getClass(), viewInfo);
+                options.setViewInfo(viewInfo);
                 FXMLView view = FXMLView.load(options);
                 BaseController childController = view.getController();
                 childController.setParentStage(parentStage);
@@ -97,6 +99,12 @@ public abstract class BaseMainController extends BaseController {
                 return null;
             }
         });
+    }
+
+    public FXMLView getOrBuildChildView(AppViewId viewInfo, Object initArgs) {
+        ViewLoadOptions options = ViewLoadOptions.build()
+                .setInitArg(initArgs);
+        return getOrBuildChildView(viewInfo, options);
     }
 
     public abstract void onMainControllerInit(Parent rootNode, Object... initArgs);
