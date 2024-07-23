@@ -56,7 +56,7 @@ public abstract class AppAbstractTask<T> extends Task<T> implements AppBackgroun
     protected ObjectProperty<T> uiValue;
 
     @Setter
-    protected TaskSucceedListener succeedListener;
+    protected TaskSucceedListener<T> succeedListener;
     @Setter
     protected TaskFailureListener failureListener;
     @Setter
@@ -164,7 +164,8 @@ public abstract class AppAbstractTask<T> extends Task<T> implements AppBackgroun
     @Override
     protected void succeeded() {
         if (succeedListener != null) {
-            succeedListener.onSucceed(this);
+            T result = getTaskResult();
+            succeedListener.onSucceed(this, result);
         }
     }
 

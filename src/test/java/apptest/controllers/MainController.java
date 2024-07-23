@@ -86,7 +86,7 @@ public class MainController extends BaseMainController {
     private void onTest7BtnClick() {
         consoleTask = new ConsoleTask(console);
 //        consoleTask.setOnSucceeded(event -> console.output("OnSucceeded")); //会报错: A bound value cannot be set
-        consoleTask.setSucceedListener(ctx -> ctx.updateUiMessage("执行成功"));
+        consoleTask.setSucceedListener((ctx, result) -> ctx.updateUiMessage("执行成功"));
         consoleTask.setCanceledListener(ctx -> System.out.println("ConsoleTask has been canceled"));
         TestApplication.context.submitTask(consoleTask);
     }
