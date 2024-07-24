@@ -12,6 +12,7 @@ import io.github.palexdev.materialfx.filter.base.AbstractFilter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.SelectionMode;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -106,7 +107,7 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         if (bindInfo.filtered()) {
             //过滤器名称，如果不设置就默认采用列标题
             String filterName = bindInfo.filterName();
-            if (filterName == null || "".equals(filterName)) {
+            if (filterName == null || filterName.isEmpty()) {
                 filterName = bindInfo.title();
             }
             TableColumnFilter filterInfo = field.getAnnotation(TableColumnFilter.class);
@@ -137,21 +138,24 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
     @Override
     protected void otherBuild() throws Exception {
         //过滤器
-        if (filters.size() > 0) {
+        if (!filters.isEmpty()) {
             tableView.getFilters().clear();
             tableView.getFilters().addAll(filters);
         }
-        //数据源绑定
+        //绑定数据源
         if (this.dataSource == null) {
             this.dataSource = FXCollections.observableArrayList();
         }
+        tableView.setItems(dataSource);
         //添加空数据（否则ui会无法更新数据源的变化）
-        if (initEmptyData && dataSource.size() == 0) {
+        if (initEmptyData && dataSource.isEmpty()) {
             T emptyData = dataType.getDeclaredConstructor().newInstance();
             this.dataSource.add(emptyData);
         }
-        //绑定数据源
-        tableView.setItems(dataSource);
+        //选择模式
+        if (selectionMode != null) {
+            tableView.getSelectionModel().setAllowsMultipleSelection(selectionMode == SelectionMode.MULTIPLE);
+        }
         //清除此空数据
         if (initEmptyData) {
             dataSource.clear();
@@ -188,6 +192,11 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
     @Override
     public MFXTableBuilder<T> setExcludeFields(String... excludeFields) {
         return (MFXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    }
+
+    @Override
+    public MFXTableBuilder<T> setSelectionMode(SelectionMode selectionMode) {
+        return (MFXTableBuilder<T>) super.setSelectionMode(selectionMode);
     }
 
     /**
@@ -304,8 +313,7 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         if (rowsPerPage <= 0) {
             throw new IllegalArgumentException("rowsPerPage must be positive");
         }
-        if (tableView instanceof MFXPaginatedTableView) {
-            MFXPaginatedTableView<T> paginatedTableView = (MFXPaginatedTableView<T>) tableView;
+        if (tableView instanceof MFXPaginatedTableView<T> paginatedTableView) {
             paginatedTableView.setRowsPerPage(rowsPerPage);
         } else {
             throw new UnsupportedOperationException("tableView is not instance of MFXPaginatedTableView");

@@ -3,6 +3,7 @@ package com.github.ScipioAM.scipio_fx.table;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnBind;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.SelectionMode;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -29,6 +30,8 @@ public abstract class AbstractTableBuilder<T> {
     protected boolean readSuperClassFields = false; //是否读取父类的@TableColumnBind注解
 
     protected final Map<String, String> excludeFieldsCache = new HashMap<>(); //通过代码排除的列（字段名）
+
+    protected SelectionMode selectionMode; // 单选还是多选
 
     /**
      * 构建tableView
@@ -138,6 +141,11 @@ public abstract class AbstractTableBuilder<T> {
     public AbstractTableBuilder<T> setExcludeFields(String... excludeFields) {
         List<String> list = Arrays.asList(excludeFields);
         return setExcludeFields(list);
+    }
+
+    public AbstractTableBuilder<T> setSelectionMode(SelectionMode selectionMode) {
+        this.selectionMode = selectionMode;
+        return this;
     }
 
 }

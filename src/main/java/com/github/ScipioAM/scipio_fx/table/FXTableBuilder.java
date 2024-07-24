@@ -2,9 +2,9 @@ package com.github.ScipioAM.scipio_fx.table;
 
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnBind;
 import com.github.ScipioAM.scipio_fx.table.annotations.TableColumnComparator;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.event.EventHandler;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -36,6 +36,9 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
     private Callback<TableView.ResizeFeatures, Boolean> resizePolicy;
 
     private FXRowClickListener<T> rowClickListener;
+    private EventHandler<MouseEvent> tableMouseClickHandler;
+
+    private ContextMenu tableContextMenu;
 
     //===============================================================================================================================================
 
@@ -143,12 +146,23 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
     protected void otherBuild() {
         //绑定数据源
         tableView.setItems(dataSource);
-        //行点击事件
-        if (rowClickListener != null) {
-            tableView.setRowFactory(param -> {
-                TableRow<T> row = new TableRow<>();
-                row.setOnMouseClicked(event -> rowClickListener.onClick(event, row));
-                return row;
+        //选择模式
+        if (selectionMode != null) {
+            tableView.getSelectionModel().setSelectionMode(selectionMode);
+        }
+        //整个table的右键菜单
+        if (tableContextMenu != null) {
+            tableView.setContextMenu(tableContextMenu);
+        }
+        if (tableMouseClickHandler != null || rowClickListener != null) {
+            tableView.setOnMouseClicked(event -> {
+                if (tableMouseClickHandler != null) {
+                    tableMouseClickHandler.handle(event);
+                }
+                if (rowClickListener != null) {
+                    T rowData = tableView.getSelectionModel().getSelectedItem();
+                    rowClickListener.onClick(event, rowData);
+                }
             });
         }
     }
@@ -192,11 +206,9 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
         return this;
     }
 
-    //不起作用，使用tableView.setMouseClicked()代替
-    @Deprecated
-    public FXTableBuilder<T> setRowClickListener(FXRowClickListener<T> rowClickListener) {
-        this.rowClickListener = rowClickListener;
-        return this;
+    @Override
+    public FXTableBuilder<T> setSelectionMode(SelectionMode selectionMode) {
+        return (FXTableBuilder<T>) super.setSelectionMode(selectionMode);
     }
 
 }
