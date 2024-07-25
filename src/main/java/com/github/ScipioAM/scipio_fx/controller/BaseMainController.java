@@ -5,6 +5,8 @@ import com.github.ScipioAM.scipio_fx.dialog.DialogHelper;
 import com.github.ScipioAM.scipio_fx.view.FXMLView;
 import com.github.ScipioAM.scipio_fx.view.ViewLoadOptions;
 import javafx.scene.Parent;
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -89,11 +91,10 @@ public abstract class BaseMainController extends BaseController {
             try {
                 options.setFxml(this.getClass(), viewInfo);
                 options.setViewInfo(viewInfo);
-                FXMLView view = FXMLView.load(options);
-                BaseController childController = view.getController();
-                childController.setParentStage(parentStage);
-                childController.setThisStage(view.getStage());
-                return view;
+                FXMLView childView = FXMLView.load(options);
+                BaseController childController = childView.getController();
+                childController.setParentController(this);
+                return childView;
             } catch (Exception e) {
                 e.printStackTrace();
                 DialogHelper.showExceptionDialog(e);
@@ -106,6 +107,25 @@ public abstract class BaseMainController extends BaseController {
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setInitArg(initArgs);
         return getOrBuildChildView(viewInfo, options);
+    }
+
+    public <T extends AppViewId> void showJumpView(Parent rootPane, BaseController parentController, T viewId, Object initArgs) {
+        if (rootPane == null) {
+            throw new IllegalArgumentException("rootPane cannot be null");
+        }
+        if (parentController == null) {
+            throw new IllegalArgumentException("parentController cannot be null");
+        }
+        if (viewId == null) {
+            throw new IllegalArgumentException("viewId cannot be null");
+        }
+        ViewLoadOptions options = ViewLoadOptions.build()
+                .setStageOptions(rootPane, StageStyle.UTILITY, Modality.APPLICATION_MODAL)
+                .setInitArg(initArgs);
+        FXMLView jumpView = getOrBuildChildView(viewId, options);
+        BaseController jumpController = jumpView.getController();
+        jumpController.setParentController(parentController);
+        jumpView.show(initArgs);
     }
 
     public abstract void onMainControllerInit(Parent rootNode, Object... initArgs);

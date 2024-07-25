@@ -17,9 +17,9 @@ import java.util.ResourceBundle;
 @Getter
 public abstract class BaseController implements Initializable {
 
-    protected Stage parentStage;
+    protected Stage stage;
 
-    protected Stage thisStage;
+    protected BaseController parentController;
 
     //=========================================== ↓↓↓↓↓↓ controller生命周期 ↓↓↓↓↓↓ ===========================================
 
@@ -73,24 +73,24 @@ public abstract class BaseController implements Initializable {
     //=========================================== ↓↓↓↓↓↓ 工具方法 ↓↓↓↓↓↓ ===========================================
 
     public void show() {
-        if (thisStage != null) {
-            thisStage.show();
+        if (stage != null) {
+            stage.show();
         } else {
             throw new IllegalStateException("Stage object is null while call BaseController.show() !");
         }
     }
 
     public void close() {
-        if (thisStage != null) {
-            thisStage.close();
+        if (stage != null) {
+            stage.close();
         } else {
             throw new IllegalStateException("Stage object is null while call BaseController.close() !");
         }
     }
 
     public void hide() {
-        if (thisStage != null) {
-            thisStage.hide();
+        if (stage != null) {
+            stage.hide();
         } else {
             throw new IllegalStateException("Stage object is null while call BaseController.hide() !");
         }

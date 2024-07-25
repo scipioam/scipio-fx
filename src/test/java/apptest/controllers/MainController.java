@@ -47,7 +47,7 @@ public class MainController extends BaseMainController {
 
     @FXML
     private void onTest3BtnClick() {
-        TestNotification.showMFX(parentStage);
+        TestNotification.showMFX(stage);
     }
 
     @FXML

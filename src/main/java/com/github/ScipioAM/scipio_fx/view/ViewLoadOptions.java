@@ -98,7 +98,7 @@ public class ViewLoadOptions {
         BaseController controller = view.getController();
         Stage stage = StageUtil.buildStage(stageStyle, modality, container.getScene().getWindow(), view.getView(), title);
         view.setStage(stage);
-        controller.setParentStage(stage);
+        controller.setStage(stage);
     }
 
     public ViewLoadOptions setInitArgs(Object... initArgs) {

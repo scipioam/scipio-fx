@@ -248,7 +248,6 @@ public abstract class JFXApplication extends Application implements ApplicationI
         URL mainViewUrl = appConfig.getMainViewUrl();
         FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, (Object[]) null);
         BaseController mainController = mainView.getController();
-        mainController.setThisStage(mainStage);
         context.setMainController(mainController);
         //让主窗体可以被随意拖拽
         if (appConfig.isMainViewDraggable()) {
@@ -326,7 +325,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
             splashScreen.setStage(null);
         }
         BaseController mainController = mainView.getController();
-        mainController.setParentStage(mainStage);
+        mainController.setStage(mainStage);
         mainView.setStage(mainStage);
         //主窗口关闭时，必然调用exit方法
         mainStage.setOnCloseRequest(windowsEvent -> exit(false));
