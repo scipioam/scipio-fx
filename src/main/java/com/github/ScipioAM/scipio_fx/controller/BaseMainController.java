@@ -92,6 +92,7 @@ public abstract class BaseMainController extends BaseController {
                 FXMLView view = FXMLView.load(options);
                 BaseController childController = view.getController();
                 childController.setParentStage(parentStage);
+                childController.setThisStage(view.getStage());
                 return view;
             } catch (Exception e) {
                 e.printStackTrace();

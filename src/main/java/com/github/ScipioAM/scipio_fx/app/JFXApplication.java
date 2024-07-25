@@ -248,6 +248,7 @@ public abstract class JFXApplication extends Application implements ApplicationI
         URL mainViewUrl = appConfig.getMainViewUrl();
         FXMLView mainView = FXMLViewLoader.build().load(mainViewUrl, (Object[]) null);
         BaseController mainController = mainView.getController();
+        mainController.setThisStage(mainStage);
         context.setMainController(mainController);
         //让主窗体可以被随意拖拽
         if (appConfig.isMainViewDraggable()) {

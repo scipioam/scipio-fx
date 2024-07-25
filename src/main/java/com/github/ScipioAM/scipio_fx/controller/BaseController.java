@@ -3,7 +3,8 @@ package com.github.ScipioAM.scipio_fx.controller;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,10 +13,13 @@ import java.util.ResourceBundle;
  * @author Alan Scipio
  * @since 1.00 _ 2020/9/14
  */
-@Data
+@Setter
+@Getter
 public abstract class BaseController implements Initializable {
 
     protected Stage parentStage;
+
+    protected Stage thisStage;
 
     //=========================================== ↓↓↓↓↓↓ controller生命周期 ↓↓↓↓↓↓ ===========================================
 
@@ -64,6 +68,32 @@ public abstract class BaseController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         onCreate(location, resources);
+    }
+
+    //=========================================== ↓↓↓↓↓↓ 工具方法 ↓↓↓↓↓↓ ===========================================
+
+    public void show() {
+        if (thisStage != null) {
+            thisStage.show();
+        } else {
+            throw new IllegalStateException("Stage object is null while call BaseController.show() !");
+        }
+    }
+
+    public void close() {
+        if (thisStage != null) {
+            thisStage.close();
+        } else {
+            throw new IllegalStateException("Stage object is null while call BaseController.close() !");
+        }
+    }
+
+    public void hide() {
+        if (thisStage != null) {
+            thisStage.hide();
+        } else {
+            throw new IllegalStateException("Stage object is null while call BaseController.hide() !");
+        }
     }
 
 }
