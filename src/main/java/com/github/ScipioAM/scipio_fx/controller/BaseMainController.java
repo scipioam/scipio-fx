@@ -109,7 +109,7 @@ public abstract class BaseMainController extends BaseController {
         return getOrBuildChildView(viewInfo, options);
     }
 
-    public <T extends AppViewId> void showJumpView(Parent rootPane, BaseController parentController, T viewId, Object initArgs) {
+    public <T extends AppViewId> FXMLView showJumpView(Parent rootPane, BaseController parentController, T viewId, Object... initArgs) {
         if (rootPane == null) {
             throw new IllegalArgumentException("rootPane cannot be null");
         }
@@ -121,11 +121,16 @@ public abstract class BaseMainController extends BaseController {
         }
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setStageOptions(rootPane, StageStyle.UTILITY, Modality.APPLICATION_MODAL)
-                .setInitArg(initArgs);
+                .setInitArgs(initArgs);
         FXMLView jumpView = getOrBuildChildView(viewId, options);
         BaseController jumpController = jumpView.getController();
         jumpController.setParentController(parentController);
         jumpView.show(initArgs);
+        return jumpView;
+    }
+
+    public <T extends AppViewId> FXMLView showJumpView(Parent rootPane, BaseController parentController, T viewId) {
+        return showJumpView(rootPane, parentController, viewId, (Object[]) null);
     }
 
     public abstract void onMainControllerInit(Parent rootNode, Object... initArgs);
