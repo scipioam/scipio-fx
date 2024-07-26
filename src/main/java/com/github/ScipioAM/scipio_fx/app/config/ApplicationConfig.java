@@ -7,8 +7,12 @@ import com.github.ScipioAM.scipio_fx.app.mfx.MaterialFXInitializer;
 import com.github.ScipioAM.scipio_fx.exception.ConfigLoadException;
 import com.github.ScipioAM.scipio_fx.utils.StringUtils;
 import javafx.stage.StageStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -21,6 +25,8 @@ import java.util.Map;
  * @since 2022/2/22
  */
 public class ApplicationConfig extends BaseConfigBean {
+
+    private final transient Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
 
     public final static String DEFAULT_SPLASH_IMG_PATH = "/img/splash.gif";
 
@@ -110,7 +116,7 @@ public class ApplicationConfig extends BaseConfigBean {
             if (rootConfigClass == null) {
                 rootConfigClass = RootConfig.class;
             }
-            InputStream in = appClass.getResourceAsStream(configFileName());
+            InputStream in = getConfigFileInputStream(appClass, configFileName());
             rootConfig = yaml.loadAs(in, rootConfigClass);
             loadedAppBean = rootConfig.getApp();
             rootConfig.setApp(this);
@@ -190,11 +196,30 @@ public class ApplicationConfig extends BaseConfigBean {
     public String configFileName() {
         String configPrefix = appInstance.configPrefix();
         StringBuilder s = new StringBuilder();
-        if (configPrefix.charAt(0) != '/') {
-            s.append("/");
+        s.append(configPrefix);
+        if (!configPrefix.endsWith(".yaml")) {
+            s.append(".yaml");
         }
-        s.append(configPrefix).append(".yaml");
         return s.toString();
+    }
+
+    private InputStream getConfigFileInputStream(Class<? extends JFXApplication> appClass, String configFileName) {
+        File externalFile = new File(configFileName);
+        if (externalFile.exists()) {
+            // 优先读取外部配置文件
+            try {
+                return new FileInputStream(externalFile);
+            } catch (Exception e) {
+                throw new ConfigLoadException("Got exception while Read external config file [" + configFileName + "], " + e, e);
+            }
+        } else {
+            // 其次读取内部配置文件
+            log.info("External config file [{}] not found, try to read internal config file", configFileName);
+            if (!configFileName.startsWith("/")) {
+                configFileName = "/" + configFileName;
+            }
+            return appClass.getResourceAsStream(configFileName);
+        }
     }
 
     //==============================================================================================================================
