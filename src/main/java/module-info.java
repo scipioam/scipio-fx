@@ -1,37 +1,37 @@
-module com.github.scipio.scipio_fx {
-
-    requires org.controlsfx.controls;
-    requires org.yaml.snakeyaml;
-    requires org.slf4j;
+module com.github.scipioam.scipiofx {
 
     requires transitive javafx.controls;
     requires transitive javafx.fxml;
-    requires transitive MaterialFX;
-    requires transitive static lombok;
+    requires transitive org.yaml.snakeyaml;
 
-    exports com.github.ScipioAM.scipio_fx.app;
-    exports com.github.ScipioAM.scipio_fx.app.config;
-    exports com.github.ScipioAM.scipio_fx.app.mfx;
-    exports com.github.ScipioAM.scipio_fx.constant;
-    exports com.github.ScipioAM.scipio_fx.controller;
-    exports com.github.ScipioAM.scipio_fx.dialog;
-    exports com.github.ScipioAM.scipio_fx.dialog.mfx;
-    exports com.github.ScipioAM.scipio_fx.table;
-    exports com.github.ScipioAM.scipio_fx.table.annotations;
-    exports com.github.ScipioAM.scipio_fx.table.cell;
-    exports com.github.ScipioAM.scipio_fx.table.mfx;
-    exports com.github.ScipioAM.scipio_fx.utils;
-    exports com.github.ScipioAM.scipio_fx.view;
-    exports com.github.ScipioAM.scipio_fx.exception;
-    exports com.github.ScipioAM.scipio_fx.combobox;
-    exports com.github.ScipioAM.scipio_fx.combobox.mfx;
-    exports com.github.ScipioAM.scipio_fx.concurrent;
+    requires static org.controlsfx.controls;
+    requires static MaterialFX;
 
-//    opens com.github.ScipioAM.scipio_fx.test.util;
-//    opens com.github.ScipioAM.scipio_fx.test;
-//    opens com.github.ScipioAM.scipio_fx.test.bean;
-//    opens com.github.ScipioAM.scipio_fx.test.original;
-//    opens com.github.ScipioAM.scipio_fx.test.controllers;
-//    opens com.github.ScipioAM.scipio_fx.test.threads;
+    requires org.slf4j;
+    requires static lombok;
+
+    requires static java.sql;
+    requires static com.zaxxer.hikari;
+    requires static org.mybatis;
+    requires static org.mybatis.generator;
+
+    exports com.github.scipioam.scipiofx.framework;
+    exports com.github.scipioam.scipiofx.framework.concurrent;
+    exports com.github.scipioam.scipiofx.framework.config;
+    exports com.github.scipioam.scipiofx.framework.exception;
+    exports com.github.scipioam.scipiofx.framework.fxml;
+    exports com.github.scipioam.scipiofx.utils;
+    exports com.github.scipioam.scipiofx.view;
+    exports com.github.scipioam.scipiofx.view.dialog;
+    exports com.github.scipioam.scipiofx.view.table;
+    exports com.github.scipioam.scipiofx.view.table.annotations;
+    exports com.github.scipioam.scipiofx.view.table.cell;
+    exports com.github.scipioam.scipiofx.mybatis;
+    exports com.github.scipioam.scipiofx.mybatis.ext;
+    exports com.github.scipioam.scipiofx.controlsfx;
+    exports com.github.scipioam.scipiofx.controlsfx.table;
+    exports com.github.scipioam.scipiofx.materialfx;
+    exports com.github.scipioam.scipiofx.materialfx.dialog;
+    exports com.github.scipioam.scipiofx.materialfx.table;
 
 }

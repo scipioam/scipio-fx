@@ -4,29 +4,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="apptest.controllers.MainController">
-    <VBox alignment="CENTER" prefHeight="600" prefWidth="800" spacing="10.0">
+
+<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="scipiofx.test.controllers.MainController">
+    <VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="800" spacing="10.0">
         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="5.0" />
+            <Insets left="20.0" right="20.0" top="20.0" />
         </padding>
 
         <TextArea fx:id="textArea" prefWidth="300.0" prefHeight="150.0" />
-        <Button onAction="#onTest1BtnClick" text="Test1___清空console" />
-        <Button onAction="#onTest2BtnClick" text="Test2___MFX对话框" />
-        <HBox spacing="10.0" alignment="CENTER">
-            <Button onAction="#onTest3BtnClick" text="Test3.1___MFXNotification" />
-            <Button onAction="#onTest32BtnClick" text="Test3.2___ControlsFX Notification" />
-        </HBox>
-        <Button onAction="#onTest4BtnClick" text="Test4___MFXTableView" />
-        <Button onAction="#onTest5BtnClick" text="Test5___FXTableView" />
-        <Button onAction="#onTest6BtnClick" text="Test6___FX输入组件" />
-        <HBox spacing="10.0" alignment="CENTER">
-            <Button onAction="#onTest7BtnClick" text="Test7.1___启动后台子线程" />
-            <Button onAction="#onTest72BtnClick" text="Test7.2___后台子线程操作" />
-            <Button onAction="#onTest73BtnClick" text="Test7.3___取消后台子线程" />
+        <HBox alignment="CENTER" spacing="80.0">
+            <Button onAction="#onClearClick" text="清空console" />
         </HBox>
     </VBox>
 </StackPane>

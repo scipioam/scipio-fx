@@ -1,15 +1,17 @@
-open module scipio_fx_test {
+open module scipiofx.test {
 
     requires org.controlsfx.controls;
-    requires org.yaml.snakeyaml;
+    requires MaterialFX;
+
     requires org.slf4j;
+    requires static lombok;
 
-    requires transitive javafx.controls;
-    requires transitive javafx.fxml;
-    requires transitive MaterialFX;
-    requires transitive static lombok;
-    requires transitive org.junit.jupiter.api;
+    requires java.sql;
+    requires com.zaxxer.hikari;
+    requires org.mybatis;
+    requires org.mybatis.generator;
 
-    requires com.github.scipio.scipio_fx;
+    requires com.github.scipioam.scipiofx;
+    requires org.junit.jupiter.api;
 
 }

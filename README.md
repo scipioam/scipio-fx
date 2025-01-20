@@ -15,9 +15,11 @@ JavaFX轻量级框架 (Java 17+)
 </repositories>
 ```
 2.maven依赖引入
+
 ```xml
+
 <dependency>
-    <groupId>com.github.ScipioAM</groupId>
+    <groupId>com.github.scipioam</groupId>
     <artifactId>scipio-fx</artifactId>
     <version>latest</version>
 </dependency>
