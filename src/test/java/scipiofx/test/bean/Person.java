@@ -72,25 +72,38 @@ public class Person implements Serializable {
         return new Person(id, name, nickName, age, gender, email, LocalDate.of(year, month, day));
     }
 
-    public static void buildTestData(Collection<Person> tableData) {
+    public static void buildTestData(Collection<Person> tableData, int size) {
         List<String> namePool = new ArrayList<>();
-        namePool.add("jack");
-        namePool.add("alan");
-        namePool.add("anne");
-        namePool.add("water");
-        namePool.add("jackson");
-        namePool.add("sherman");
-        namePool.add("paul");
-        namePool.add("norman");
-        namePool.add("white");
-        namePool.add("jane");
-        namePool.add("ruby");
-        namePool.add("edwin");
-        namePool.add("bella");
-        namePool.add("aurora");
-        for (int i = 0; i < 10; i++) {
-            int id = 10000 + i;
-            String name = RandomUtils.getStringByCustom(namePool);
+        namePool.add("Alice");
+        namePool.add("Bob");
+        namePool.add("Charlie");
+        namePool.add("David");
+        namePool.add("Emma");
+        namePool.add("Frank");
+        namePool.add("Grace");
+        namePool.add("Hannah");
+        namePool.add("Isaac");
+        namePool.add("Jack");
+        namePool.add("Kate");
+        namePool.add("Liam");
+        namePool.add("Mia");
+        namePool.add("Noah");
+        namePool.add("Olivia");
+        namePool.add("Peter");
+        namePool.add("Quinn");
+        namePool.add("Rachel");
+        namePool.add("Samuel");
+        namePool.add("Tom");
+        for (int i = 0; i < size; i++) {
+            int id = 100001 + i;
+            String name;
+            if (i < namePool.size()) {
+                // 数量在namePool的长度内，直接取
+                name = namePool.get(i);
+            } else {
+                // 超出namePool长度，随机取
+                name = RandomUtils.getStringByCustom(namePool);
+            }
             tableData.add(Person.build(id, name));
         }
     }

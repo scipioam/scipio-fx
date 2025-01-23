@@ -1,11 +1,9 @@
 package com.github.scipioam.scipiofx.framework.fxml;
 
 import com.github.scipioam.scipiofx.framework.BaseController;
-import com.github.scipioam.scipiofx.view.dialog.DialogHelper;
+import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.net.URL;
 
@@ -13,8 +11,7 @@ import java.net.URL;
  * @author Alan Scipio
  * @since 2022/2/22
  */
-@Accessors(chain = true)
-@Data
+@SuppressWarnings("LombokGetterMayBeUsed")
 public class FXMLView {
 
     private URL fxmlUrl;
@@ -67,8 +64,6 @@ public class FXMLView {
         }
     }
 
-    //=================================================================================================================
-
     /**
      * 加载view
      *
@@ -84,38 +79,54 @@ public class FXMLView {
             }
             return view;
         } catch (Exception e) {
-            DialogHelper.showExceptionDialog(e);
+            CFXDialogHelper.showExceptionDialog(e);
             e.printStackTrace();
             return null;
         }
     }
 
-    /*
-     * 如果view是空壳则加载，然后显示
-     *
-     * @param view    view对象（第一次时应当是个实例化的空壳）
-     * @param options 加载view的参数
-     */
-//    public static void loadAndShow(FXMLView view, ViewLoadOptions options) {
-//        if (view == null) {
-//            throw new IllegalArgumentException("view can not be null");
-//        }
-//        Stage stage = view.getStage();
-//        if (stage == null) {
-//            try {
-//                FXMLView newView = FXMLViewLoader.build()
-//                        .load(options.getFxmlUrl(), options.getInitArgs());
-//                view.setView(newView.getView())
-//                        .setFxmlUrl(newView.getFxmlUrl())
-//                        .setTitle(newView.getTitle())
-//                        .setController(newView.controller);
-//                options.buildStageForView(view);
-//            } catch (Exception e) {
-//                AlertHelper.showError("程序错误", "打开界面失败", "请联系管理员");
-//                e.printStackTrace();
-//            }
-//        }
-//        view.show();
-//    }
+    public String getTitle() {
+        return title;
+    }
 
+    public FXMLView setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public FXMLView setStage(Stage stage) {
+        this.stage = stage;
+        return this;
+    }
+
+    public BaseController getController() {
+        return controller;
+    }
+
+    public FXMLView setController(BaseController controller) {
+        this.controller = controller;
+        return this;
+    }
+
+    public Parent getSelf() {
+        return self;
+    }
+
+    public FXMLView setSelf(Parent self) {
+        this.self = self;
+        return this;
+    }
+
+    public URL getFxmlUrl() {
+        return fxmlUrl;
+    }
+
+    public FXMLView setFxmlUrl(URL fxmlUrl) {
+        this.fxmlUrl = fxmlUrl;
+        return this;
+    }
 }

@@ -1,6 +1,6 @@
 package com.github.scipioam.scipiofx.framework.concurrent;
 
-import com.github.scipioam.scipiofx.view.dialog.DialogHelper;
+import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import javafx.application.Platform;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -60,7 +60,7 @@ public abstract class SimpleBackgroundTask<T> implements Runnable {
     }
 
     public void setDefaultOnErrorListener() {
-        onErrorListener = DialogHelper::showExceptionDialog;
+        onErrorListener = CFXDialogHelper::showExceptionDialog;
     }
 
 }

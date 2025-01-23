@@ -8,6 +8,7 @@ import com.github.scipioam.scipiofx.framework.config.ConfigRootProperties;
 import com.github.scipioam.scipiofx.framework.exception.FrameworkException;
 import com.github.scipioam.scipiofx.mybatis.MybatisConfig;
 import com.github.scipioam.scipiofx.mybatis.MybatisManager;
+import javafx.application.Platform;
 
 /**
  * 默认的MyBatis初始化线程
@@ -29,11 +30,13 @@ public class DBAppInitThread extends AppInitThread {
                 // 获取Mybatis配置
                 MybatisConfig mybatisConfig = dbConfigProperties.getMybatis();
                 dbAppContext.setMybatisConfig(mybatisConfig);
+                setSplashProgress(0.2);
                 // 初始化Mybatis管理器
                 MybatisManager mybatisManager = new MybatisManager();
                 mybatisManager.init(mybatisConfig);
                 dbAppContext.setMybatisManager(mybatisManager);
                 log.info("Mybatis init cost time: {}ms", System.currentTimeMillis() - startTime);
+                setSplashProgress(0.9);
                 // 自定义其他操作
                 doAfterMybatisInit(application, context, mybatisConfig, mybatisManager);
             } else {
@@ -42,6 +45,11 @@ public class DBAppInitThread extends AppInitThread {
         } else {
             throw new FrameworkException("DBAppInitThread must be used with DBAppContext");
         }
+    }
+
+    @Override
+    protected void beforeShowMainView() {
+        setSplashProgress(1.0);
     }
 
     protected void doBeforeMybatisInit(JFXApplication application, AppContext context) {

@@ -142,4 +142,15 @@ public class SplashScreen {
         this.splashImgUrl = splashImgUrl;
         return this;
     }
+
+    /**
+     * 设置进度
+     *
+     * @param progress 百分比进度，0-1之间（0%-100%）
+     */
+    public void setProgress(double progress) {
+        if (progressBar != null) {
+            progressBar.setProgress(progress);
+        }
+    }
 }

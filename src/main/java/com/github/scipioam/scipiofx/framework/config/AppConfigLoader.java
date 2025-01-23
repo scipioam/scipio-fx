@@ -5,8 +5,6 @@ import com.github.scipioam.scipiofx.framework.JFXApplication;
 import com.github.scipioam.scipiofx.framework.LaunchListener;
 import com.github.scipioam.scipiofx.framework.exception.ConfigLoadException;
 import com.github.scipioam.scipiofx.utils.StringUtils;
-import lombok.Getter;
-import lombok.Setter;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -16,8 +14,7 @@ import java.net.URL;
  * @author Alan Scipio
  * @since 2024/4/26
  */
-@Setter
-@Getter
+@SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 public class AppConfigLoader {
 
     private JFXApplication appInstance;
@@ -104,4 +101,11 @@ public class AppConfigLoader {
         return s.toString();
     }
 
+    public JFXApplication getAppInstance() {
+        return appInstance;
+    }
+
+    public void setAppInstance(JFXApplication appInstance) {
+        this.appInstance = appInstance;
+    }
 }

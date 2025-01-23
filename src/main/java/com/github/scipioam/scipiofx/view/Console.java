@@ -3,18 +3,19 @@ package com.github.scipioam.scipiofx.view;
 import com.github.scipioam.scipiofx.utils.StringUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextArea;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 一个小的辅助工具，
- * 用于包装一个{@link TextArea}来方便输出
+ * 一个小的辅助工具，用于包装一个{@link TextArea}来方便输出
  *
  * @since 2022/6/21
  */
-@Data
+@Setter
+@Getter
 public class Console {
 
     private final TextArea textArea;

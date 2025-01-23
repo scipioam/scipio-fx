@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.scipioAM</groupId>
+    <groupId>com.github.scipioam</groupId>
     <artifactId>scipiofx</artifactId>
     <version>2.0.0</version>
     <packaging>jar</packaging>
@@ -33,10 +33,21 @@
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/scipioam/scipio-fx</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/scipioam/scipio-fx</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -1,7 +1,8 @@
 package com.github.scipioam.scipiofx.framework;
 
 import com.github.scipioam.scipiofx.framework.fxml.FXMLView;
-import com.github.scipioam.scipiofx.view.dialog.DialogHelper;
+import com.github.scipioam.scipiofx.view.SplashScreen;
+import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import javafx.application.Platform;
 
 /**
@@ -16,13 +17,24 @@ public abstract class AppInitThread implements Runnable {
      */
     protected long defaultSplashTime = 2000L;
 
-    protected boolean needShowMainView;
+    /**
+     * 启动画面的进度是否无限循环
+     */
+    protected boolean endlessSplashProgress = true;
+
+    protected SplashScreen splashScreen;
+
     protected JFXApplication application;
+
     protected AppContext context;
+
     protected LaunchListener launchListener;
+
+    private boolean needRunLater = true;
 
     @Override
     public void run() {
+        needRunLater = true;
         try {
             long startTime = System.currentTimeMillis();
 
@@ -30,15 +42,16 @@ public abstract class AppInitThread implements Runnable {
             init(application, context);
 
             long costTime = System.currentTimeMillis() - startTime;
-            if (needShowMainView && costTime < defaultSplashTime) {
+            if (splashScreen != null && costTime < defaultSplashTime) {
                 //如果初始化时间过快，则延迟一段时间再显示主界面
                 Thread.sleep(defaultSplashTime - costTime);
             }
 
             //UI主线程回调
             Platform.runLater(() -> {
+                needRunLater = false;
                 try {
-                    if (needShowMainView) {
+                    if (splashScreen != null) {
                         // 加载mainView之前的回调
                         beforeShowMainView();
                         //加载mainView
@@ -52,7 +65,7 @@ public abstract class AppInitThread implements Runnable {
                     onFinished(mainView);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    DialogHelper.showExceptionDialog(e);
+                    CFXDialogHelper.showExceptionDialog(e);
                 }
             });
         } catch (Exception e) {
@@ -60,7 +73,10 @@ public abstract class AppInitThread implements Runnable {
                 launchListener.onLaunchError(application, e);
             } else {
                 e.printStackTrace();
-                Platform.runLater(() -> DialogHelper.showExceptionDialog(e));
+                Platform.runLater(() -> {
+                    needRunLater = false;
+                    CFXDialogHelper.showExceptionDialog(e);
+                });
             }
         }
     }
@@ -100,8 +116,35 @@ public abstract class AppInitThread implements Runnable {
         this.context = context;
     }
 
-    public void setNeedShowMainView(boolean needShowMainView) {
-        this.needShowMainView = needShowMainView;
+    public SplashScreen getSplashScreen() {
+        return splashScreen;
+    }
+
+    public void setSplashScreen(SplashScreen splashScreen) {
+        this.splashScreen = splashScreen;
+    }
+
+    /**
+     * 设置启动画面的进度
+     *
+     * @param progress 进度（0.0~1.0）
+     */
+    public void setSplashProgress(double progress) {
+        if (!endlessSplashProgress && splashScreen != null) {
+            if (needRunLater) {
+                Platform.runLater(() -> splashScreen.setProgress(progress));
+            } else {
+                splashScreen.setProgress(progress);
+            }
+        }
+    }
+
+    public boolean isEndlessSplashProgress() {
+        return endlessSplashProgress;
+    }
+
+    public void setEndlessSplashProgress(boolean endlessSplashProgress) {
+        this.endlessSplashProgress = endlessSplashProgress;
     }
 
     public long getDefaultSplashTime() {

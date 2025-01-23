@@ -90,53 +90,50 @@ public abstract class JFXApplication extends Application {
 
     @Override
     public void start(Stage mainStage) throws Exception {
+        setUserAgentStylesheet(STYLESHEET_MODENA);
         this.mainStage = mainStage;
         context.setMainStage(mainStage);
         try {
-            showMainStage();
+            splashScreen = this.splashScreen();
+            if (splashScreen != null) {
+                // 显示启动画面
+                Stage splashStage = new Stage(StageStyle.TRANSPARENT);
+                Scene splashScene = new Scene(splashScreen.buildViews(), Color.TRANSPARENT);
+                splashStage.setScene(splashScene);
+                splashStage.setResizable(false);
+                splashScreen.setStage(splashStage);
+                splashStage.show();
+            }
+
+            //启动初始化线程
+            AppInitThread initThread = context.getInitThread();
+            if (initThread != null) {
+                initThread.setApplication(this);
+                initThread.setContext(context);
+                initThread.setLaunchListener(context.getLaunchListener());
+                initThread.setSplashScreen(splashScreen);
+                context.submitTask(initThread);
+            }
+
+            if (splashScreen == null) {
+                // 直接显示mainView
+                initMainStage();
+                showMainView();
+            } else if (initThread == null) {
+                // 没有初始化子线程，但有SplashScreen，则启动默认的空初始化线程（单纯等n秒）
+                EmptyAppInitThread emptyAppInitThread = new EmptyAppInitThread();
+                emptyAppInitThread.setApplication(this);
+                emptyAppInitThread.setContext(context);
+                emptyAppInitThread.setLaunchListener(context.getLaunchListener());
+                emptyAppInitThread.setSplashScreen(splashScreen);
+                context.submitTask(emptyAppInitThread);
+            }
         } catch (Exception e) {
-            log.error("Init main stage error", e);
+            log.error("start main stage error", e);
             if (context.getLaunchListener() != null) {
                 context.getLaunchListener().onLaunchError(this, e);
             }
             throw e;
-        }
-    }
-
-    protected void showMainStage() throws Exception {
-        splashScreen = this.splashScreen();
-        if (splashScreen != null) {
-            // 显示启动画面
-            Stage splashStage = new Stage(StageStyle.TRANSPARENT);
-            Scene splashScene = new Scene(splashScreen.buildViews(), Color.TRANSPARENT);
-            splashStage.setScene(splashScene);
-            splashStage.setResizable(false);
-            splashScreen.setStage(splashStage);
-            splashStage.show();
-        }
-
-        //启动初始化线程
-        AppInitThread initThread = context.getInitThread();
-        if (initThread != null) {
-            initThread.setApplication(this);
-            initThread.setContext(context);
-            initThread.setLaunchListener(context.getLaunchListener());
-            initThread.setNeedShowMainView(splashScreen != null);
-            context.submitTask(initThread);
-        }
-
-        if (splashScreen == null) {
-            // 直接显示mainView
-            initMainStage();
-            showMainView();
-        } else if (initThread == null) {
-            // 没有初始化子线程，但有SplashScreen，则启动默认的空初始化线程（单纯等n秒）
-            EmptyAppInitThread emptyAppInitThread = new EmptyAppInitThread();
-            emptyAppInitThread.setApplication(this);
-            emptyAppInitThread.setContext(context);
-            emptyAppInitThread.setLaunchListener(context.getLaunchListener());
-            emptyAppInitThread.setNeedShowMainView(true);
-            context.submitTask(emptyAppInitThread);
         }
     }
 
@@ -156,6 +153,16 @@ public abstract class JFXApplication extends Application {
         if (context.getLaunchListener() != null) {
             context.getLaunchListener().beforeLoadMainScene(mainStage, scene);
         }
+
+        // 初始化MaterialFx
+        try {
+            if (appProperties.isMaterialFxEnabled()) {
+                appProperties.getMaterialFx().init();
+            }
+        } catch (Exception e) {
+            log.info("MaterialFx init failed: {}", e);
+        }
+
         return scene;
     }
 
@@ -199,7 +206,7 @@ public abstract class JFXApplication extends Application {
         if (!appProperties.getView().isResizableFlag()) {
             mainStage.setResizable(false);
         }
-        log.info("Init main stage success, cost {}ms", (System.currentTimeMillis() - startTime));
+        log.info("Initialize main stage success, cost {}ms", (System.currentTimeMillis() - startTime));
     }
 
     public void showMainView() {

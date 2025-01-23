@@ -10,8 +10,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * 程序上下文
@@ -74,6 +76,14 @@ public class AppContext {
             threadPool.submit(task);
         } else {
             new Thread(task).start();
+        }
+    }
+
+    public <T> Future<T> submitFutureTask(Callable<T> task) {
+        if (threadPool != null) {
+            return threadPool.submit(task);
+        } else {
+            throw new IllegalStateException("No thread pool available");
         }
     }
 

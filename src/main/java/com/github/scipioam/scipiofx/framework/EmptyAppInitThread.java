@@ -4,7 +4,7 @@ package com.github.scipioam.scipiofx.framework;
  * @author Alan Scipio
  * created on 2025-01-17
  */
-public class EmptyAppInitThread extends AppInitThread{
+public final class EmptyAppInitThread extends AppInitThread{
 
     private final long sleepTime;
 

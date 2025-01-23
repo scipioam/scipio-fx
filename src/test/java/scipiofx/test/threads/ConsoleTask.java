@@ -2,6 +2,7 @@ package scipiofx.test.threads;
 
 import com.github.scipioam.scipiofx.framework.concurrent.AppAbstractTask;
 import com.github.scipioam.scipiofx.view.Console;
+import lombok.Getter;
 
 /**
  * 子线程测试实例。
@@ -10,29 +11,32 @@ import com.github.scipioam.scipiofx.view.Console;
  * @author Alan Scipio
  * @since 2022/2/23
  */
+@Getter
 public class ConsoleTask extends AppAbstractTask<String> {
 
-//    private final Console console;
+    private final Console console;
 
     public ConsoleTask(Console console) {
         super(console.getTextArea().textProperty());
-//        this.console = console;
+        this.console = console;
     }
 
     @Override
     public String doCall() {
         System.out.println("ConsoleTask start...");
         int i = 1;
-        int length = 3;
+        int length = 20;
         try {
             for(; i <= length; i++) {
                 Thread.sleep(1000);
                 String msg = "progress: " + i + "/" + length + "\n";
-//                updateProgress(i, 10L);
+//                System.out.println("ConsoleTask: " + msg);
                 updateMessage(msg);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            System.out.println("ConsoleTask ended");
         }
         return i + "";
     }

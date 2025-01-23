@@ -1,11 +1,12 @@
 # ScipioFX
-[![](https://jitpack.io/v/ScipioAM/scipio-fx.svg)](https://jitpack.io/#ScipioAM/scipio-fx)
-#### 介绍
-JavaFX轻量级框架 (Java 17+)
+[![](https://jitpack.io/v/ScipioAM/scipio-fx.svg)](https://jitpack.io/#scipioam/scipio-fx)
+### Description
+JavaFX`s lightweight integration framework (Java 21+)
 
-#### 使用说明
+### Usage
 
-1.加入JitPack的仓库地址
+##### 1.Add repository to your pom.xml
+Using [Jitpack repository](https://jitpack.io/#scipioam/scipio-fx)
 ```xml
 <repositories>
     <repository>
@@ -14,13 +15,21 @@ JavaFX轻量级框架 (Java 17+)
     </repository>
 </repositories>
 ```
-2.maven依赖引入
-
+Or [Github Packages](https://github.com/scipioam/scipio-fx/packages/) (Only support for 2.0.0+)
 ```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <url>https://maven.pkg.github.com/scipioam/scipio-fx</url>
+    </repository>
+</repositories>
+```
 
+##### 2.Import maven dependency
+```xml
 <dependency>
     <groupId>com.github.scipioam</groupId>
-    <artifactId>scipio-fx</artifactId>
+    <artifactId>scipiofx</artifactId>
     <version>latest</version>
 </dependency>
 ```

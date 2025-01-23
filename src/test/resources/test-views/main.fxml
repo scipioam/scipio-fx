@@ -2,20 +2,40 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.HBox?>
 
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="scipiofx.test.controllers.MainController">
-    <VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="800" spacing="10.0">
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scipiofx.test.controllers.MainController">
+    <VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="700" spacing="10.0">
         <padding>
             <Insets left="20.0" right="20.0" top="20.0" />
         </padding>
 
-        <TextArea fx:id="textArea" prefWidth="300.0" prefHeight="150.0" />
+        <TextArea fx:id="textArea" prefHeight="250.0" prefWidth="300.0" />
         <HBox alignment="CENTER" spacing="80.0">
-            <Button onAction="#onClearClick" text="清空console" />
+            <Button mnemonicParsing="false" onMouseClicked="#onClearClick" text="清空console" />
+            <Button mnemonicParsing="false" onMouseClicked="#onTask1Click" text="执行后台任务1" />
         </HBox>
+        <HBox alignment="CENTER" spacing="50.0">
+            <Button mnemonicParsing="false" onMouseClicked="#onTask2Click" text="执行后台任务2" />
+            <Button mnemonicParsing="false" onMouseClicked="#getTask2StateClick" text="获取后台任务2状态" />
+            <Button mnemonicParsing="false" onMouseClicked="#getTask2ResultClick" text="获取后台任务2结果" />
+        </HBox>
+
+        <Separator prefWidth="200.0" />
+
+        <AnchorPane prefHeight="100.0" style="-fx-border-color: grey;">
+            <Label text="子界面跳转" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0" />
+            <HBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Button mnemonicParsing="false" onMouseClicked="#jumpInputsClick" text="输入和弹框界面" />
+                <Button mnemonicParsing="false" onMouseClicked="#jumpTableCfxClick" text="ControlsFX表格界面" />
+                <Button mnemonicParsing="false" onMouseClicked="#jumpTableMfxClick" text="MaterialFX表格界面" />
+            </HBox>
+        </AnchorPane>
     </VBox>
 </StackPane>

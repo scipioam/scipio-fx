@@ -1,7 +1,7 @@
 package com.github.scipioam.scipiofx.framework;
 
 import com.github.scipioam.scipiofx.framework.fxml.FXMLView;
-import com.github.scipioam.scipiofx.view.dialog.DialogHelper;
+import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -36,9 +36,9 @@ public interface LaunchListener {
      * @param app 程序对象
      * @param e   异常
      */
-    default void onLaunchError(JFXApplication app, Exception e) {
+    default void onLaunchError(JFXApplication app, Throwable e) {
         e.printStackTrace();
-        Platform.runLater(() -> DialogHelper.showExceptionDialog(e));
+        Platform.runLater(() -> CFXDialogHelper.showExceptionDialog(e));
     }
 
     /**

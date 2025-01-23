@@ -39,6 +39,8 @@ public class AppProperties extends AbstractProperties implements Serializable {
 
     private ViewProperties view = new ViewProperties();
 
+    private MaterialFxProperties materialFx = new MaterialFxProperties();
+
     public URL getIconUrl() {
         return loadUrl(iconUrl, iconPath);
     }
@@ -66,6 +68,10 @@ public class AppProperties extends AbstractProperties implements Serializable {
         if (view != null) {
             view.setAppClass(appClass);
         }
+    }
+
+    public boolean isMaterialFxEnabled() {
+        return materialFx.isEnable();
     }
 
     //===================================================================================================
@@ -109,6 +115,11 @@ public class AppProperties extends AbstractProperties implements Serializable {
 
         public Builder view(ViewProperties view) {
             prop.setView(view);
+            return this;
+        }
+
+        public Builder materialFx(MaterialFxProperties materialFx) {
+            prop.setMaterialFx(materialFx);
             return this;
         }
 

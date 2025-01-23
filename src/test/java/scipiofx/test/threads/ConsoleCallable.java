@@ -9,15 +9,26 @@ import java.util.concurrent.Callable;
  */
 public class ConsoleCallable implements Callable<String> {
 
-    private final ConsoleTask consoleTask;
+    private final int length;
 
-    public ConsoleCallable(ConsoleTask consoleTask) {
-        this.consoleTask = consoleTask;
+    public ConsoleCallable(int length) {
+        if (length <= 0) {
+            throw new IllegalArgumentException("length must be positive");
+        }
+        this.length = length;
     }
 
     @Override
-    public String call() throws Exception {
-        return consoleTask.call();
+    public String call() {
+        int i = 1;
+        try {
+            for(; i <= length; i++) {
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return i + "";
     }
 
 }

@@ -6,10 +6,10 @@ app:
   iconPath: /test-img/r.png
 
   # splash image relative path
-  splashImgPath: /test-img/splash.gif
+  splashImgPath:
 
   # is splash progress bar shown (false/true, off/on. 0/1)
-  splashProgressBar: true
+  splashProgressBar: false
 
   # full class name which extends the AppInitThread super class
   initThread: scipiofx.test.TestInitThread
@@ -29,6 +29,17 @@ app:
     resizable: false
     # default view id (it`s just an integrated support for developer, not meaning the framework will auto switch to this view)
     defaultViewId: 1
+
+  # MaterialFX theme config
+  materialFx:
+    # Determine whether to enable the materialfx theme or not
+    enable: true
+    # Determine whether to init the materialfx theme only or not
+    useMaterialFxThemeOnly: false
+    # Include the legacy materialfx theme or not (and the javafx original theme will be effected too)
+    includeLegacy: false
+    # Declare the materialfx initializer class (full class name, or empty to use default initializer when using materialfx)
+    initializer:
 
 mybatis:
   # mapper.xml

@@ -3,7 +3,7 @@ package com.github.scipioam.scipiofx.framework;
 import com.github.scipioam.scipiofx.framework.fxml.FXMLView;
 import com.github.scipioam.scipiofx.framework.fxml.ViewArgs;
 import com.github.scipioam.scipiofx.framework.fxml.ViewLoadOptions;
-import com.github.scipioam.scipiofx.view.dialog.DialogHelper;
+import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @since 2022/6/21
  */
-@SuppressWarnings("LombokGetterMayBeUsed")
+@SuppressWarnings({"LombokGetterMayBeUsed", "UnusedReturnValue"})
 public abstract class BaseMainController extends BaseController {
 
     protected final Map<AppViewId, FXMLView> children = new LinkedHashMap<>();
@@ -59,7 +59,7 @@ public abstract class BaseMainController extends BaseController {
      * @param appViewId 子view的标识key
      * @param initArgs  自定义初始化参数
      */
-    public void loadInternalChildView(AppViewId appViewId, ViewArgs initArgs) {
+    public FXMLView loadInternalChildView(AppViewId appViewId, ViewArgs initArgs) {
         ViewLoadOptions options = ViewLoadOptions.build()
                 .setInitArgs(initArgs);
         FXMLView childView = getOrBuildChildView(appViewId, options);
@@ -72,10 +72,11 @@ public abstract class BaseMainController extends BaseController {
         }
         contentPane.getChildren().clear();
         contentPane.getChildren().add(childView.getSelf());
+        return childView;
     }
 
     /**
-     * 加载外部子view
+     * 加载并显示外部子view
      *
      * @param appViewId  子view的标识key
      * @param container  父容器
@@ -83,7 +84,7 @@ public abstract class BaseMainController extends BaseController {
      * @param modality   模态的模式
      * @param initArgs   初始化参数
      */
-    public void loadExternalChildView(AppViewId appViewId, Parent container, StageStyle stageStyle, Modality modality, ViewArgs initArgs) {
+    public FXMLView showExternalChildView(AppViewId appViewId, Parent container, StageStyle stageStyle, Modality modality, ViewArgs initArgs) {
         if (container == null) {
             throw new IllegalArgumentException("parent container cannot be null");
         }
@@ -98,10 +99,16 @@ public abstract class BaseMainController extends BaseController {
         if (childView == null) {
             throw new IllegalStateException("childView is null, appViewId:[" + appViewId.id() + "], title:[" + appViewId.title() + "], fxmlPath: [" + appViewId.fxmlPath() + "]");
         }
+        childView.show(initArgs);
+        return childView;
     }
 
-    public void loadExternalChildView(AppViewId appViewId, Parent container, ViewArgs initArgs) {
-        loadExternalChildView(appViewId, container, null, null, initArgs);
+    public FXMLView showExternalChildView(AppViewId appViewId, Parent container, ViewArgs initArgs) {
+        return showExternalChildView(appViewId, container, null, null, initArgs);
+    }
+
+    public FXMLView showExternalChildView(AppViewId appViewId, Parent container, StageStyle stageStyle, Modality modality) {
+        return showExternalChildView(appViewId, container, stageStyle, modality, null);
     }
 
     /**
@@ -126,7 +133,7 @@ public abstract class BaseMainController extends BaseController {
                 return childView;
             } catch (Exception e) {
                 e.printStackTrace();
-                DialogHelper.showExceptionDialog(e);
+                CFXDialogHelper.showExceptionDialog(e);
                 return null;
             }
         });

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
  * @author Alan Scipio
  * created on 2025-01-17
  */
-public class LogHelper {
+public final class LogHelper {
 
     private final Logger slf4jLogger;
 
