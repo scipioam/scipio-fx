@@ -206,7 +206,7 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
      * 设置列宽平均自适应
      */
     public FXTableBuilder<T> setColumnResizePolicyConstrained() {
-        this.resizePolicy = TableView.CONSTRAINED_RESIZE_POLICY;
+        this.resizePolicy = TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN;
         return this;
     }
 
