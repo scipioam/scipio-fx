@@ -5,6 +5,7 @@ import com.github.scipioam.scipiofx.framework.BaseController;
 import com.github.scipioam.scipiofx.framework.Language;
 import com.github.scipioam.scipiofx.framework.fxml.ViewArgs;
 import com.github.scipioam.scipiofx.materialfx.MFXComboBoxSupport;
+import com.github.scipioam.scipiofx.materialfx.dialog.MFXDialogHelper;
 import com.github.scipioam.scipiofx.view.ComboBoxSupport;
 import com.github.scipioam.scipiofx.view.dialog.AlertHelper;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -14,6 +15,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import org.controlsfx.control.SegmentedButton;
 import scipiofx.test.JumpView;
 
@@ -26,11 +28,15 @@ import java.util.Optional;
 public class InputsController extends BaseController {
 
     @FXML
+    private AnchorPane rootPane;
+    @FXML
     private ComboBox<Language> cb0;
     @FXML
     private MFXComboBox<JumpView> cb1;
     @FXML
     private SegmentedButton btnGroup0;
+    @FXML
+    private SegmentedButton btnGroup1;
 
     @Override
     public void onLoadInit(AppContext context, Parent rootNode, ViewArgs initArgs) {
@@ -42,6 +48,11 @@ public class InputsController extends BaseController {
         ToggleGroup toggleGroup0 = new ToggleGroup();
         for (ToggleButton btn : btnGroup0.getButtons()) {
             btn.setToggleGroup(toggleGroup0);
+        }
+
+        ToggleGroup toggleGroup1 = new ToggleGroup();
+        for (ToggleButton btn : btnGroup1.getButtons()) {
+            btn.setToggleGroup(toggleGroup1);
         }
     }
 
@@ -68,6 +79,26 @@ public class InputsController extends BaseController {
         } else {
             AlertHelper.showInfo("Info", "Not Confirmed", "You did not confirm");
         }
+    }
+
+    @FXML
+    private void showMfxError() {
+        MFXDialogHelper.showError(rootPane, "Test Error", "This is a error message");
+    }
+
+    @FXML
+    private void showMfxInfo() {
+        MFXDialogHelper.showInfo(rootPane, "Test Info", "This is an info message");
+    }
+
+    @FXML
+    private void showMfxWarning() {
+        MFXDialogHelper.showWarning(rootPane, "Test Warning", "This is a warning message");
+    }
+
+    @FXML
+    private void showMfxFilter() {
+        MFXDialogHelper.showInfo(rootPane, "Info", "This function is still under development");
     }
 
 }

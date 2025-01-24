@@ -9,14 +9,14 @@
 <!--<?import io.github.palexdev.materialfx.controls.MFXComboBox?>-->
 
 <?import org.controlsfx.control.SegmentedButton?>
-<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scipiofx.test.controllers.InputsController">
+<AnchorPane fx:id="rootPane" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scipiofx.test.controllers.InputsController">
     <Label layoutX="45.0" layoutY="35.0" text="原始风格" />
     <ComboBox fx:id="cb0" layoutX="137.0" layoutY="31.0" prefWidth="150.0" />
 
    <Label layoutX="45.0" layoutY="125.0" text="原始风格弹框" />
 <!--    <MFXComboBox fx:id="cb1" floatMode="BORDER" floatingText="子页面" layoutX="137.0" layoutY="80.0" prefWidth="150.0" />-->
 
-    <Label layoutX="45.0" layoutY="89.0" text="MaterialFX风格" />
+    <Label layoutX="45.0" layoutY="89.0" text="原生风格" />
     <HBox prefHeight="60.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="140.0">
         <SegmentedButton fx:id="btnGroup0">
             <buttons>
@@ -24,6 +24,18 @@
                 <ToggleButton mnemonicParsing="false" text="警告对话框" onMouseClicked="#showOriginalWarning" />
                 <ToggleButton mnemonicParsing="false" text="信息对话框" onMouseClicked="#showOriginalInfo" />
                 <ToggleButton mnemonicParsing="false" text="确认对话框" onMouseClicked="#showOriginalConfirmation" />
+            </buttons>
+        </SegmentedButton>
+    </HBox>
+
+    <Label layoutX="45.0" layoutY="179.0" text="MaterialFX风格" />
+    <HBox prefHeight="60.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="193.0">
+        <SegmentedButton fx:id="btnGroup1">
+            <buttons>
+                <ToggleButton mnemonicParsing="false" text="错误对话框" onMouseClicked="#showMfxError" />
+                <ToggleButton mnemonicParsing="false" text="警告对话框" onMouseClicked="#showMfxWarning" />
+                <ToggleButton mnemonicParsing="false" text="信息对话框" onMouseClicked="#showMfxInfo" />
+                <ToggleButton mnemonicParsing="false" text="过滤对话框" onMouseClicked="#showMfxFilter" />
             </buttons>
         </SegmentedButton>
     </HBox>

@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
  * @author Alan Scipio
  * @since 2022/2/23
  */
+@SuppressWarnings("UnusedReturnValue")
 public class MFXDialogHelper {
 
     private MFXDialogHelper() {
@@ -43,20 +44,8 @@ public class MFXDialogHelper {
         return showDialog(ownerNode, MFXDialogType.INFO, headerText, contentText, language, okBtnAction);
     }
 
-    public static MFXDialog showInfo(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
-        return showDialog(null, MFXDialogType.INFO, headerText, contentText, language, okBtnAction);
-    }
-
-    public static MFXDialog showInfo(String headerText, String contentText, Language language) {
-        return showInfo(headerText, contentText, language, null);
-    }
-
     public static MFXDialog showInfo(Pane ownerNode, String headerText, String contentText) {
         return showInfo(ownerNode, headerText, contentText, Language.ENGLISH, null);
-    }
-
-    public static MFXDialog showInfo(String headerText, String contentText) {
-        return showInfo(headerText, contentText, Language.ENGLISH, null);
     }
 
     //=================================================================================================================================================================
@@ -65,20 +54,8 @@ public class MFXDialogHelper {
         return showDialog(ownerNode, MFXDialogType.WARN, headerText, contentText, language, okBtnAction);
     }
 
-    public static MFXDialog showWarning(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
-        return showDialog(null, MFXDialogType.WARN, headerText, contentText, language, okBtnAction);
-    }
-
-    public static MFXDialog showWarning(String headerText, String contentText, Language language) {
-        return showWarning(headerText, contentText, language, null);
-    }
-
     public static MFXDialog showWarning(Pane ownerNode, String headerText, String contentText) {
         return showWarning(ownerNode, headerText, contentText, Language.ENGLISH, null);
-    }
-
-    public static MFXDialog showWarning(String headerText, String contentText) {
-        return showWarning(headerText, contentText, Language.ENGLISH, null);
     }
 
     //=================================================================================================================================================================
@@ -87,19 +64,7 @@ public class MFXDialogHelper {
         return showDialog(ownerNode, MFXDialogType.ERROR, headerText, contentText, language, okBtnAction);
     }
 
-    public static MFXDialog showError(String headerText, String contentText, Language language, DialogBtnListener okBtnAction) {
-        return showDialog(null, MFXDialogType.ERROR, headerText, contentText, language, okBtnAction);
-    }
-
-    public static MFXDialog showError(String headerText, String contentText, Language language) {
-        return showError(headerText, contentText, language, null);
-    }
-
     public static MFXDialog showError(Pane ownerNode, String headerText, String contentText) {
         return showError(ownerNode, headerText, contentText, Language.ENGLISH, null);
-    }
-
-    public static MFXDialog showError(String headerText, String contentText) {
-        return showError(headerText, contentText, Language.ENGLISH, null);
     }
 }

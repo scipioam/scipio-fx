@@ -1,7 +1,16 @@
 # ScipioFX
 [![](https://jitpack.io/v/ScipioAM/scipio-fx.svg)](https://jitpack.io/#scipioam/scipio-fx)
+[![GitHub Package Version](https://img.shields.io/github/v/tag/scipioam/scipio-fx?label=Github&color=blue)](https://github.com/scipioam/scipio-fx/packages)
+
 ### Description
 JavaFX`s lightweight integration framework (Java 21+)
+
+### Third-party Components
+- (Optional) [ControlsFX](https://github.com/controlsfx/controlsfx)
+- (Optional) [MaterialFX](https://github.com/palexdev/MaterialFX)
+
+### Third-party Libraries
+- (Optional) [MyBatis](https://mybatis.org/mybatis-3/)
 
 ### Usage
 
