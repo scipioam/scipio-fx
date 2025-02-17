@@ -1,30 +1,23 @@
 package com.github.scipioam.scipiofx.view.table;
 
+import com.github.scipioam.scipiofx.framework.LogHelper;
 import com.github.scipioam.scipiofx.view.table.annotations.TableColumnBind;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
-/**
- * @since 2022/6/13
- */
-@Data
-@Accessors(chain = true)
+@SuppressWarnings("LombokGetterMayBeUsed")
 public abstract class AbstractTableBuilder<T> {
 
-    @Setter(AccessLevel.NONE)
+    protected final LogHelper log = new LogHelper(null);
+
     protected ObservableList<T> dataSource;
 
     protected Class<T> dataType;
 
-    @Setter(AccessLevel.NONE)
     protected boolean initEmptyData = false; //当数据源是空的时候，为其添加一行空数据后再删除，否则ui会出问题不更新数据源的变化
 
     protected boolean readSuperClassFields = false; //是否读取父类的@TableColumnBind注解
@@ -55,10 +48,10 @@ public abstract class AbstractTableBuilder<T> {
         if (entries.isEmpty()) {
             throw new IllegalStateException("type[" + dataType.getName() + "] must declared at least one annotation of [" + TableColumnBind.class.getName() + "]");
         } else {
-            System.out.println(entries.size() + " columns of TableView have been build, based on type[" + dataType.getName() + "]");
+            log.info("{} columns of TableView have been build, based on type[{}]", entries.size(), dataType.getName());
         }
         //其他构建
-        otherBuild();
+        postProcessing(entries);
         return dataSource;
     }
 
@@ -95,9 +88,9 @@ public abstract class AbstractTableBuilder<T> {
     protected abstract void fieldColumnBuild(Field field, TableColumnBind bindInfo) throws Exception;
 
     /**
-     * 其他构建
+     * 后处理
      */
-    protected abstract void otherBuild() throws Exception;
+    protected abstract void postProcessing(List<TableColumnBindEntry> entries) throws Exception;
 
     //===============================================================================================================================================
 
@@ -110,24 +103,23 @@ public abstract class AbstractTableBuilder<T> {
         }
     }
 
-    public AbstractTableBuilder<T> initDataSource(boolean initEmptyData) {
+    protected void setDataSource(boolean initEmptyData) {
         this.initEmptyData = initEmptyData;
-        return this;
     }
 
-    public AbstractTableBuilder<T> initDataSource(Collection<T> initData) {
+    protected void setDataSource(Collection<T> initData) {
         if (initData != null) {
             if (initData instanceof ObservableList) {
                 dataSource = (ObservableList<T>) initData;
             } else {
+                dataSource.clear();
                 dataSource.addAll(initData);
             }
-            initEmptyData = (initData.isEmpty());
         }
-        return this;
+        initEmptyData = initData == null || initData.isEmpty();
     }
 
-    public AbstractTableBuilder<T> setExcludeFields(Collection<String> excludeFields) {
+    protected void setExcludeFields(Collection<String> excludeFields) {
         if(excludeFields == null || excludeFields.isEmpty()) {
             excludeFieldsCache.clear();
         } else {
@@ -135,17 +127,34 @@ public abstract class AbstractTableBuilder<T> {
                 excludeFieldsCache.put(excludeField, null);
             }
         }
-        return this;
     }
 
-    public AbstractTableBuilder<T> setExcludeFields(String... excludeFields) {
+    protected void setExcludeFields(String... excludeFields) {
         List<String> list = Arrays.asList(excludeFields);
-        return setExcludeFields(list);
+        setExcludeFields(list);
     }
 
-    public AbstractTableBuilder<T> setSelectionMode(SelectionMode selectionMode) {
-        this.selectionMode = selectionMode;
-        return this;
+    public ObservableList<T> getDataSource() {
+        return dataSource;
     }
 
+    public Class<T> getDataType() {
+        return dataType;
+    }
+
+    public boolean isInitEmptyData() {
+        return initEmptyData;
+    }
+
+    public boolean isReadSuperClassFields() {
+        return readSuperClassFields;
+    }
+
+    public Map<String, String> getExcludeFieldsCache() {
+        return excludeFieldsCache;
+    }
+
+    public SelectionMode getSelectionMode() {
+        return selectionMode;
+    }
 }

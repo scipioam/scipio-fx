@@ -1,5 +1,6 @@
 package com.github.scipioam.scipiofx.materialfx.table;
 
+import com.github.scipioam.scipiofx.framework.exception.FrameworkException;
 import javafx.beans.property.*;
 
 import java.lang.reflect.Field;
@@ -98,7 +99,7 @@ public class MFXColumnComparator<T> implements Comparator<T> {
                 throw new UnsupportedOperationException("unsupported fieldType for ColumnComparator.compare: " + fieldType.getName());
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new FrameworkException(e);
         }
     }
 

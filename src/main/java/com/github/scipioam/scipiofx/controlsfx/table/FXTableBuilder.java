@@ -1,42 +1,29 @@
 package com.github.scipioam.scipiofx.controlsfx.table;
 
-import com.github.scipioam.scipiofx.view.table.AbstractTableBuilder;
-import com.github.scipioam.scipiofx.view.table.FXRowClickListener;
-import com.github.scipioam.scipiofx.view.table.FXTableColumnBuildListener;
-import com.github.scipioam.scipiofx.view.table.FXTableColumnBuilder;
+import com.github.scipioam.scipiofx.view.table.*;
 import com.github.scipioam.scipiofx.view.table.annotations.TableColumnBind;
 import com.github.scipioam.scipiofx.view.table.annotations.TableColumnComparator;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.controlsfx.control.tableview2.TableView2;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * {@link TableView}的构建器
- *
- * @since 2022/6/13
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
+@SuppressWarnings({"LombokGetterMayBeUsed", "rawtypes"})
 public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
 
-    @Setter(AccessLevel.NONE)
-    private TableView<T> tableView;
+    private final TableView<T> tableView;
     private boolean isTableView2 = false; //是否为controlsFX包里的威力加强版（TableView2）
     private FXTableColumnBuildListener<T> columnBuildListener;
     private FXTableColumnBuilder<T> columnBuilder;
-    @SuppressWarnings("rawtypes")
     private Callback<TableView.ResizeFeatures, Boolean> resizePolicy;
 
     private FXRowClickListener<T> rowClickListener;
@@ -144,10 +131,10 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
 //    }
 
     /**
-     * 其他构建
+     * 后处理
      */
     @Override
-    protected void otherBuild() {
+    protected void postProcessing(List<TableColumnBindEntry> entries) {
         //绑定数据源
         tableView.setItems(dataSource);
         //选择模式
@@ -174,45 +161,100 @@ public class FXTableBuilder<T> extends AbstractTableBuilder<T> {
     //===============================================================================================================================================
 
     public FXTableBuilder<T> initDataSource(boolean initEmptyData) {
-        return (FXTableBuilder<T>) super.initDataSource(initEmptyData);
+         super.setDataSource(initEmptyData);
+         return this;
     }
 
-    @Override
     public FXTableBuilder<T> initDataSource(Collection<T> initData) {
-        return (FXTableBuilder<T>) super.initDataSource(initData);
+        super.setDataSource(initData);
+        return this;
     }
 
-    @Override
-    public FXTableBuilder<T> setDataType(Class<T> dataType) {
-        return (FXTableBuilder<T>) super.setDataType(dataType);
+    public FXTableBuilder<T> dataType(Class<T> dataType) {
+        super.dataType = dataType;
+        return this;
     }
 
-    @Override
-    public FXTableBuilder<T> setReadSuperClassFields(boolean readSuperClassFields) {
-        return (FXTableBuilder<T>) super.setReadSuperClassFields(readSuperClassFields);
+    public FXTableBuilder<T> readSuperClassFields(boolean readSuperClassFields) {
+        super.readSuperClassFields = readSuperClassFields;
+        return this;
     }
 
-    @Override
-    public FXTableBuilder<T> setExcludeFields(Collection<String> excludeFields) {
-        return (FXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    public FXTableBuilder<T> excludeFields(Collection<String> excludeFields) {
+        super.setExcludeFields(excludeFields);
+        return this;
     }
 
-    @Override
-    public FXTableBuilder<T> setExcludeFields(String... excludeFields) {
-        return (FXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    public FXTableBuilder<T> excludeFields(String... excludeFields) {
+        super.setExcludeFields(excludeFields);
+        return this;
     }
 
     /**
      * 设置列宽平均自适应
      */
-    public FXTableBuilder<T> setColumnResizePolicyConstrained() {
+    public FXTableBuilder<T> columnResizePolicyConstrained() {
         this.resizePolicy = TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN;
         return this;
     }
 
-    @Override
-    public FXTableBuilder<T> setSelectionMode(SelectionMode selectionMode) {
-        return (FXTableBuilder<T>) super.setSelectionMode(selectionMode);
+    public FXTableBuilder<T> selectionMode(SelectionMode selectionMode) {
+        super.selectionMode = selectionMode;
+        return this;
     }
 
+    public FXTableBuilder<T> columnBuildListener(FXTableColumnBuildListener<T> columnBuildListener) {
+        this.columnBuildListener = columnBuildListener;
+        return this;
+    }
+
+    public FXTableBuilder<T> rowClickListener(FXRowClickListener<T> rowClickListener) {
+        this.rowClickListener = rowClickListener;
+        return this;
+    }
+
+    public FXTableBuilder<T> tableMouseClickHandler(EventHandler<MouseEvent> tableMouseClickHandler) {
+        this.tableMouseClickHandler = tableMouseClickHandler;
+        return this;
+    }
+
+    public FXTableBuilder<T> tableContextMenu(ContextMenu tableContextMenu) {
+        this.tableContextMenu = tableContextMenu;
+        return this;
+    }
+
+    //===============================================================================================================================================
+
+
+    public TableView<T> getTableView() {
+        return tableView;
+    }
+
+    public boolean isTableView2() {
+        return isTableView2;
+    }
+
+    public FXTableColumnBuildListener<T> getColumnBuildListener() {
+        return columnBuildListener;
+    }
+
+    public FXTableColumnBuilder<T> getColumnBuilder() {
+        return columnBuilder;
+    }
+
+    public Callback<TableView.ResizeFeatures, Boolean> getResizePolicy() {
+        return resizePolicy;
+    }
+
+    public FXRowClickListener<T> getRowClickListener() {
+        return rowClickListener;
+    }
+
+    public EventHandler<MouseEvent> getTableMouseClickHandler() {
+        return tableMouseClickHandler;
+    }
+
+    public ContextMenu getTableContextMenu() {
+        return tableContextMenu;
+    }
 }

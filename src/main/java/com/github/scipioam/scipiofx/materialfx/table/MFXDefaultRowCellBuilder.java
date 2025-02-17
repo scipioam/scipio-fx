@@ -1,5 +1,6 @@
 package com.github.scipioam.scipiofx.materialfx.table;
 
+import com.github.scipioam.scipiofx.framework.exception.FrameworkException;
 import com.github.scipioam.scipiofx.utils.ReflectUtil;
 import com.github.scipioam.scipiofx.view.table.annotations.TableColumnBind;
 import com.github.scipioam.scipiofx.view.table.annotations.TableColumnTimeFormat;
@@ -32,7 +33,7 @@ public class MFXDefaultRowCellBuilder<T> implements MFXRowCellBuilder<T> {
                 }
                 if (fieldType == LocalDate.class || fieldType == LocalDateTime.class || fieldType == LocalTime.class || fieldType == Date.class) {
                     TableColumnTimeFormat formatInfo = field.getAnnotation(TableColumnTimeFormat.class);
-                    if (formatInfo == null) {
+                    if (formatInfo == null || data == null) {
                         return data;
                     }
                     //时间日期格式化
@@ -53,7 +54,7 @@ public class MFXDefaultRowCellBuilder<T> implements MFXRowCellBuilder<T> {
                     return data;
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new FrameworkException(e);
             }
         });
     }

@@ -21,29 +21,27 @@ import java.util.List;
 
 /**
  * 测试实体类：人员
- *
- * @since 2022/6/9
  */
 @NoArgsConstructor
 public class Person implements Serializable {
 
-    @TableColumnBind(title = "ID", filtered = true, alignment = Pos.CENTER, compared = true, widthPercent = 0.2)
+    @TableColumnBind(title = "ID", filtered = true, alignment = Pos.CENTER, compared = true, widthPercent = 0.15)
     private final IntegerProperty id = new SimpleIntegerProperty();
 
-    @TableColumnBind(title = "NAME", compared = true, widthPercent = 0.3)
+    @TableColumnBind(title = "NAME", filtered = true, compared = true, widthPercent = 0.2)
     @TableColumnComparator(value = MFXPersonNameComparator.class, bindField = true)
     private final StringProperty name = new SimpleStringProperty();
 
 //    @TableColumnBind(title = "NICKNAME")
     private final StringProperty nickName = new SimpleStringProperty();
 
-    @TableColumnBind(title = "AGE", compared = true, widthPercent = 0.2)
+    @TableColumnBind(title = "AGE", compared = true, widthPercent = 0.1)
     private final IntegerProperty age = new SimpleIntegerProperty();
 
-    @TableColumnBind(title = "GENDER", widthPercent = 0.1)
+    @TableColumnBind(title = "GENDER", filtered = true, widthPercent = 0.1)
     private final StringProperty gender = new SimpleStringProperty();
 
-//    @TableColumnBind(title = "EM")
+    @TableColumnBind(title = "EMAIL", widthPercent = 0.25)
     private final StringProperty email = new SimpleStringProperty();
 
     @TableColumnTimeFormat(pattern = "yyyy.MM.dd")
@@ -64,7 +62,7 @@ public class Person implements Serializable {
     public static Person build(int id, String name) {
         String nickName = name + "_nick";
         int age = RandomUtils.getInt(18,50);
-        String email = RandomUtils.getStringWithSpecialChar(8, false) + "@mail.com";
+        String email = name + RandomUtils.getStringWithSpecialChar(2, false) + "@mail.com";
         String gender = RandomUtils.getBoolean() ? "male" : "female";
         int year = RandomUtils.getInt(1980,2001);
         int month = RandomUtils.getInt(1,12);

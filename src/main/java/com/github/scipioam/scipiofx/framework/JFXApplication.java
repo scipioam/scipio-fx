@@ -323,4 +323,8 @@ public abstract class JFXApplication extends Application {
     public FXMLView getMainView() {
         return mainView;
     }
+
+    public static AppContext getContext() {
+        return instance.context;
+    }
 }

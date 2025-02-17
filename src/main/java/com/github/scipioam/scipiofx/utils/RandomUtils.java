@@ -107,7 +107,7 @@ public class RandomUtils {
         if (special) {
             kindIndexArr.add(SPECIAL);
         }
-        if (kindIndexArr.size() == 0) {
+        if (kindIndexArr.isEmpty()) {
             throw new IllegalArgumentException("none kind of strings have been chosen");
         }
         Random random = new Random();
@@ -115,6 +115,7 @@ public class RandomUtils {
         for (int i = 1; i <= length; i++) {
             int kindIndex = kindIndexArr.get(random.nextInt(kindIndexArr.size()));
             int charIndex;
+            //noinspection EnhancedSwitchMigration
             switch (kindIndex) {
                 case LOWER: //小写
                     charIndex = random.nextInt(26);
@@ -172,7 +173,7 @@ public class RandomUtils {
      * @param pool           自定义基础字符池
      */
     public static String getStringByCustom(int getNumFromPool, Collection<String> pool) {
-        if (pool == null || pool.size() == 0) {
+        if (pool == null || pool.isEmpty()) {
             throw new IllegalArgumentException("method argument 'Collection<String> pool' can not be empty");
         }
         //确定池子的类型

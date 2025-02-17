@@ -1,6 +1,7 @@
 package com.github.scipioam.scipiofx.materialfx.table;
 
 import com.github.scipioam.scipiofx.view.table.AbstractTableBuilder;
+import com.github.scipioam.scipiofx.view.table.TableColumnBindEntry;
 import com.github.scipioam.scipiofx.view.table.annotations.TableColumnBind;
 import com.github.scipioam.scipiofx.view.table.annotations.TableColumnComparator;
 import com.github.scipioam.scipiofx.view.table.annotations.TableColumnFilter;
@@ -13,29 +14,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.SelectionMode;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * {@link MFXTableView}的构建器
- *
- * @since 2022/6/10
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
 public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
 
     private final TableBuilder<T, MFXTableView<T>> innerBuilder;
     private final ObservableList<AbstractFilter<T, ?>> filters = FXCollections.observableArrayList();
-    @Setter(AccessLevel.NONE)
     private final MFXTableView<T> tableView;
 
     private MFXRowCellBuilder<T> rowCellBuilder;
@@ -55,14 +46,6 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
             this.tableView = tableView;
             innerBuilder = TableBuilder.table(tableView);
         }
-    }
-
-    public static <T> MFXTableBuilder<T> builder() {
-        return new MFXTableBuilder<>();
-    }
-
-    public static <T> MFXTableBuilder<T> builder(MFXTableView<T> tableView) {
-        return new MFXTableBuilder<>(tableView);
     }
 
     //===============================================================================================================================================
@@ -133,10 +116,10 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
     }
 
     /**
-     * 其他构建
+     * 后处理
      */
     @Override
-    protected void otherBuild() throws Exception {
+    protected void postProcessing(List<TableColumnBindEntry> entries) throws Exception {
         //过滤器
         if (!filters.isEmpty()) {
             tableView.getFilters().clear();
@@ -156,7 +139,7 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         if (selectionMode != null) {
             tableView.getSelectionModel().setAllowsMultipleSelection(selectionMode == SelectionMode.MULTIPLE);
         }
-        //清除此空数据
+        //最后清除此空数据
         if (initEmptyData) {
             dataSource.clear();
         }
@@ -164,39 +147,49 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
 
     //===============================================================================================================================================
 
-    @Override
-    public MFXTableBuilder<T> setDataType(Class<T> dataType) {
-        return (MFXTableBuilder<T>) super.setDataType(dataType);
+    public MFXTableBuilder<T> dataType(Class<T> dataType) {
+        super.dataType = dataType;
+        return this;
     }
 
-    @Override
     public MFXTableBuilder<T> initDataSource(boolean initEmptyData) {
-        return (MFXTableBuilder<T>) super.initDataSource(initEmptyData);
+        super.setDataSource(initEmptyData);
+        return this;
     }
 
-    @Override
     public MFXTableBuilder<T> initDataSource(Collection<T> initData) {
-        return (MFXTableBuilder<T>) super.initDataSource(initData);
+        super.setDataSource(initData);
+        return this;
     }
 
-    @Override
-    public MFXTableBuilder<T> setReadSuperClassFields(boolean readSuperClassFields) {
-        return (MFXTableBuilder<T>) super.setReadSuperClassFields(readSuperClassFields);
+    public MFXTableBuilder<T> readSuperClassFields(boolean readSuperClassFields) {
+        super.readSuperClassFields = readSuperClassFields;
+        return this;
     }
 
-    @Override
-    public MFXTableBuilder<T> setExcludeFields(Collection<String> excludeFields) {
-        return (MFXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    public MFXTableBuilder<T> excludeFields(Collection<String> excludeFields) {
+        super.setExcludeFields(excludeFields);
+        return this;
     }
 
-    @Override
-    public MFXTableBuilder<T> setExcludeFields(String... excludeFields) {
-        return (MFXTableBuilder<T>) super.setExcludeFields(excludeFields);
+    public MFXTableBuilder<T> excludeFields(String... excludeFields) {
+        super.setExcludeFields(excludeFields);
+        return this;
     }
 
-    @Override
-    public MFXTableBuilder<T> setSelectionMode(SelectionMode selectionMode) {
-        return (MFXTableBuilder<T>) super.setSelectionMode(selectionMode);
+    public MFXTableBuilder<T> selectionMode(SelectionMode selectionMode) {
+        super.selectionMode = selectionMode;
+        return this;
+    }
+
+    public MFXTableBuilder<T> rowCellBuilder(MFXRowCellBuilder<T> rowCellBuilder) {
+        this.rowCellBuilder = rowCellBuilder;
+        return this;
+    }
+
+    public MFXTableBuilder<T> columnBuildListener(MFXTableColumnBuildListener<T> columnBuildListener) {
+        this.columnBuildListener = columnBuildListener;
+        return this;
     }
 
     /**
@@ -248,12 +241,12 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         return this;
     }
 
-    public MFXTableBuilder<T> setHSpeed(double unit, double block) {
+    public MFXTableBuilder<T> horizontalScrollbarSpeed(double unit, double block) {
         innerBuilder.setHSpeed(unit, block);
         return this;
     }
 
-    public MFXTableBuilder<T> setVSpeed(double unit, double block) {
+    public MFXTableBuilder<T> verticalScrollbarSpeed(double unit, double block) {
         innerBuilder.setVSpeed(unit, block);
         return this;
     }
@@ -283,7 +276,7 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
         return this;
     }
 
-    public MFXTableBuilder<T> setFooterVisible(boolean footerVisible) {
+    public MFXTableBuilder<T> footerVisible(boolean footerVisible) {
         innerBuilder.setFooterVisible(footerVisible);
         return this;
     }
@@ -291,7 +284,7 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
     /**
      * 初始化时对数据的排序
      */
-    public MFXTableBuilder<T> setInitDataSort(Comparator<T> comparator) {
+    public MFXTableBuilder<T> initDataSort(Comparator<T> comparator) {
         innerBuilder.setComparator(comparator);
         return this;
     }
@@ -301,7 +294,7 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
      *
      * @param isReverse 是否反转
      */
-    public MFXTableBuilder<T> setInitDataSort(Comparator<T> comparator, boolean isReverse) {
+    public MFXTableBuilder<T> initDataSort(Comparator<T> comparator, boolean isReverse) {
         innerBuilder.setComparator(comparator, isReverse);
         return this;
     }
@@ -309,7 +302,7 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
     /**
      * 启用{@link MFXPaginatedTableView}的前提下，设定每页数量
      */
-    public MFXTableBuilder<T> setRowsPerPage(int rowsPerPage) {
+    public MFXTableBuilder<T> rowsPerPage(int rowsPerPage) {
         if (rowsPerPage <= 0) {
             throw new IllegalArgumentException("rowsPerPage must be positive");
         }
