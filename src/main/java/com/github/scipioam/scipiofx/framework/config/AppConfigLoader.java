@@ -1,9 +1,11 @@
 package com.github.scipioam.scipiofx.framework.config;
 
 import com.github.scipioam.scipiofx.framework.AppInitThread;
+import com.github.scipioam.scipiofx.framework.EmptyAppInitThread;
 import com.github.scipioam.scipiofx.framework.JFXApplication;
 import com.github.scipioam.scipiofx.framework.LaunchListener;
 import com.github.scipioam.scipiofx.framework.exception.ConfigLoadException;
+import com.github.scipioam.scipiofx.mybatis.ext.DBAppInitThread;
 import com.github.scipioam.scipiofx.utils.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
@@ -83,6 +85,14 @@ public class AppConfigLoader {
         AppInitThread initThread = appInstance.initThread();
         if (initThread != null) {
             appProperties.setInitThreadInstance(initThread);
+        } else if (StringUtils.isNotBlank(appProperties.getInitThread())) {
+            if (appProperties.getInitThread().equalsIgnoreCase("EmptyAppInitThread")
+                    || appProperties.getInitThread().equalsIgnoreCase("empty")) {
+                appProperties.setInitThreadInstance(new EmptyAppInitThread());
+            } else if (appProperties.getInitThread().equalsIgnoreCase("DBAppInitThread")
+                    || appProperties.getInitThread().equalsIgnoreCase("db")) {
+                appProperties.setInitThreadInstance(new DBAppInitThread());
+            }
         }
 
         return configRootProperties;
