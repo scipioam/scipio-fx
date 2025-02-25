@@ -4,6 +4,7 @@ import com.github.scipioam.scipiofx.framework.fxml.ViewArgs;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,12 +18,22 @@ public abstract class BaseController implements Initializable {
     // 只有子view才有值
     protected BaseController parentController;
 
+    protected Window myWindow;
+
     public BaseController getParentController() {
         return parentController;
     }
 
     public void setParentController(BaseController parentController) {
         this.parentController = parentController;
+    }
+
+    public Window getMyWindow() {
+        return myWindow;
+    }
+
+    public void setMyWindow(Window myWindow) {
+        this.myWindow = myWindow;
     }
 
     //=========================================== Controller life circle ===========================================
@@ -73,6 +84,24 @@ public abstract class BaseController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         onCreate(location, resources);
+    }
+
+    //=========================================== Controller tool methods ===========================================
+
+    public void show() {
+        if (myWindow != null && (myWindow instanceof Stage myStage)) {
+            myStage.show();
+        }
+    }
+
+    public void hide() {
+        myWindow.hide();
+    }
+
+    public void close() {
+        if (myWindow != null && (myWindow instanceof Stage myStage)) {
+            myStage.close();
+        }
     }
 
 }

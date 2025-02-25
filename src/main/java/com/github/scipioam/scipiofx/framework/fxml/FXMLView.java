@@ -1,7 +1,7 @@
 package com.github.scipioam.scipiofx.framework.fxml;
 
-import com.github.scipioam.scipiofx.framework.BaseController;
 import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
+import com.github.scipioam.scipiofx.framework.BaseController;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
@@ -74,8 +74,12 @@ public class FXMLView {
         try {
             FXMLViewLoader fxmlViewLoader = new FXMLViewLoader();
             FXMLView view = fxmlViewLoader.load(options.getFxmlUrl(), options.getInitArgs());
+            BaseController controller = view.getController();
             if (options.isNeedStage()) {
                 options.buildStageForView(view);
+                controller.setMyWindow(view.getStage());
+            } else {
+                controller.setMyWindow(view.getSelf().getScene().getWindow());
             }
             return view;
         } catch (Exception e) {
