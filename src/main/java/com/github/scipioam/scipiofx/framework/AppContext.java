@@ -71,6 +71,9 @@ public class AppContext {
 
     protected BaseController mainController;
 
+    /**
+     * 发起子线程任务
+     */
     public void submitTask(Runnable task) {
         if (threadPool != null) {
             threadPool.submit(task);
@@ -79,12 +82,24 @@ public class AppContext {
         }
     }
 
+    /**
+     * 发起子线程任务，并返回Future对象
+     */
     public <T> Future<T> submitFutureTask(Callable<T> task) {
         if (threadPool != null) {
             return threadPool.submit(task);
         } else {
             throw new IllegalStateException("No thread pool available");
         }
+    }
+
+    /**
+     * 初始化线程是否已经结束
+     *
+     * @return true：已结束
+     */
+    public boolean isInitThreadFinished() {
+        return initThread == null || initThread.isFinished();
     }
 
 }

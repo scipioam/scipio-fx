@@ -1,7 +1,6 @@
 package com.github.scipioam.scipiofx.controlsfx;
 
 import com.github.scipioam.scipiofx.framework.Language;
-import com.github.scipioam.scipiofx.utils.StringUtils;
 import com.github.scipioam.scipiofx.view.dialog.DialogBtnListener;
 import com.github.scipioam.scipiofx.view.dialog.DialogHelper;
 import javafx.concurrent.Worker;
@@ -30,7 +29,7 @@ public final class CFXDialogHelper extends DialogHelper {
      * @param language 语言
      * @return 异常对话框
      */
-    public static ExceptionDialog buildExceptionDialog(Throwable e, Language language) {
+    public static ExceptionDialog buildExceptionDialog(Throwable e, Language language, int maxLength) {
         ExceptionDialog dialog = new ExceptionDialog(e);
         String title, headerText, emptyMsg;
         switch (language) {
@@ -48,31 +47,44 @@ public final class CFXDialogHelper extends DialogHelper {
         }
         dialog.setTitle(title);
         dialog.setHeaderText(headerText);
-        dialog.setContentText(StringUtils.isBlank(e.getMessage()) ? emptyMsg : e.getMessage());
+
+        String errMsg = e.getMessage() == null ?emptyMsg : e.getMessage();
+        if (maxLength > 0 && errMsg.length() > maxLength) {
+            errMsg = errMsg.substring(0, maxLength) + "...";
+        }
+        dialog.setContentText(errMsg);
+        return dialog;
+    }
+
+    public static ExceptionDialog showExceptionDialog(Throwable e, Language language, int maxLength) {
+        ExceptionDialog dialog = buildExceptionDialog(e, language, maxLength);
+        dialog.show();
         return dialog;
     }
 
     public static ExceptionDialog showExceptionDialog(Throwable e, Language language) {
-        ExceptionDialog dialog = buildExceptionDialog(e, language);
-        dialog.show();
-        return dialog;
+        return showExceptionDialog(e, language, 800);
     }
 
     public static ExceptionDialog showExceptionDialog(Throwable e) {
         return showExceptionDialog(e, Language.CHINESE);
     }
 
-    public static Optional<ButtonType> showExceptionDialogHandle(Throwable e, Language language) {
-        ExceptionDialog dialog = buildExceptionDialog(e, language);
+    public static Optional<ButtonType> showExceptionDialogHandle(Throwable e, Language language, int maxLength) {
+        ExceptionDialog dialog = buildExceptionDialog(e, language, maxLength);
         return dialog.showAndWait();
+    }
+
+    public static Optional<ButtonType> showExceptionDialogHandle(Throwable e, Language language) {
+        return showExceptionDialogHandle(e, language, 800);
     }
 
     public static Optional<ButtonType> showExceptionDialogHandle(Throwable e) {
         return showExceptionDialogHandle(e, Language.CHINESE);
     }
 
-    public static void showExceptionDialogHandle(Throwable e, Language language, DialogBtnListener listener) {
-        ExceptionDialog dialog = buildExceptionDialog(e, language);
+    public static void showExceptionDialogHandle(Throwable e, Language language, DialogBtnListener listener, int maxLength) {
+        ExceptionDialog dialog = buildExceptionDialog(e, language, maxLength);
         Optional<ButtonType> handle = dialog.showAndWait();
         if (listener != null && handle.isPresent() && handle.get() != ButtonType.CLOSE) {
             listener.onClicked(null, null);
@@ -80,7 +92,7 @@ public final class CFXDialogHelper extends DialogHelper {
     }
 
     public static void showExceptionDialogHandle(Throwable e, DialogBtnListener listener) {
-        showExceptionDialogHandle(e, Language.CHINESE, listener);
+        showExceptionDialogHandle(e, Language.CHINESE, listener, 1000);
     }
 
     //TODO ProgressDialog还可以进一步封装，否则要在外面启动Worker子线程

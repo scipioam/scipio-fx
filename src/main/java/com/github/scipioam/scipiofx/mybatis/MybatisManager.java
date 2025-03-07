@@ -294,7 +294,8 @@ public class MybatisManager {
             }
         } catch (Exception e) {
             sqlSession.rollback();
-            log.error("Got exception while executing sql !", e);
+//            log.error("Got exception while executing sql !", e);
+            throw e;
         } finally {
             sqlSession.close();
         }
@@ -336,7 +337,7 @@ public class MybatisManager {
             //非sqlite的再执行一个
             String testSql = connectOptions.getConnectionTestQuery();
             if (StringUtils.isBlank(testSql)) {
-                testSql = "select 1";
+                testSql = "select 1 from dual";
             }
             connection.prepareStatement(testSql).execute();
             return null;
@@ -347,6 +348,44 @@ public class MybatisManager {
 
     public Throwable testConnect() {
         return testConnect(defaultDataSourceKey);
+    }
+
+    public void runScript(ScriptRunBuilder builder) throws Exception {
+        // 获取DB连接
+        SqlSession sqlSession;
+        if (StringUtils.isNotBlank(builder.getDataSourceKey())) {
+            sqlSession = openSession(builder.getDataSourceKey());
+        } else {
+            sqlSession = openSession();
+        }
+        Connection connection = sqlSession.getConnection();
+        try {
+            // 初始化脚本执行器
+            MyScriptRunner runner = builder.build(connection);
+            // 执行脚本
+            File scriptFile = builder.getScriptFile();
+            try (Reader reader = new FileReader(scriptFile)) {
+                runner.runScript(reader);
+            }
+        } catch (Exception e) {
+            sqlSession.rollback();
+//            log.error("Got exception while executing sql !", e);
+            throw e;
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    public void runScript(File scriptFile) throws Exception {
+        ScriptRunBuilder builder = new ScriptRunBuilder()
+                .setScriptFilePath(scriptFile.getPath());
+        runScript(builder);
+    }
+
+    public void runScript(String scriptFilePath) throws Exception {
+        ScriptRunBuilder builder = new ScriptRunBuilder()
+                .setScriptFilePath(scriptFilePath);
+        runScript(builder);
     }
 
     //================================================== ↓↓↓↓↓↓ 工具方法 ↓↓↓↓↓↓ ==================================================

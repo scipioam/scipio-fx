@@ -30,11 +30,14 @@ public abstract class AppInitThread implements Runnable {
 
     protected LaunchListener launchListener;
 
-    private boolean needRunLater = true;
+    protected boolean needRunLater = true;
+
+    protected boolean finished = false;
 
     @Override
     public void run() {
         needRunLater = true;
+        finished = false;
         try {
             long startTime = System.currentTimeMillis();
 
@@ -78,6 +81,8 @@ public abstract class AppInitThread implements Runnable {
                     CFXDialogHelper.showExceptionDialog(e);
                 });
             }
+        } finally {
+            finished = true;
         }
     }
 
@@ -156,5 +161,9 @@ public abstract class AppInitThread implements Runnable {
             throw new IllegalArgumentException("defaultSplashTime must be greater than or equal to 0");
         }
         this.defaultSplashTime = defaultSplashTime;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }
