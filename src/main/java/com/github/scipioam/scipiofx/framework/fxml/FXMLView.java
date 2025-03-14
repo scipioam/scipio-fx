@@ -3,6 +3,7 @@ package com.github.scipioam.scipiofx.framework.fxml;
 import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import com.github.scipioam.scipiofx.framework.BaseController;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -79,7 +80,10 @@ public class FXMLView {
                 options.buildStageForView(view);
                 controller.setMyWindow(view.getStage());
             } else {
-                controller.setMyWindow(view.getSelf().getScene().getWindow());
+                Scene scene = view.getSelf().getScene();
+                if (scene != null) {
+                    controller.setMyWindow(scene.getWindow());
+                }
             }
             return view;
         } catch (Exception e) {

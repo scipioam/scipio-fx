@@ -175,6 +175,8 @@ public abstract class JFXApplication extends Application {
         // 设置主画面
         Scene mainScene = buildMainScene();
         mainStage.setScene(mainScene);
+        mainView.setStage(mainStage);
+        mainView.getController().setMyWindow(mainStage);
         // 设置标题
         String title = appProperties.getTitle();
         if (title != null) {

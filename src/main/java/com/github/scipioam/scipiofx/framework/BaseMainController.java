@@ -6,6 +6,7 @@ import com.github.scipioam.scipiofx.framework.fxml.ViewLoadOptions;
 import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
 
@@ -22,8 +23,15 @@ public abstract class BaseMainController extends BaseController {
 
     public abstract void onMainControllerInit(AppContext context, Parent rootNode, ViewArgs initArgs);
 
-    public Pane getContentPane() {
+    public Region getContentPane() {
         return null;
+    }
+
+    protected void loadChildrenForContentPane(Region contentPane, FXMLView childView) {
+        if (contentPane instanceof Pane cp) {
+            cp.getChildren().clear();
+            cp.getChildren().add(childView.getSelf());
+        }
     }
 
     @Override
@@ -66,12 +74,17 @@ public abstract class BaseMainController extends BaseController {
         if (childView == null) {
             throw new IllegalStateException("childView is null, appViewId:[" + appViewId.id() + "], title:[" + appViewId.title() + "], fxmlPath: [" + appViewId.fxmlPath() + "]");
         }
-        Pane contentPane = getContentPane();
+        Region contentPane = getContentPane();
         if (contentPane == null) {
             throw new IllegalStateException("contentPane cannot be null");
         }
-        contentPane.getChildren().clear();
-        contentPane.getChildren().add(childView.getSelf());
+
+        // 内部子view的window和stage跟随父view
+        BaseController childController = childView.getController();
+        childController.setMyWindow(myWindow);
+        childView.setStage(JFXApplication.getContext().mainStage);
+
+        loadChildrenForContentPane(contentPane, childView);
         return childView;
     }
 
