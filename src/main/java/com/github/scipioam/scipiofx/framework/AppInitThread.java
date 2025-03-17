@@ -41,8 +41,12 @@ public abstract class AppInitThread implements Runnable {
         try {
             long startTime = System.currentTimeMillis();
 
+            beforeInit(application, context);
+
             //自定义初始化操作
             init(application, context);
+
+            afterInit(application, context);
 
             long costTime = System.currentTimeMillis() - startTime;
             if (splashScreen != null && costTime < defaultSplashTime) {
@@ -93,6 +97,20 @@ public abstract class AppInitThread implements Runnable {
      * @param context     上下文对象
      */
     public abstract void init(JFXApplication application, AppContext context) throws Exception;
+
+    /**
+     * 初始化之前的回调（非UI线程）
+     */
+    protected void beforeInit(JFXApplication application, AppContext context) throws Exception {
+        // do nothing
+    }
+
+    /**
+     * 初始化之后的回调（非UI线程）
+     */
+    protected void afterInit(JFXApplication application, AppContext context) throws Exception {
+        // do nothing
+    }
 
     /**
      * 加载mainView之前的回调（在{@link Platform#runLater(Runnable)}之内）

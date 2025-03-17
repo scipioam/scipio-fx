@@ -11,7 +11,6 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -97,12 +96,7 @@ public abstract class JFXApplication extends Application {
             splashScreen = this.splashScreen();
             if (splashScreen != null) {
                 // 显示启动画面
-                Stage splashStage = new Stage(StageStyle.TRANSPARENT);
-                Scene splashScene = new Scene(splashScreen.buildViews(), Color.TRANSPARENT);
-                splashStage.setScene(splashScene);
-                splashStage.setResizable(false);
-                splashScreen.setStage(splashStage);
-                splashStage.show();
+                splashScreen.buildAndShowStage();
             }
 
             //启动初始化线程
@@ -168,10 +162,6 @@ public abstract class JFXApplication extends Application {
 
     protected void initMainStage() throws Exception {
         long startTime = System.currentTimeMillis();
-        // 如果有启动画面，则关闭启动画面
-        if (splashScreen != null) {
-            splashScreen.closeStage();
-        }
         // 设置主画面
         Scene mainScene = buildMainScene();
         mainStage.setScene(mainScene);
@@ -214,6 +204,11 @@ public abstract class JFXApplication extends Application {
     public void showMainView() {
         if (context.getLaunchListener() != null) {
             context.getLaunchListener().beforeShowMainView(this, mainView, mainStage.getScene());
+        }
+        // 如果有启动画面，则关闭启动画面
+        if (splashScreen != null) {
+            splashScreen.closeStage();
+            log.info("Splash screen closed, show duration: {}ms", splashScreen.getShowDuration());
         }
         mainStage.show();
         if (context.getLaunchListener() != null) {

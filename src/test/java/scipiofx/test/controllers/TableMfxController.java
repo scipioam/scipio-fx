@@ -4,6 +4,7 @@ import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import com.github.scipioam.scipiofx.framework.AppContext;
 import com.github.scipioam.scipiofx.framework.BaseController;
 import com.github.scipioam.scipiofx.framework.fxml.ViewArgs;
+import com.github.scipioam.scipiofx.materialfx.dialog.MFXDialogHelper;
 import com.github.scipioam.scipiofx.materialfx.table.MFXTableBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTableView;
@@ -11,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 import scipiofx.test.bean.Person;
 
 /**
@@ -19,6 +21,8 @@ import scipiofx.test.bean.Person;
  */
 public class TableMfxController extends BaseController {
 
+    @FXML
+    private AnchorPane rootPane;
     @FXML
     private MFXTableView<Person> tableView;
     @FXML
@@ -30,7 +34,7 @@ public class TableMfxController extends BaseController {
     public void onLoadInit(AppContext context, Parent rootNode, ViewArgs initArgs) {
         // 初始化表格
         try {
-            Person.buildTestData(tableList, 10);
+//            Person.buildTestData(tableList, 10);
             long startTime = System.currentTimeMillis();
             MFXTableBuilder<Person> tableBuilder = new MFXTableBuilder<>(tableView);
             tableBuilder.initDataSource(tableList)
@@ -48,10 +52,7 @@ public class TableMfxController extends BaseController {
      */
     @FXML
     private void clickSearch() {
-        // TODO 搜索无效
-//        Person.buildTestData(tableList, 10);
-//        tableView.setItems(tableList);
-//        tableView.update();
+
     }
 
     /**
@@ -60,6 +61,7 @@ public class TableMfxController extends BaseController {
     @FXML
     private void clickReset() {
         System.out.println(tableView.getItems());
+        tableList.clear();
     }
 
     /**
@@ -67,7 +69,7 @@ public class TableMfxController extends BaseController {
      */
     @FXML
     private void clickAddRow() {
-//        tableList.add(Person.build());
+        tableList.add(new Person());
     }
 
     /**
@@ -75,6 +77,12 @@ public class TableMfxController extends BaseController {
      */
     @FXML
     private void clickDeleteRow() {
+        Person selectedData = tableView.getSelectionModel().getSelectedValue();
+        if (selectedData != null) {
+            tableView.getItems().remove(selectedData);
+        } else {
+            MFXDialogHelper.showWarning(rootPane, "警告", "请先选择要删除的行！");
+        }
     }
 
     /**

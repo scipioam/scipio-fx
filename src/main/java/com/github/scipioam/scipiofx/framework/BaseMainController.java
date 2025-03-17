@@ -4,6 +4,7 @@ import com.github.scipioam.scipiofx.framework.fxml.FXMLView;
 import com.github.scipioam.scipiofx.framework.fxml.ViewArgs;
 import com.github.scipioam.scipiofx.framework.fxml.ViewLoadOptions;
 import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
+import com.github.scipioam.scipiofx.utils.StringUtils;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -97,7 +98,7 @@ public abstract class BaseMainController extends BaseController {
      * @param modality   模态的模式
      * @param initArgs   初始化参数
      */
-    public FXMLView showExternalChildView(AppViewId appViewId, Parent container, StageStyle stageStyle, Modality modality, ViewArgs initArgs) {
+    public FXMLView showExternalChildView(AppViewId appViewId, Parent container, StageStyle stageStyle, Modality modality, ViewArgs initArgs, String title) {
         if (container == null) {
             throw new IllegalArgumentException("parent container cannot be null");
         }
@@ -108,6 +109,9 @@ public abstract class BaseMainController extends BaseController {
         } else {
             options.setStageOptions(container, stageStyle, modality);
         }
+        if (StringUtils.isNotBlank(title)) {
+            options.setTitle(title);
+        }
         FXMLView childView = getOrBuildChildView(appViewId, options);
         if (childView == null) {
             throw new IllegalStateException("childView is null, appViewId:[" + appViewId.id() + "], title:[" + appViewId.title() + "], fxmlPath: [" + appViewId.fxmlPath() + "]");
@@ -117,11 +121,11 @@ public abstract class BaseMainController extends BaseController {
     }
 
     public FXMLView showExternalChildView(AppViewId appViewId, Parent container, ViewArgs initArgs) {
-        return showExternalChildView(appViewId, container, null, null, initArgs);
+        return showExternalChildView(appViewId, container, null, null, initArgs, null);
     }
 
     public FXMLView showExternalChildView(AppViewId appViewId, Parent container, StageStyle stageStyle, Modality modality) {
-        return showExternalChildView(appViewId, container, stageStyle, modality, null);
+        return showExternalChildView(appViewId, container, stageStyle, modality, null, null);
     }
 
     /**

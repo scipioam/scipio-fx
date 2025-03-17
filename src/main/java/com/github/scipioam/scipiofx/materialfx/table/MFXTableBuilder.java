@@ -125,16 +125,17 @@ public class MFXTableBuilder<T> extends AbstractTableBuilder<T> {
             tableView.getFilters().clear();
             tableView.getFilters().addAll(filters);
         }
-        //绑定数据源
+        //数据源初始化
         if (this.dataSource == null) {
             this.dataSource = FXCollections.observableArrayList();
         }
-        tableView.setItems(dataSource);
-        //添加空数据（否则ui会无法更新数据源的变化）
+        //先添加空数据（否则ui会无法更新数据源的变化）
         if (initEmptyData && dataSource.isEmpty()) {
             T emptyData = dataType.getDeclaredConstructor().newInstance();
             this.dataSource.add(emptyData);
         }
+        //再绑定数据源
+        tableView.setItems(dataSource);
         //选择模式
         if (selectionMode != null) {
             tableView.getSelectionModel().setAllowsMultipleSelection(selectionMode == SelectionMode.MULTIPLE);

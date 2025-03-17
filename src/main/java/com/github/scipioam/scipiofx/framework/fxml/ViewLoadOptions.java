@@ -2,6 +2,7 @@ package com.github.scipioam.scipiofx.framework.fxml;
 
 import com.github.scipioam.scipiofx.framework.AppViewId;
 import com.github.scipioam.scipiofx.utils.StageUtil;
+import com.github.scipioam.scipiofx.utils.StringUtils;
 import javafx.scene.Parent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -51,7 +52,7 @@ public class ViewLoadOptions {
 
     public ViewLoadOptions setViewId(AppViewId viewId) {
         this.viewId = viewId;
-        if (viewId != null) {
+        if (viewId != null && StringUtils.isBlank(title)) {
             this.title = viewId.title();
         }
         return this;

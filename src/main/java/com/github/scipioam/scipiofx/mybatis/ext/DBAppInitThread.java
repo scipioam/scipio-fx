@@ -8,7 +8,6 @@ import com.github.scipioam.scipiofx.framework.config.ConfigRootProperties;
 import com.github.scipioam.scipiofx.framework.exception.FrameworkException;
 import com.github.scipioam.scipiofx.mybatis.MybatisConfig;
 import com.github.scipioam.scipiofx.mybatis.MybatisManager;
-import javafx.application.Platform;
 
 /**
  * 默认的MyBatis初始化线程
@@ -18,7 +17,18 @@ import javafx.application.Platform;
  */
 public class DBAppInitThread extends AppInitThread {
 
-    private final LogHelper log = new LogHelper(getClass());
+    protected final LogHelper log;
+
+    public DBAppInitThread() {
+        this(null);
+    }
+
+    public DBAppInitThread(LogHelper log) {
+        if (log == null) {
+            log = new LogHelper(getClass());
+        }
+        this.log = log;
+    }
 
     @Override
     public void init(JFXApplication application, AppContext context) throws Exception {

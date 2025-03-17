@@ -2,11 +2,14 @@ package com.github.scipioam.scipiofx.view;
 
 import com.github.scipioam.scipiofx.framework.config.AppProperties;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.MissingResourceException;
@@ -42,6 +45,10 @@ public class SplashScreen {
      * 启动画面的stage
      */
     private Stage stage;
+
+    private long startShowTime;
+
+    private long showDuration;
 
     public static SplashScreen create() {
         return new SplashScreen();
@@ -92,10 +99,26 @@ public class SplashScreen {
         return progressBar;
     }
 
+    public void buildAndShowStage() {
+        stage = new Stage(StageStyle.TRANSPARENT);
+        Scene splashScene = new Scene(buildViews(), Color.TRANSPARENT);
+        stage.setScene(splashScene);
+        stage.setResizable(false);
+        showStage();
+    }
+
+    public void showStage() {
+        if (stage != null) {
+            stage.show();
+        }
+        startShowTime = System.currentTimeMillis();
+    }
+
     public void closeStage() {
         if (stage != null) {
             stage.close();
         }
+        showDuration = System.currentTimeMillis() - startShowTime;
     }
 
     public Stage getStage() {
@@ -152,5 +175,13 @@ public class SplashScreen {
         if (progressBar != null) {
             progressBar.setProgress(progress);
         }
+    }
+
+    public long getStartShowTime() {
+        return startShowTime;
+    }
+
+    public long getShowDuration() {
+        return showDuration;
     }
 }
