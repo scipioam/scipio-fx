@@ -86,6 +86,7 @@ public abstract class BaseMainController extends BaseController {
         childView.setStage(JFXApplication.getContext().mainStage);
 
         loadChildrenForContentPane(contentPane, childView);
+        childController.onShow(childView.getStage(), initArgs);
         return childView;
     }
 
