@@ -4,6 +4,7 @@ import com.github.scipioam.scipiofx.framework.fxml.FXMLView;
 import com.github.scipioam.scipiofx.view.SplashScreen;
 import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
 import javafx.application.Platform;
+import javafx.scene.Scene;
 
 /**
  * @author Alan Scipio
@@ -43,16 +44,19 @@ public abstract class AppInitThread implements Runnable {
 
             beforeInit(application, context);
 
-            //自定义初始化操作
+            // 自定义初始化操作
             init(application, context);
 
             afterInit(application, context);
 
             long costTime = System.currentTimeMillis() - startTime;
             if (splashScreen != null && costTime < defaultSplashTime) {
-                //如果初始化时间过快，则延迟一段时间再显示主界面
+                // 如果初始化时间过快，则延迟一段时间再显示主界面
                 Thread.sleep(defaultSplashTime - costTime);
             }
+
+            // 加载mainView的内容
+            Scene mainScene = application.buildMainScene();
 
             //UI主线程回调
             Platform.runLater(() -> {
@@ -61,14 +65,14 @@ public abstract class AppInitThread implements Runnable {
                     if (splashScreen != null) {
                         // 加载mainView之前的回调
                         beforeShowMainView();
-                        //加载mainView
-                        application.initMainStage();
-                        //显示mainView
+                        // 初始化mainView
+                        application.initMainStage(mainScene);
+                        // 显示mainView
                         application.showMainView();
                     }
-                    //初始化结束时的回调
+                    // 初始化结束时的回调
                     FXMLView mainView = application.getMainView();
-                    //初始化结束时的回调
+                    // 初始化结束时的回调
                     onFinished(mainView);
                 } catch (Exception e) {
                     e.printStackTrace();

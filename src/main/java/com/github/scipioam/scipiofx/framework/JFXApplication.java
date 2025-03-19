@@ -111,7 +111,8 @@ public abstract class JFXApplication extends Application {
 
             if (splashScreen == null) {
                 // 直接显示mainView
-                initMainStage();
+                Scene mainScene = buildMainScene();
+                initMainStage(mainScene);
                 showMainView();
             } else if (initThread == null) {
                 // 没有初始化子线程，但有SplashScreen，则启动默认的空初始化线程（单纯等n秒）
@@ -131,6 +132,9 @@ public abstract class JFXApplication extends Application {
         }
     }
 
+    /**
+     * 构建主画面内容
+     */
     protected Scene buildMainScene() throws Exception {
         FXMLViewLoader fxmlViewLoader = new FXMLViewLoader();
         URL mainViewUrl = appProperties.getView().getMainViewUrl();
@@ -160,10 +164,12 @@ public abstract class JFXApplication extends Application {
         return scene;
     }
 
-    protected void initMainStage() throws Exception {
+    /**
+     * 初始化主画面
+     */
+    protected void initMainStage(Scene mainScene) {
         long startTime = System.currentTimeMillis();
         // 设置主画面
-        Scene mainScene = buildMainScene();
         mainStage.setScene(mainScene);
         mainView.setStage(mainStage);
         mainView.getController().setMyWindow(mainStage);
@@ -201,6 +207,9 @@ public abstract class JFXApplication extends Application {
         log.info("Initialize main stage success, cost {}ms", (System.currentTimeMillis() - startTime));
     }
 
+    /**
+     * 显示主画面
+     */
     public void showMainView() {
         if (context.getLaunchListener() != null) {
             context.getLaunchListener().beforeShowMainView(this, mainView, mainStage.getScene());
