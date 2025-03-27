@@ -14,6 +14,8 @@ module com.github.scipioam.scipiofx {
     requires static com.zaxxer.hikari;
     requires static org.mybatis;
     requires static org.mybatis.generator;
+    requires java.management;
+    requires jakarta.annotation;
 
     exports com.github.scipioam.scipiofx.framework;
     exports com.github.scipioam.scipiofx.framework.concurrent;
@@ -21,6 +23,7 @@ module com.github.scipioam.scipiofx {
     exports com.github.scipioam.scipiofx.framework.exception;
     exports com.github.scipioam.scipiofx.framework.fxml;
     exports com.github.scipioam.scipiofx.utils;
+    exports com.github.scipioam.scipiofx.utils.snowflake;
     exports com.github.scipioam.scipiofx.view;
     exports com.github.scipioam.scipiofx.view.dialog;
     exports com.github.scipioam.scipiofx.view.table;
