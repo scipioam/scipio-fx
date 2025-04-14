@@ -1,5 +1,5 @@
 # ScipioFX
-[![](https://jitpack.io/v/ScipioAM/scipio-fx.svg)](https://jitpack.io/#scipioam/scipio-fx)
+[![](https://jitpack.io/v/scipioam/scipio-fx.svg)](https://jitpack.io/#scipioam/scipio-fx)
 [![GitHub Package Version](https://img.shields.io/github/v/tag/scipioam/scipio-fx?label=Github&color=blue)](https://github.com/scipioam/scipio-fx/packages)
 
 ### Description
