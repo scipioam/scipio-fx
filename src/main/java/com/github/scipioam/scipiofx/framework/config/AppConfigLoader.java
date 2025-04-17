@@ -7,8 +7,13 @@ import com.github.scipioam.scipiofx.framework.LaunchListener;
 import com.github.scipioam.scipiofx.framework.exception.ConfigLoadException;
 import com.github.scipioam.scipiofx.mybatis.ext.DBAppInitThread;
 import com.github.scipioam.scipiofx.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -18,6 +23,8 @@ import java.net.URL;
  */
 @SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 public class AppConfigLoader {
+
+    private static final Logger log = LoggerFactory.getLogger(AppConfigLoader.class);
 
     private JFXApplication appInstance;
 
@@ -42,7 +49,7 @@ public class AppConfigLoader {
         AppProperties appProperties;
         String configFileName = configFileName();
         try {
-            InputStream in = appClass.getResourceAsStream(configFileName);
+            InputStream in = getConfigInputStream(configFileName, appClass);
             configRootProperties = yaml.loadAs(in, propertiesClass);
             if (configRootProperties == null) {
                 throw new ConfigLoadException("Load config failed, loadConfig object is null");
@@ -109,6 +116,26 @@ public class AppConfigLoader {
         }
         s.append(configPrefix).append(".yaml");
         return s.toString();
+    }
+
+    public InputStream getConfigInputStream(String configFileName, Class<? extends JFXApplication> appClass) throws FileNotFoundException {
+        InputStream in;
+        String innerConfigFileName = configFileName;
+        if (configFileName.startsWith("/")) {
+            configFileName = "." + configFileName;
+        }
+
+        //搜寻jar同级目录下的配置文件
+        File configFile = new File(configFileName);
+        if (configFile.exists()) {
+            in = new FileInputStream(configFile);
+            log.info("Load config file from default path: [{}]", configFile.getAbsolutePath());
+        } else {
+            //内置默认配置文件
+            in = appClass.getResourceAsStream(innerConfigFileName);
+            log.info("Load config file from jar inner file: [{}]", innerConfigFileName);
+        }
+        return in;
     }
 
     public JFXApplication getAppInstance() {
