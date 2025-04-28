@@ -28,6 +28,8 @@ public class AppConfigLoader {
 
     private JFXApplication appInstance;
 
+    private File externalConfigFile;
+
     public AppConfigLoader() {
     }
 
@@ -128,10 +130,12 @@ public class AppConfigLoader {
         //搜寻jar同级目录下的配置文件
         File configFile = new File(configFileName);
         if (configFile.exists()) {
+            externalConfigFile = configFile;
             in = new FileInputStream(configFile);
             log.info("Load config file from default path: [{}]", configFile.getAbsolutePath());
         } else {
             //内置默认配置文件
+            externalConfigFile = null;
             in = appClass.getResourceAsStream(innerConfigFileName);
             log.info("Load config file from jar inner file: [{}]", innerConfigFileName);
         }
@@ -144,5 +148,9 @@ public class AppConfigLoader {
 
     public void setAppInstance(JFXApplication appInstance) {
         this.appInstance = appInstance;
+    }
+
+    public File getExternalConfigFile() {
+        return externalConfigFile;
     }
 }

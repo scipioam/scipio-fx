@@ -8,6 +8,7 @@ import com.github.scipioam.scipiofx.framework.fxml.FXMLView;
 import com.github.scipioam.scipiofx.framework.fxml.FXMLViewLoader;
 import com.github.scipioam.scipiofx.view.SplashScreen;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -75,6 +76,7 @@ public abstract class JFXApplication extends Application {
             context.setCustomProperties(configRootProperties.getCustomProperties());
             context.setLaunchListener(appProperties.getLaunchListenerInstance());
             context.setInitThread(appProperties.getInitThreadInstance());
+            context.setExternalConfigFile(configLoader.getExternalConfigFile());
             // 创建线程池
             context.setThreadPool(buildThreadPool());
         } catch (Exception e) {
@@ -230,6 +232,10 @@ public abstract class JFXApplication extends Application {
         if (mainView.getController() != null) {
             mainView.getController().onStop();
         }
+    }
+
+    public void exit() {
+        Platform.exit();
     }
 
     /**

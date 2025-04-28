@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,6 +63,8 @@ public class AppContext {
     public ViewProperties getViewProperties() {
         return appProperties.getView();
     }
+
+    private File externalConfigFile; // 只有在使用了jar包外的配置文件时，此字段才有值
 
     // UI Objects
 
