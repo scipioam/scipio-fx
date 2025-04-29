@@ -1,6 +1,5 @@
 package com.github.scipioam.scipiofx.framework;
 
-import com.github.scipioam.scipiofx.framework.config.AppConfigLoader;
 import com.github.scipioam.scipiofx.framework.config.AppProperties;
 import com.github.scipioam.scipiofx.framework.config.ConfigRootProperties;
 import com.github.scipioam.scipiofx.framework.exception.ConfigLoadException;
@@ -42,6 +41,10 @@ public abstract class JFXApplication extends Application {
 
     protected double xOffset;
     protected double yOffset;
+
+    public static JFXApplication getInstance() {
+        return instance;
+    }
 
     public JFXApplication() {
         instance = this;
@@ -101,29 +104,22 @@ public abstract class JFXApplication extends Application {
                 splashScreen.buildAndShowStage();
             }
 
-            //启动初始化线程
-            AppInitThread initThread = context.getInitThread();
+            // 看情况创建初始化线程
+            AppInitThread initThread = buildInitThread();
+
+            // 如果确实创建了，则启动初始化线程
             if (initThread != null) {
-                initThread.setApplication(this);
-                initThread.setContext(context);
-                initThread.setLaunchListener(context.getLaunchListener());
-                initThread.setSplashScreen(splashScreen);
-                context.submitTask(initThread);
+                StateCheckThread stateCheckThread = new StateCheckThread(this, initThread);
+                context.submitTask(stateCheckThread); // 启动状态检查子线程
+                context.submitTask(initThread); // 启动初始化子线程
             }
 
+            // 没有启动画面，则直接显示mainView
             if (splashScreen == null) {
-                // 直接显示mainView
+                log.info("Start main stage without splash screen.");
                 Scene mainScene = buildMainScene();
                 initMainStage(mainScene);
                 showMainView();
-            } else if (initThread == null) {
-                // 没有初始化子线程，但有SplashScreen，则启动默认的空初始化线程（单纯等n秒）
-                EmptyAppInitThread emptyAppInitThread = new EmptyAppInitThread();
-                emptyAppInitThread.setApplication(this);
-                emptyAppInitThread.setContext(context);
-                emptyAppInitThread.setLaunchListener(context.getLaunchListener());
-                emptyAppInitThread.setSplashScreen(splashScreen);
-                context.submitTask(emptyAppInitThread);
             }
         } catch (Exception e) {
             log.error("start main stage error", e);
@@ -134,10 +130,30 @@ public abstract class JFXApplication extends Application {
         }
     }
 
+    private AppInitThread buildInitThread() {
+        AppInitThread initThread = context.getInitThread();
+        if (initThread != null) {
+            // 有自定义的初始化子线程
+            initThread.setApplication(this);
+            initThread.setContext(context);
+            initThread.setLaunchListener(context.getLaunchListener());
+            initThread.setSplashScreen(splashScreen);
+        } else if (splashScreen != null) {
+            // 没有自定义的初始化子线程，但有SplashScreen，则启动默认的空初始化线程（单纯等n秒）
+            initThread = new EmptyAppInitThread();
+            initThread.setApplication(this);
+            initThread.setContext(context);
+            initThread.setLaunchListener(context.getLaunchListener());
+            initThread.setSplashScreen(splashScreen);
+        }
+        return initThread;
+    }
+
     /**
      * 构建主画面内容
      */
     protected Scene buildMainScene() throws Exception {
+        long startTime = System.currentTimeMillis();
         FXMLViewLoader fxmlViewLoader = new FXMLViewLoader();
         URL mainViewUrl = appProperties.getView().getMainViewUrl();
         if (mainViewUrl == null) {
@@ -163,6 +179,7 @@ public abstract class JFXApplication extends Application {
             log.info("MaterialFx init failed: {}", e);
         }
 
+        log.info("Load main view [{}] success, cost {}ms", mainViewUrl, (System.currentTimeMillis() - startTime));
         return scene;
     }
 
@@ -170,7 +187,6 @@ public abstract class JFXApplication extends Application {
      * 初始化主画面
      */
     protected void initMainStage(Scene mainScene) {
-        long startTime = System.currentTimeMillis();
         // 设置主画面
         mainStage.setScene(mainScene);
         mainView.setStage(mainStage);
@@ -206,7 +222,6 @@ public abstract class JFXApplication extends Application {
         if (!appProperties.getView().isResizableFlag()) {
             mainStage.setResizable(false);
         }
-        log.info("Initialize main stage success, cost {}ms", (System.currentTimeMillis() - startTime));
     }
 
     /**
@@ -241,14 +256,14 @@ public abstract class JFXApplication extends Application {
     /**
      * 设置配置文件对应的类型
      */
-    public Class<? extends ConfigRootProperties> configRootPropertiesType() {
+    protected Class<? extends ConfigRootProperties> configRootPropertiesType() {
         return ConfigRootProperties.class;
     }
 
     /**
      * 创建上下文
      */
-    public AppContext buildContext() {
+    protected AppContext buildContext() {
         return new AppContext();
     }
 
@@ -262,66 +277,62 @@ public abstract class JFXApplication extends Application {
     /**
      * 配置文件名
      */
-    public String configPrefix() {
+    protected String configPrefix() {
         return "app-config";
     }
 
     /**
      * 程序标题（优先级高于配置文件）
      */
-    public String title() {
+    protected String title() {
         return null;
     }
 
     /**
      * 主画面的URL（优先级高于配置文件）
      */
-    public URL mainViewUrl() {
+    protected URL mainViewUrl() {
         return null;
     }
 
     /**
      * 主画面图标的URL（优先级高于配置文件）
      */
-    public URL iconUrl() {
+    protected URL iconUrl() {
         return null;
     }
 
     /**
      * 启动画面的URL（优先级高于配置文件）
      */
-    public URL splashImgUrl() {
+    protected URL splashImgUrl() {
         return null;
     }
 
     /**
      * 启动监听器（优先级高于配置文件）
      */
-    public LaunchListener launchListener() {
+    protected LaunchListener launchListener() {
         return null;
     }
 
     /**
      * 初始化线程（优先级高于配置文件）
      */
-    public AppInitThread initThread() {
+    protected AppInitThread initThread() {
         return null;
     }
 
     /**
      * 启动画面实例化（优先级高于配置文件）
      */
-    public SplashScreen splashScreen() {
+    protected SplashScreen splashScreen() {
         URL splashImgUrl = appProperties.getSplashImgUrl();
         if (splashImgUrl != null) {
             return SplashScreen.create(splashImgUrl, true, appProperties.isSplashProgressBarFlag());
         } else {
             return null;
         }
-    }
-
-    public static JFXApplication getInstance() {
-        return instance;
     }
 
     public AppProperties getAppProperties() {
@@ -337,6 +348,18 @@ public abstract class JFXApplication extends Application {
     }
 
     public static AppContext getContext() {
-        return instance.context;
+        return getInstance().context;
+    }
+
+    public boolean isMainViewLoaded() {
+        return mainView != null;
+    }
+
+    public boolean isMainViewShowing() {
+        return mainStage != null && mainStage.isShowing();
+    }
+
+    public SplashScreen getSplashScreen() {
+        return splashScreen;
     }
 }

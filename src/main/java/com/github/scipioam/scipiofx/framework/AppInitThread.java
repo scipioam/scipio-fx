@@ -1,10 +1,9 @@
 package com.github.scipioam.scipiofx.framework;
 
 import com.github.scipioam.scipiofx.framework.fxml.FXMLView;
-import com.github.scipioam.scipiofx.view.SplashScreen;
 import com.github.scipioam.scipiofx.controlsfx.CFXDialogHelper;
+import com.github.scipioam.scipiofx.view.SplashScreen;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 
 /**
  * @author Alan Scipio
@@ -47,38 +46,13 @@ public abstract class AppInitThread implements Runnable {
             // 自定义初始化操作
             init(application, context);
 
-            afterInit(application, context);
+//            afterInit(application, context);
 
             long costTime = System.currentTimeMillis() - startTime;
-            if (splashScreen != null && costTime < defaultSplashTime) {
+            if (application.getSplashScreen() != null && costTime < defaultSplashTime) {
                 // 如果初始化时间过快，则延迟一段时间再显示主界面
                 Thread.sleep(defaultSplashTime - costTime);
             }
-
-            // 加载mainView的内容
-            Scene mainScene = application.buildMainScene();
-
-            //UI主线程回调
-            Platform.runLater(() -> {
-                needRunLater = false;
-                try {
-                    if (splashScreen != null) {
-                        // 加载mainView之前的回调
-                        beforeShowMainView();
-                        // 初始化mainView
-                        application.initMainStage(mainScene);
-                        // 显示mainView
-                        application.showMainView();
-                    }
-                    // 初始化结束时的回调
-                    FXMLView mainView = application.getMainView();
-                    // 初始化结束时的回调
-                    onFinished(mainView);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    CFXDialogHelper.showExceptionDialog(e);
-                }
-            });
         } catch (Exception e) {
             if (launchListener != null) {
                 launchListener.onLaunchError(application, e);
@@ -90,12 +64,13 @@ public abstract class AppInitThread implements Runnable {
                 });
             }
         } finally {
+            needRunLater = false;
             finished = true;
         }
     }
 
     /**
-     * 初始化的具体实现（在{@link Platform#runLater(Runnable)}之外）
+     * 初始化的具体实现（非UI线程）
      *
      * @param application 程序对象
      * @param context     上下文对象
@@ -110,25 +85,20 @@ public abstract class AppInitThread implements Runnable {
     }
 
     /**
-     * 初始化之后的回调（非UI线程）
+     * 初始化之后的回调（UI线程）
      */
     protected void afterInit(JFXApplication application, AppContext context) throws Exception {
         // do nothing
     }
 
     /**
-     * 加载mainView之前的回调（在{@link Platform#runLater(Runnable)}之内）
+     * 初始化结束时（显示主画面之前）的回调（UI线程）
      */
-    protected void beforeShowMainView() {
-        // do nothing
-    }
-
-    /**
-     * 初始化结束时（显示主画面之前）的回调（在{@link Platform#runLater(Runnable)}之内）
-     */
-    protected void onFinished(FXMLView mainView) {
-        BaseController mainController = mainView.getController();
-        mainController.onInitThreadFinished();
+    public void onFinished(FXMLView mainView) {
+        if (mainView != null) {
+            BaseController mainController = mainView.getController();
+            mainController.onInitThreadFinished();
+        }
     }
 
     public void setApplication(JFXApplication application) {

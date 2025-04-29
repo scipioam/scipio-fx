@@ -58,7 +58,7 @@ public class DBAppInitThread extends AppInitThread {
     }
 
     @Override
-    protected void beforeShowMainView() {
+    protected void afterInit(JFXApplication application, AppContext context) {
         setSplashProgress(1.0);
     }
 

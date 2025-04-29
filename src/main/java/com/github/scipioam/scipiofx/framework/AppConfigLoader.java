@@ -1,9 +1,7 @@
-package com.github.scipioam.scipiofx.framework.config;
+package com.github.scipioam.scipiofx.framework;
 
-import com.github.scipioam.scipiofx.framework.AppInitThread;
-import com.github.scipioam.scipiofx.framework.EmptyAppInitThread;
-import com.github.scipioam.scipiofx.framework.JFXApplication;
-import com.github.scipioam.scipiofx.framework.LaunchListener;
+import com.github.scipioam.scipiofx.framework.config.AppProperties;
+import com.github.scipioam.scipiofx.framework.config.ConfigRootProperties;
 import com.github.scipioam.scipiofx.framework.exception.ConfigLoadException;
 import com.github.scipioam.scipiofx.mybatis.ext.DBAppInitThread;
 import com.github.scipioam.scipiofx.utils.StringUtils;
